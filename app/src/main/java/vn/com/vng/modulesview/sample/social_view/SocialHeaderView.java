@@ -7,11 +7,11 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 
 import vn.com.vng.modulesview.R;
-import vn.com.vng.modulesview.modules_view.ImageModule;
+import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 import vn.com.vng.modulesview.modules_view.Module;
-import vn.com.vng.modulesview.modules_view.ModuleParams;
+import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.ModulesView;
-import vn.com.vng.modulesview.modules_view.TextModule;
+import vn.com.vng.modulesview.modules_view.widget.TextModule;
 import vn.com.vng.modulesview.sample.model.SocialModel;
 
 /**
@@ -43,7 +43,7 @@ public class SocialHeaderView extends ModulesView {
     private int mAvaSize = dp(40);
 
     private int mAvaMargin = dp(8);
-    private int mHeaderHeight =  mAvaSize + mAvaMargin*2;
+    private int mHeaderHeight = mAvaSize + mAvaMargin * 2;
 
     private int mNameTextSize = sp(16);
     private static int mNameTextColor = 0xff050505;
@@ -67,29 +67,29 @@ public class SocialHeaderView extends ModulesView {
 
     private void init() {
         mAvaImgModule = buildAvaModule();
-        mAvaImgModule.getModuleParams()
+        mAvaImgModule.getLayoutParams()
                 .setMargin(mAvaMargin)
                 .setWidthDimension(mAvaSize)
                 .setHeightDimension(mAvaSize);
 
 
         mNameTextModule = buildNameModule();
-        mNameTextModule.getModuleParams()
-                .setDimensions(ModuleParams.WRAP_CONTENT, ModuleParams.WRAP_CONTENT)
+        mNameTextModule.getLayoutParams()
+                .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .anchorLeftTo(mAvaImgModule)
                 .setMarginTop(mAvaMargin);
 
         mTimeTextModule = buildTimeModule();
-        mTimeTextModule.getModuleParams()
-                .setDimensions(ModuleParams.WRAP_CONTENT, ModuleParams.WRAP_CONTENT)
+        mTimeTextModule.getLayoutParams()
+                .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .anchorLeftTo(mAvaImgModule)
                 .anchorTopTo(mNameTextModule);
 
         mTopLine = new Module();
-        mTopLine.getModuleParams()
-                .setWidthDimension(ModuleParams.MATCH_PARENT)
-                .setHeightDimension(1)
-                .setBackgroundColor(0xffcccccc);
+        mTopLine.setBackgroundColor(0xffcccccc);
+        mTopLine.getLayoutParams()
+                .setWidthDimension(LayoutParams.MATCH_PARENT)
+                .setHeightDimension(1);
 
         addModule(mAvaImgModule);
         addModule(mNameTextModule);
@@ -125,7 +125,7 @@ public class SocialHeaderView extends ModulesView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasureDimension(getMeasuredWidth(), mHeaderHeight +1);
+        setMeasureDimension(getMeasuredWidth(), mHeaderHeight + 1);
     }
 
     //-----------------listener------------
@@ -165,9 +165,8 @@ public class SocialHeaderView extends ModulesView {
     //--------------------bind data--------------------------
 
 
-
     public void bindHeader(final SocialModel model) {
-        if(model != null) {
+        if (model != null) {
             if (mAvaImgModule.getWidth() > 0 || mAvaImgModule.getHeight() > 0)
                 mAvaImgModule.loadImage(model.getAvatar(), R.drawable.img_place_holder, R.drawable.img_error);
             else
@@ -180,7 +179,7 @@ public class SocialHeaderView extends ModulesView {
 
             mNameTextModule.setText(model.getName());
             mTimeTextModule.setText(model.getTime());
-        }else{
+        } else {
             mAvaImgModule.setBitmap(null);
             mNameTextModule.setText(null);
             mTimeTextModule.setText(null);

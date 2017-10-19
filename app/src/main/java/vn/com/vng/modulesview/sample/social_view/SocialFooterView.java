@@ -8,11 +8,12 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 
 import vn.com.vng.modulesview.R;
-import vn.com.vng.modulesview.modules_view.ImageModule;
+import vn.com.vng.modulesview.modules_view.GravityCompat;
+import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 import vn.com.vng.modulesview.modules_view.Module;
-import vn.com.vng.modulesview.modules_view.ModuleParams;
+import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.ModulesView;
-import vn.com.vng.modulesview.modules_view.TextModule;
+import vn.com.vng.modulesview.modules_view.widget.TextModule;
 import vn.com.vng.modulesview.sample.model.SocialModel;
 
 /**
@@ -83,41 +84,43 @@ public class SocialFooterView extends ModulesView {
 
 
         mTopLine = new Module();
-        mTopLine.getModuleParams()
-                .setBackgroundColor(0xffcccccc)
-                .setDimensions(ModuleParams.MATCH_PARENT, 1)
+        mTopLine.setBackgroundColor(0xffcccccc);
+        mTopLine.getLayoutParams()
+                .setDimensions(LayoutParams.MATCH_PARENT, 1)
                 .setMargin(mLeftMargin, mFooterMarginTop, mRightMargin, 0);
 
 
         mImgLike = buildLikeImgModule();
-        mImgLike.getModuleParams()
+        mImgLike.getLayoutParams()
                 .anchorTopTo(mTopLine)
                 .setMarginLeft(mLeftMargin)
-                .setPadding(dp(4))
+                .setPadding(dp(4), dp(8), dp(4), 0)
                 .setDimensions(mIconSize, mIconSize);
 
         mTextLike = buildLikeTextModule();
-        mTextLike.getModuleParams()
-                .setDimensions(mLikeTextWidth, ModuleParams.WRAP_CONTENT)
+        mTextLike.getLayoutParams()
+                .setDimensions(mLikeTextWidth, mContentHeight)
+                .setGravity(GravityCompat.CENTER_VERTICAL)
                 .anchorTopTo(mTopLine)
                 .anchorLeftTo(mImgLike);
 
         mImgComment = buildCommentImgModule();
-        mImgComment.getModuleParams()
+        mImgComment.getLayoutParams()
                 .setDimensions(mIconSize, mIconSize)
                 .anchorTopTo(mTopLine)
                 .anchorLeftTo(mTextLike)
-                .setPadding(dp(4));
+                .setPadding(dp(4), dp(8), dp(4), 0);
 
         mTextComment = buildCommentTextModule();
-        mTextComment.getModuleParams()
-                .setDimensions(mCommentTextWidth, ModuleParams.WRAP_CONTENT)
+        mTextComment.getLayoutParams()
+                .setDimensions(mCommentTextWidth, mContentHeight)
+                .setGravity(GravityCompat.CENTER_VERTICAL)
                 .anchorTopTo(mTopLine)
                 .anchorLeftTo(mImgComment);
 
 
         mImgMore = buildMoreImgModule();
-        mImgMore.getModuleParams()
+        mImgMore.getLayoutParams()
                 .setDimensions(mIconSize, mIconSize)
                 .anchorTopTo(mTopLine)
                 .anchorRightToParent(true)
@@ -126,17 +129,17 @@ public class SocialFooterView extends ModulesView {
 
 
         mBottomLine = new Module();
-        mBottomLine.getModuleParams()
-                .setDimensions(ModuleParams.MATCH_PARENT, 1)
-                .setBackgroundColor(0xffcccccc)
+        mBottomLine.setBackgroundColor(0xffcccccc);
+        mBottomLine.getLayoutParams()
+                .setDimensions(LayoutParams.MATCH_PARENT, 1)
                 .setMarginTop(dp(8))
                 .anchorTopTo(mImgLike);
 
         mBottomSeparator = new Module();
-        mBottomSeparator.getModuleParams()
+        mBottomSeparator.setBackgroundColor(0xffe4e5e5);
+        mBottomSeparator.getLayoutParams()
                 .anchorTopTo(mBottomLine)
-                .setDimensions(ModuleParams.MATCH_PARENT, mBottomSeparatorSize)
-                .setBackgroundColor(0xffe4e5e5);
+                .setDimensions(LayoutParams.MATCH_PARENT, mBottomSeparatorSize);
         //add modules
         addModule(mTopLine);
         addModule(mImgLike);
@@ -190,9 +193,8 @@ public class SocialFooterView extends ModulesView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-       setMeasureDimension(getMeasuredWidth(), mFooterHeight);
+        setMeasureDimension(getMeasuredWidth(), mFooterHeight);
     }
-
 
 
     //-------------------bind data-----------------------------------

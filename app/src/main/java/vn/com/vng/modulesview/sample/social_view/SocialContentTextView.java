@@ -4,12 +4,13 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.text.Layout;
 import android.util.AttributeSet;
 
-import vn.com.vng.modulesview.modules_view.Module;
-import vn.com.vng.modulesview.modules_view.ModuleParams;
+import vn.com.vng.modulesview.modules_view.GravityCompat;
+import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.ModulesView;
-import vn.com.vng.modulesview.modules_view.TextModule;
+import vn.com.vng.modulesview.modules_view.widget.TextModule;
 import vn.com.vng.modulesview.sample.model.SocialModel;
 
 /**
@@ -41,8 +42,9 @@ public class SocialContentTextView extends ModulesView {
 
     private void init() {
         mTextContent = buildContentTextModule();
-        mTextContent.getModuleParams()
-                .setDimensions(ModuleParams.MATCH_PARENT, ModuleParams.WRAP_CONTENT)
+        mTextContent.getLayoutParams()
+                .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 .setMargin(dp(8), dp(4), dp(8), dp(4));
         addModule(mTextContent);
     }
@@ -58,7 +60,7 @@ public class SocialContentTextView extends ModulesView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasureDimension(getMeasuredWidth(), mTextContent.getHeight() + mTextContent.getModuleParams().getMarginTop() + mTextContent.getModuleParams().getMarginBottom());
+        setMeasureDimension(getMeasuredWidth(), mTextContent.getHeight() + mTextContent.getLayoutParams().getMarginTop() + mTextContent.getLayoutParams().getMarginBottom());
     }
 
     public void bindModel(SocialModel model) {

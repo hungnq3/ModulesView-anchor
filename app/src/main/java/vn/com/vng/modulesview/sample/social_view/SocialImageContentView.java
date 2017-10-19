@@ -13,10 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import vn.com.vng.modulesview.R;
-import vn.com.vng.modulesview.modules_view.ImageModule;
+import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 import vn.com.vng.modulesview.modules_view.Module;
 import vn.com.vng.modulesview.modules_view.ModulesView;
-import vn.com.vng.modulesview.sample.model.SocialModel;
 
 /**
  * Created by HungNQ on 15/09/2017.

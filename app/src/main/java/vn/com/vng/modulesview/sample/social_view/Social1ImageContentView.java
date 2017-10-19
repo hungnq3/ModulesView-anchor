@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 
 import java.util.List;
 
-import vn.com.vng.modulesview.modules_view.ImageModule;
+import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 
 /**
  * Created by HungNQ on 15/09/2017.
@@ -43,7 +43,7 @@ public class Social1ImageContentView extends SocialImageContentView {
         int widthSize = getMeasuredWidth();
 
         ImageModule img1 = imageModules.get(0);
-        img1.getModuleParams()
+        img1.getLayoutParams()
         .setDimensions(mScreenWidth, mScreenWidth);
 
     }

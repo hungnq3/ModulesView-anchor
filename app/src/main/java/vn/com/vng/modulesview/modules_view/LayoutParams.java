@@ -4,18 +4,47 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.IntDef;
 import android.view.View;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by HungNQ on 17/10/2017.
  */
 
-public class ModuleParams {
+public class LayoutParams {
 
-    //if a bound (left, top, right, bottom) can not determine , let put BOUND_WRAP_CONTENT.
-    //Depend on each module, bounds will be defined when the module call configModule()
-    public static final int WRAP_CONTENT = -1;
-    public static final int MATCH_PARENT = -2;
+    /**
+     * Special value for the height or width requested by a Module.
+     * MATCH_PARENT means that the m wants to be as big as its parent,
+     * minus the parent's padding, if anyodule.
+     */
+    public static final int MATCH_PARENT = -1;
+
+    /**
+     * Special value for the height or width requested by a Module.
+     * WRAP_CONTENT means that the module wants to be just large enough to fit
+     * its own internal content, taking its own padding into account.
+     */
+    public static final int WRAP_CONTENT = -2;
+
+    public static final int VISIBLE = 0;
+    public static final int INVISIBLE = 1;
+    public static final int GONE = 2;
+
+//    @IntDef({GravityCompat.LEFT, GravityCompat.RIGHT, GravityCompat.TOP, GravityCompat.BOTTOM, GravityCompat.CENTER, GravityCompat.CENTER_HORIZONTAL, GravityCompat.CENTER_VERTICAL})
+//    @Retention(RetentionPolicy.SOURCE)
+//    public @interface Gravity {
+//    }
+
+    @IntDef({VISIBLE, INVISIBLE, GONE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Visibility {
+    }
+
+    private boolean mDirty;
 
 
     int mX, mY;
@@ -26,60 +55,64 @@ public class ModuleParams {
     int mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom;
     int mMarginLeft, mMarginTop, mMarginRight, mMarginBottom;
 
-    Drawable mBackgroundDrawable;
 
+    int mGravity;
+    int mVisibility;
 
     //-----------builder---------------------------------------
-    public ModuleParams setX(int x) {
+    public LayoutParams setX(int x) {
         mX = x;
         return this;
     }
 
-    public ModuleParams setY(int y) {
+    public LayoutParams setY(int y) {
         mY = y;
         return this;
     }
 
-    public ModuleParams setWidthDimension(int widthDimension) {
+    public LayoutParams setWidthDimension(int widthDimension) {
         mWidthDimension = widthDimension;
         return this;
     }
 
-    public ModuleParams setHeightDimension(int heightDimension) {
+    public LayoutParams setHeightDimension(int heightDimension) {
         mHeightDimension = heightDimension;
         return this;
     }
 
-    public ModuleParams setDimensions(int widthDimension, int heightDimension){
+    public LayoutParams setDimensions(int widthDimension, int heightDimension) {
         mWidthDimension = widthDimension;
         mHeightDimension = heightDimension;
         return this;
     }
 
-    public ModuleParams setPaddingLeft(int paddingLeft) {
+    public LayoutParams setPaddingLeft(int paddingLeft) {
         mPaddingLeft = paddingLeft;
         return this;
 
     }
 
-    public ModuleParams setPaddingTop(int paddingTop) {
-        mPaddingTop = paddingTop;
+    public LayoutParams setPaddingTop(int paddingTop) {
+        if (mPaddingTop != paddingTop) {
+            mDirty = true;
+            mPaddingTop = paddingTop;
+        }
         return this;
     }
 
-    public ModuleParams setPaddingRight(int paddingRight) {
+    public LayoutParams setPaddingRight(int paddingRight) {
         mPaddingRight = paddingRight;
         return this;
 
     }
 
-    public ModuleParams setPaddingBottom(int paddingBottom) {
+    public LayoutParams setPaddingBottom(int paddingBottom) {
         mPaddingBottom = paddingBottom;
         return this;
 
     }
 
-    public ModuleParams setPadding(int left, int top, int right, int bottom) {
+    public LayoutParams setPadding(int left, int top, int right, int bottom) {
         mPaddingLeft = left;
         mPaddingTop = top;
         mPaddingRight = right;
@@ -87,38 +120,38 @@ public class ModuleParams {
         return this;
     }
 
-    public ModuleParams setPadding(int padding) {
+    public LayoutParams setPadding(int padding) {
         mPaddingLeft = mPaddingTop = mPaddingRight = mPaddingBottom = padding;
         return this;
     }
 
-    public ModuleParams setMarginLeft(int marginLeft) {
+    public LayoutParams setMarginLeft(int marginLeft) {
         mMarginLeft = marginLeft;
         return this;
     }
 
-    public ModuleParams setMarginTop(int marginTop) {
+    public LayoutParams setMarginTop(int marginTop) {
         mMarginTop = marginTop;
         return this;
     }
 
-    public ModuleParams setMarginRight(int marginRight) {
+    public LayoutParams setMarginRight(int marginRight) {
         mMarginRight = marginRight;
         return this;
 
     }
 
-    public ModuleParams setMarginBottom(int marginBottom) {
+    public LayoutParams setMarginBottom(int marginBottom) {
         mMarginBottom = marginBottom;
         return this;
     }
 
-    public ModuleParams setMargin(int margin) {
+    public LayoutParams setMargin(int margin) {
         mMarginLeft = mMarginTop = mMarginRight = mMarginBottom = margin;
         return this;
     }
 
-    public ModuleParams setMargin(int left, int top, int right, int bottom) {
+    public LayoutParams setMargin(int left, int top, int right, int bottom) {
         mMarginLeft = left;
         mMarginRight = right;
         mMarginTop = top;
@@ -127,75 +160,59 @@ public class ModuleParams {
     }
 
 
-    public ModuleParams setBackgroundColor(int backgroundColor) {
-        clearBackground();
-        mBackgroundDrawable = new ColorDrawable(backgroundColor);
+    public LayoutParams setGravity(int gravity) {
+        mGravity = gravity;
         return this;
     }
 
-
-    public ModuleParams setBackgroundDrawable(Drawable backgroundDrawable) {
-        clearBackground();
-        mBackgroundDrawable = backgroundDrawable;
+    public LayoutParams setVisibility(@Visibility int visibility) {
+        mVisibility = visibility;
         return this;
     }
 
-    public ModuleParams setBackgroundBitmap(Bitmap backgroundBitmap) {
-        clearBackground();
-        mBackgroundDrawable = new BitmapDrawable(null, backgroundBitmap);
-        return this;
-    }
-
-    public ModuleParams clearBackground() {
-        mBackgroundDrawable = null;
-        return this;
-
-    }
-
-
-    public ModuleParams anchorLeftToParent(Boolean anchorParent) {
+    public LayoutParams anchorLeftToParent(Boolean anchorParent) {
         mAnchorParentLeft = anchorParent;
         if (anchorParent)
             mAnchorLeft = null;
         return this;
     }
 
-    public ModuleParams anchorTopToParent(Boolean anchorParent) {
+    public LayoutParams anchorTopToParent(Boolean anchorParent) {
         mAnchorParentTop = anchorParent;
         if (anchorParent)
             mAnchorTop = null;
         return this;
     }
 
-    public ModuleParams anchorRightToParent(Boolean anchorParent) {
+    public LayoutParams anchorRightToParent(Boolean anchorParent) {
         mAnchorParentRight = anchorParent;
         if (anchorParent)
             mAnchorRight = null;
         return this;
     }
 
-    public ModuleParams anchorLeftTo(Module module) {
+    public LayoutParams anchorLeftTo(Module module) {
         mAnchorLeft = module;
         if (module != null)
             mAnchorParentLeft = false;
         return this;
     }
 
-    public ModuleParams anchorTopTo(Module module) {
+    public LayoutParams anchorTopTo(Module module) {
         mAnchorTop = module;
         if (module != null)
             mAnchorParentTop = false;
         return this;
     }
 
-    public ModuleParams anchorRightTo(Module module) {
+    public LayoutParams anchorRightTo(Module module) {
         mAnchorRight = module;
         if (module != null)
             mAnchorParentRight = false;
         return this;
     }
 
-    public ModuleParams anchorBottomTo(Module module) {
+    public LayoutParams anchorBottomTo(Module module) {
         mAnchorBottom = module;
         if (module != null)
             mAnchorParentBottom = false;
@@ -203,7 +220,7 @@ public class ModuleParams {
     }
 
 
-    public ModuleParams anchorBottomToParent(Boolean anchorParent) {
+    public LayoutParams anchorBottomToParent(Boolean anchorParent) {
         mAnchorParentBottom = anchorParent;
         if (anchorParent)
             mAnchorBottom = null;
@@ -271,8 +288,16 @@ public class ModuleParams {
     }
 
 
-    public Drawable getBackgroundDrawable() {
-        return mBackgroundDrawable;
+
+
+    public int getGravity() {
+        return mGravity;
+    }
+
+    public
+    @Visibility
+    int getVisibility() {
+        return mVisibility;
     }
 
 
@@ -312,20 +337,20 @@ public class ModuleParams {
 
 
     public boolean hasAnchorLeft() {
-        return mAnchorLeft != null || mAnchorParentLeft;
+        return (mAnchorLeft != null && mAnchorLeft.getLayoutParams().getVisibility() != GONE) || mAnchorParentLeft;
     }
 
     public boolean hasAnchorRight() {
-        return mAnchorRight != null || mAnchorParentRight || mWidthDimension == ModuleParams.MATCH_PARENT;
+        return (mAnchorRight != null && mAnchorRight.getLayoutParams().getVisibility() != GONE) || mAnchorParentRight;
     }
 
     public boolean hasAnchorTop() {
-        return mAnchorTop != null || mAnchorParentTop;
+        return (mAnchorTop != null && mAnchorTop.getLayoutParams().getVisibility() != GONE) || mAnchorParentTop;
 
     }
 
     public boolean hasAnchorBottom() {
-        return mAnchorBottom != null || mAnchorParentBottom || mHeightDimension == ModuleParams.MATCH_PARENT;
+        return (mAnchorBottom != null && mAnchorBottom.getLayoutParams().getVisibility() != GONE) || mAnchorParentBottom;
     }
 
 
@@ -340,20 +365,22 @@ public class ModuleParams {
         boolean hasAnchorRight = hasAnchorRight();
         if (hasAnchorLeft) {
             if (getAnchorLeft() != null) {
-                ModuleParams anchorParams = getAnchorLeft().getModuleParams();
+                LayoutParams anchorParams = getAnchorLeft().getLayoutParams();
                 left = getAnchorLeft().getRight() + anchorParams.mMarginRight + mMarginLeft;
             } else //anchor parent
                 left = mMarginLeft;
-        } else { //default
-            left = mX + mMarginLeft;
+        } else if (mWidthDimension == MATCH_PARENT) {
+            left = mMarginLeft;
         }
 
         if (hasAnchorRight) {
             if (getAnchorRight() != null) {
-                ModuleParams anchorParams = getAnchorRight().getModuleParams();
+                LayoutParams anchorParams = getAnchorRight().getLayoutParams();
                 right = getAnchorRight().getLeft() - anchorParams.mMarginLeft - mMarginRight;
             } else //anchor parent
                 right = parentWidth - mMarginRight;
+        } else if (mWidthDimension == MATCH_PARENT) {
+            right = parentWidth - mMarginRight;
         }
 
         if (mWidthDimension >= 0) {
@@ -376,20 +403,22 @@ public class ModuleParams {
         boolean hasAnchorBottom = hasAnchorBottom();
         if (hasAnchorTop) {
             if (getAnchorTop() != null) {
-                ModuleParams anchorParams = getAnchorTop().getModuleParams();
+                LayoutParams anchorParams = getAnchorTop().getLayoutParams();
                 top = getAnchorTop().getBottom() + anchorParams.mMarginBottom + mMarginTop;
             } else
                 top = mMarginTop;
-        } else { //default
-            top = mY + mMarginTop;
+        } else if (mHeightDimension == MATCH_PARENT) {
+            top = mMarginTop;
         }
 
         if (hasAnchorBottom) {
             if (getAnchorBottom() != null) {
-                ModuleParams anchorParams = getAnchorBottom().getModuleParams();
+                LayoutParams anchorParams = getAnchorBottom().getLayoutParams();
                 bottom = getAnchorBottom().getTop() - anchorParams.mMarginTop - mMarginBottom;
             } else
                 bottom = parentHeight - mMarginBottom;
+        } else if (mHeightDimension == MATCH_PARENT) {
+            bottom = parentHeight - mMarginBottom;
         }
 
 

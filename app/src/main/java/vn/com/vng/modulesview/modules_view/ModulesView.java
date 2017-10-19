@@ -70,13 +70,6 @@ public class ModulesView extends View {
         module.setParent(this);
     }
 
-    public void addModule(@NonNull Module module, int left, int top, int right, int bottom) {
-        if (module.getParent() != null)
-            return;
-        mModules.add(module);
-        module.setParent(this);
-        module.setBounds(left, top, right, bottom);
-    }
 
     public void clearModules() {
         for (Module module : mModules) {
@@ -149,7 +142,7 @@ public class ModulesView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         for (Module module : mModules) {
-            if (module == null)
+            if (module == null || module.getLayoutParams().getVisibility() == LayoutParams.GONE)
                 continue;
             module.measure(widthMeasureSpec, heightMeasureSpec);
             module.onPostMeasured();
@@ -187,7 +180,8 @@ public class ModulesView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (Module module : mModules) {
-            module.draw(canvas);
+            if (module.getLayoutParams().getVisibility() == LayoutParams.VISIBLE)
+                module.draw(canvas);
         }
     }
 

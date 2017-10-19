@@ -1,4 +1,4 @@
-package vn.com.vng.modulesview.modules_view;
+package vn.com.vng.modulesview.modules_view.widget;
 
 import android.graphics.Canvas;
 import android.graphics.RectF;
@@ -9,6 +9,8 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 
 import com.facebook.fbui.textlayoutbuilder.TextLayoutBuilder;
+
+import vn.com.vng.modulesview.modules_view.Module;
 
 /**
  * Created by HungNQ on 08/09/2017.
@@ -151,31 +153,13 @@ public class TextModule extends Module {
 
 
     @Override
-    public void internalMeasure(int width, int widthMode, int height, int heightMode) {
-        super.internalMeasure(width, widthMode, height, heightMode);
-
-        int maxWidth = width - getModuleParams().getPaddingLeft() - getModuleParams().getPaddingRight();
-        if(maxWidth <0)
-            maxWidth = 0;
-
-        int maxHeight = height - getModuleParams().getPaddingTop() - getModuleParams().getPaddingBottom();
-        if(maxHeight <0)
-            maxHeight = 0;
-
-        int textWidth = (widthMode == DIMENSION_MODE_FIXED) ? maxWidth : 0;
-
-        //build a layout to calculate text width and height
-        mTextLayout = buildTextLayout(textWidth, maxWidth);
-        int vWidth = mTextLayout.getWidth() + getModuleParams().getPaddingLeft() + getModuleParams().getPaddingRight();
-        int vHeight;
-        if (heightMode == DIMENSION_MODE_MAX)
-            vHeight = Math.min(mTextLayout.getHeight() +getModuleParams().getPaddingTop() + getModuleParams().getPaddingBottom() , height);
-        else if (heightMode == DIMENSION_MODE_FIXED)
-            vHeight = height;
-        else
-            vHeight = mTextLayout.getHeight() +getModuleParams().getPaddingTop() + getModuleParams().getPaddingBottom();
-
-        updateMeasureDimension(vWidth, vHeight);
+    public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
+//        super.onMeasureContent(width, widthMode, height, heightMode);
+        int maxWidth = width < 0 ? 0 : width;
+        mTextLayout = buildTextLayout(maxWidth);
+        int textWidth = mTextLayout.getWidth();
+        int textHeight = mTextLayout.getHeight();
+        setContentDimensions(textWidth, textHeight);
     }
 
 
@@ -184,18 +168,15 @@ public class TextModule extends Module {
      *
      * @return {@link Layout}
      */
-    private Layout buildTextLayout(int width, int maxWidth) {
+    private Layout buildTextLayout(int maxWidth) {
         //default text size
         if (mTextSize == 0 && mContext != null) {
             mTextSize = (int) (DEFAULT_TEXT_SIZE_IN_SP * mContext.getResources().getDisplayMetrics().scaledDensity);
             mTextLayoutBuilder.setTextSize(mTextSize);
         }
-        if (width > 0)
-            mTextLayoutBuilder.setWidth(width);
-        else
-            mTextLayoutBuilder.setWidth(0, TextLayoutBuilder.MEASURE_MODE_UNSPECIFIED);
 
-        if (maxWidth > 0)
+        mTextLayoutBuilder.setWidth(0, TextLayoutBuilder.MEASURE_MODE_UNSPECIFIED);
+        if (maxWidth >= 0)
             mTextLayoutBuilder.setMaxWidth(maxWidth);
 
         Layout layout = mTextLayoutBuilder.build();
@@ -204,7 +185,30 @@ public class TextModule extends Module {
         if (layout == null) {
             TextPaint textPaint = new TextPaint();
             textPaint.setTextSize(mTextSize);
-            layout = new StaticLayout("", textPaint, width, mAlignment, mTextLayoutBuilder.getTextSpacingMultiplier(), mTextLayoutBuilder.getTextSpacingExtra(), false);
+            layout = new StaticLayout("", textPaint, maxWidth, mAlignment, mTextLayoutBuilder.getTextSpacingMultiplier(), mTextLayoutBuilder.getTextSpacingExtra(), false);
+        }
+        return layout;
+    }
+
+    /**
+     * build a {@link Layout} based on text width and element's properties set
+     *
+     * @return {@link Layout}
+     */
+    private Layout buildTextLayout() {
+        //default text size
+        if (mTextSize == 0 && mContext != null) {
+            mTextSize = (int) (DEFAULT_TEXT_SIZE_IN_SP * mContext.getResources().getDisplayMetrics().scaledDensity);
+            mTextLayoutBuilder.setTextSize(mTextSize);
+        }
+
+        Layout layout = mTextLayoutBuilder.build();
+
+        //fix layout null when text empty
+        if (layout == null) {
+            TextPaint textPaint = new TextPaint();
+            textPaint.setTextSize(mTextSize);
+            layout = new StaticLayout("", textPaint, 0, mAlignment, mTextLayoutBuilder.getTextSpacingMultiplier(), mTextLayoutBuilder.getTextSpacingExtra(), false);
         }
         return layout;
     }
@@ -212,36 +216,21 @@ public class TextModule extends Module {
     @Override
     public void configModule() {
         super.configModule();
-        if (getWidth() > 0)
-            mTextLayout = buildTextLayout(getWidth(), 0);
-        configClipBounds();
+        if (getContentWidth() > 0)
+            mTextLayout = buildTextLayout();
     }
-
-
-    private void configClipBounds() {
-
-        int contentWidth = getWidth() - getModuleParams().getPaddingLeft() - getModuleParams().getPaddingRight();
-        int contentHeight = getHeight() - getModuleParams().getPaddingTop() - getModuleParams().getPaddingBottom();
-        if (contentWidth <= 0 || contentHeight <= 0)
-            return;
-        mClipRect.set(0, 0, contentWidth, contentHeight);
-    }
-
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        if (getWidth() <= 0 || getHeight() <= 0)
+    protected void onDraw(Canvas canvas, int contentLeft, int contentTop, int contentRight, int contentBottom) {
+        super.onDraw(canvas, contentLeft, contentTop, contentRight, contentBottom);
+        if (getContentHeight() <= 0 || getContentWidth() <= 0)
             return;
 
         canvas.save();
-        //translate if needed
-        int translateLeft = getLeft() + getModuleParams().mPaddingLeft;
-        int translateTop = getTop() + getModuleParams().mPaddingTop;
-        canvas.translate(translateLeft, translateTop);
 
         //clip drawing region
-        canvas.clipRect(mClipRect);
+        canvas.clipRect(contentLeft, contentTop, contentRight, contentBottom);
+        canvas.translate(contentLeft, contentTop);
 
         if (mTextLayout != null)
             mTextLayout.draw(canvas);

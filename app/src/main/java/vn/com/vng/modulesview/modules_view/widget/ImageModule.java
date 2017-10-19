@@ -1,7 +1,6 @@
-package vn.com.vng.modulesview.modules_view;
+package vn.com.vng.modulesview.modules_view.widget;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -12,18 +11,17 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.HalfFloat;
 import android.support.annotation.IntDef;
-import android.transition.TransitionManager;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.squareup.picasso.Target;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import vn.com.vng.modulesview.modules_view.Module;
 
 /**
  * Created by HungNQ on 08/09/2017.
@@ -45,7 +43,8 @@ public class ImageModule extends Module {
 
     @IntDef({FIT_CENTER, FIT_XY, CENTER, CENTER_CROP, CENTER_INSIDE})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface ScaleType {}
+    public @interface ScaleType {
+    }
 
 
     //----------stuff-------------------------
@@ -108,11 +107,10 @@ public class ImageModule extends Module {
 
     //-------------endregion------------------
 
-
     @Override
     public void configModule() {
         super.configModule();
-        if(getWidth() <=0 || getHeight() <= 0)
+        if (getWidth() <= 0 || getHeight() <= 0)
             return;
 
         configureImageBounds();
@@ -130,8 +128,14 @@ public class ImageModule extends Module {
         final int iWidth = mBitmap.getWidth();
         final int iHeight = mBitmap.getHeight();
 
-        final int vWidth =  getWidth() - getModuleParams().getPaddingRight() - getModuleParams().getPaddingLeft();
-        final int vHeight = getHeight() - getModuleParams().getPaddingTop() - getModuleParams().getPaddingBottom();
+        final int vWidth = getContentWidth();
+        final int vHeight = getContentHeight();
+
+        if (iWidth <= 0 || iHeight <= 0 || vWidth <= 0 || vHeight <= 0)
+            return;
+
+        mDrawTranslateX = 0;
+        mDrawTranslateY = 0;
 
         final boolean fits = vWidth == iWidth && vHeight == iHeight;
 
@@ -147,8 +151,7 @@ public class ImageModule extends Module {
             //determine draw region
             mDrawWidth = vWidth;
             mDrawHeight = vHeight;
-            mDrawTranslateX = getModuleParams().getPaddingLeft();
-            mDrawTranslateY =  getModuleParams().getPaddingTop();
+
 
         } else {
             // We need to do the scaling ourself, so have the drawable
@@ -160,8 +163,6 @@ public class ImageModule extends Module {
                 //determine draw region
                 mDrawWidth = vWidth;
                 mDrawHeight = vHeight;
-                mDrawTranslateX = getModuleParams().getPaddingLeft();
-                mDrawTranslateY = getModuleParams().getPaddingTop();
             } else if (mScaleType == CENTER) {
                 // Center bitmap in view, no scaling.
                 mDrawMatrix = mMatrix;
@@ -171,8 +172,6 @@ public class ImageModule extends Module {
                 //determine draw region
                 mDrawWidth = vWidth;
                 mDrawHeight = vHeight;
-                mDrawTranslateX = getModuleParams().getPaddingLeft();
-                mDrawTranslateY = getModuleParams().getPaddingTop();
             } else if (mScaleType == CENTER_CROP) {
                 mDrawMatrix = mMatrix;
 
@@ -193,9 +192,6 @@ public class ImageModule extends Module {
                 //determine draw region
                 mDrawWidth = vWidth;
                 mDrawHeight = vHeight;
-                mDrawTranslateX = getModuleParams().getPaddingLeft();
-                mDrawTranslateY = getModuleParams().getPaddingTop();
-
             } else if (mScaleType == CENTER_INSIDE) {
                 mDrawMatrix = mMatrix;
                 float scale;
@@ -218,8 +214,8 @@ public class ImageModule extends Module {
                 //determine draw region
                 mDrawWidth = (int) (iWidth * scale);
                 mDrawHeight = (int) (iHeight * scale);
-                mDrawTranslateX = getModuleParams().getPaddingLeft() + (int) dx;
-                mDrawTranslateY = getModuleParams().getPaddingTop() + (int) dy;
+                mDrawTranslateX = (int) dx;
+                mDrawTranslateY = (int) dy;
             } else { //FIT_CENTER
                 // Generate the required transform.
                 float scale = Math.min((float) vWidth / (float) iWidth,
@@ -234,8 +230,8 @@ public class ImageModule extends Module {
                 //determine draw region
                 mDrawWidth = (int) (iWidth * scale);
                 mDrawHeight = (int) (iHeight * scale);
-                mDrawTranslateX = getModuleParams().getPaddingLeft() + dx;
-                mDrawTranslateY = getModuleParams().getPaddingTop() + dy;
+                mDrawTranslateX = dx;
+                mDrawTranslateY = dy;
             }
         }
     }
@@ -275,33 +271,31 @@ public class ImageModule extends Module {
 
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    protected void onDraw(Canvas canvas, int contentLeft, int contentTop, int contentRight, int contentBottom) {
+        super.onDraw(canvas, contentLeft, contentTop, contentRight, contentBottom);
 
-        if (mBitmap == null) {
+        if (mBitmap == null)
             return;
-        }
-        if (mBitmap.getHeight() == 0 || mBitmap.getHeight() == 0) {
+
+        if (mBitmap.getHeight() == 0 || mBitmap.getHeight() == 0)
             return;
-        }
+
+        if (getContentWidth() <= 0 || getContentHeight() <= 0)
+            return;
+
+        canvas.save();
 
 //        translate if needed
-        int translateLeft = getLeft() + mDrawTranslateX;
-        int translateTop = getTop() + mDrawTranslateY;
-        boolean needToSave = translateLeft != 0 || translateTop != 0;
-
-        if (needToSave) {
-            canvas.save();
-            canvas.translate(translateLeft, translateTop);
-        }
+        int translateLeft = contentLeft + mDrawTranslateX;
+        int translateTop = contentTop + mDrawTranslateY;
+        canvas.translate(translateLeft, translateTop);
 
         if (!mClipPath.isEmpty())
             canvas.drawPath(mClipPath, mBitmapPaint);
         else
             canvas.drawRect(mCLipRect, mBitmapPaint);
 
-        if (needToSave)
-            canvas.restore();
+        canvas.restore();
     }
 
 

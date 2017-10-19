@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 
 import java.util.List;
 
-import vn.com.vng.modulesview.modules_view.ImageModule;
+import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 
 /**
  * Created by HungNQ on 15/09/2017.
@@ -54,38 +54,38 @@ public class Social7ImageContentView extends SocialImageContentView {
         int temp1 = (int) (widthSize * 2f / 3);
         int temp2 =  widthSize / 3;
 
-        img1.getModuleParams()
+        img1.getLayoutParams()
                 .setDimensions(temp1, temp2)
                 .setPadding(0, 0, dp(1), dp(1));
 
-        img2.getModuleParams()
+        img2.getLayoutParams()
                 .setDimensions(temp1, temp2)
                 .anchorTopTo(img1)
                 .setPadding(0, dp(1), dp(1), dp(1));
 
-        img3.getModuleParams()
+        img3.getLayoutParams()
                 .setDimensions(temp2,temp2)
                 .anchorLeftTo(img1)
                 .setPadding(dp(1),0,0,dp(1));
 
-        img4.getModuleParams()
+        img4.getLayoutParams()
                 .setDimensions(temp2,temp2)
                 .anchorLeftTo(img2)
                 .anchorTopTo(img3)
                 .setPadding(dp(1),dp(1),0,dp(1));
 
-        img5.getModuleParams()
+        img5.getLayoutParams()
                 .setDimensions(temp2,temp2)
                 .anchorTopTo(img2)
                 .setPadding(0,dp(1),dp(1), 0);
 
-        img6.getModuleParams()
+        img6.getLayoutParams()
                 .setDimensions(temp2,temp2)
                 .anchorTopTo(img2)
                 .anchorLeftTo(img5)
                 .setPadding(dp(1),dp(1),dp(1), 0);
 
-        img7.getModuleParams()
+        img7.getLayoutParams()
                 .setDimensions(temp2,temp2)
                 .anchorTopTo(img4)
                 .anchorLeftTo(img6)

@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 
 import java.util.List;
 
-import vn.com.vng.modulesview.modules_view.ImageModule;
+import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 
 /**
  * Created by HungNQ on 15/09/2017.
@@ -51,22 +51,22 @@ public class Social4ImageContentView extends SocialImageContentView {
         int temp1 = (int) (widthSize * 2f / 3);
         int temp2 =  widthSize / 3;
 
-        img1.getModuleParams()
+        img1.getLayoutParams()
                 .setDimensions(temp1, widthSize)
                 .setPaddingRight(dp(1));
-        img2.getModuleParams()
+        img2.getLayoutParams()
                 .setHeightDimension(temp2)
                 .anchorLeftTo(img1)
                 .anchorRightToParent(true)
                 .setPadding(dp(1), 0, 0, dp(1));
 
-        img3.getModuleParams()
+        img3.getLayoutParams()
                 .setHeightDimension(temp2)
                 .anchorLeftTo(img1)
                 .anchorRightToParent(true)
                 .anchorTopTo(img2)
                 .setPadding(dp(1),dp(1),0,0);
-        img4.getModuleParams()
+        img4.getLayoutParams()
                 .setHeightDimension(temp2)
                 .anchorLeftTo(img1)
                 .anchorRightToParent(true)
