@@ -61,41 +61,41 @@ public class Social8ImageContentView extends SocialImageContentView {
 
         img2.getLayoutParams()
                 .setDimensions(temp2, temp2)
-                .anchorTopTo(img1)
+                .anchorTopToBottom(img1)
                 .setPadding(0, dp(1), dp(1), dp(1));
 
         img3.getLayoutParams()
                 .setDimensions(temp2, temp2)
-                .anchorTopTo(img1)
-                .anchorLeftTo(img2)
+                .anchorTopToBottom(img1)
+                .anchorLeftToRight(img2)
                 .setPadding(dp(1));
 
         img4.getLayoutParams()
                 .setDimensions(temp2,temp2)
-                .anchorLeftTo(img1)
+                .anchorLeftToRight(img1)
                 .setPadding(dp(1),0,0,dp(1));
 
         img5.getLayoutParams()
                 .setDimensions(temp2,temp2)
-                .anchorLeftTo(img3)
-                .anchorTopTo(img4)
+                .anchorLeftToRight(img3)
+                .anchorTopToBottom(img4)
                 .setPadding(dp(1),dp(1),0,dp(1));
 
         img6.getLayoutParams()
                 .setDimensions(temp2,temp2)
-                .anchorTopTo(img2)
+                .anchorTopToBottom(img2)
                 .setPadding(0,dp(1),dp(1), 0);
 
         img7.getLayoutParams()
                 .setDimensions(temp2,temp2)
-                .anchorTopTo(img3)
-                .anchorLeftTo(img6)
+                .anchorTopToBottom(img3)
+                .anchorLeftToRight(img6)
                 .setPadding(dp(1),dp(1),dp(1), 0);
 
         img8.getLayoutParams()
                 .setDimensions(temp2,temp2)
-                .anchorTopTo(img5)
-                .anchorLeftTo(img7)
+                .anchorTopToBottom(img5)
+                .anchorLeftToRight(img7)
                 .setPadding(dp(1),dp(1),0, 0);
     }
 }

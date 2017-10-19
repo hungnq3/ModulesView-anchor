@@ -76,14 +76,15 @@ public class SocialHeaderView extends ModulesView {
         mNameTextModule = buildNameModule();
         mNameTextModule.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                .anchorLeftTo(mAvaImgModule)
-                .setMarginTop(mAvaMargin);
+                .anchorLeftToRight(mAvaImgModule)
+                .setMarginLeft(dp(8))
+                .anchorTopToTop(mAvaImgModule);
 
         mTimeTextModule = buildTimeModule();
         mTimeTextModule.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                .anchorLeftTo(mAvaImgModule)
-                .anchorTopTo(mNameTextModule);
+                .anchorLeftToLeft(mNameTextModule)
+                .anchorTopToBottom(mNameTextModule);
 
         mTopLine = new Module();
         mTopLine.setBackgroundColor(0xffcccccc);

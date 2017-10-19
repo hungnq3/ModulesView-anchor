@@ -92,7 +92,7 @@ public class SocialFooterView extends ModulesView {
 
         mImgLike = buildLikeImgModule();
         mImgLike.getLayoutParams()
-                .anchorTopTo(mTopLine)
+                .anchorTopToBottom(mTopLine)
                 .setMarginLeft(mLeftMargin)
                 .setPadding(dp(4), dp(8), dp(4), 0)
                 .setDimensions(mIconSize, mIconSize);
@@ -101,28 +101,28 @@ public class SocialFooterView extends ModulesView {
         mTextLike.getLayoutParams()
                 .setDimensions(mLikeTextWidth, mContentHeight)
                 .setGravity(GravityCompat.CENTER_VERTICAL)
-                .anchorTopTo(mTopLine)
-                .anchorLeftTo(mImgLike);
+                .anchorTopToBottom(mTopLine)
+                .anchorLeftToRight(mImgLike);
 
         mImgComment = buildCommentImgModule();
         mImgComment.getLayoutParams()
                 .setDimensions(mIconSize, mIconSize)
-                .anchorTopTo(mTopLine)
-                .anchorLeftTo(mTextLike)
+                .anchorTopToBottom(mTopLine)
+                .anchorLeftToRight(mTextLike)
                 .setPadding(dp(4), dp(8), dp(4), 0);
 
         mTextComment = buildCommentTextModule();
         mTextComment.getLayoutParams()
                 .setDimensions(mCommentTextWidth, mContentHeight)
                 .setGravity(GravityCompat.CENTER_VERTICAL)
-                .anchorTopTo(mTopLine)
-                .anchorLeftTo(mImgComment);
+                .anchorTopToBottom(mTopLine)
+                .anchorLeftToRight(mImgComment);
 
 
         mImgMore = buildMoreImgModule();
         mImgMore.getLayoutParams()
                 .setDimensions(mIconSize, mIconSize)
-                .anchorTopTo(mTopLine)
+                .anchorTopToBottom(mTopLine)
                 .anchorRightToParent(true)
                 .setMarginRight(mRightMargin)
                 .setPadding(dp(4));
@@ -133,12 +133,12 @@ public class SocialFooterView extends ModulesView {
         mBottomLine.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, 1)
                 .setMarginTop(dp(8))
-                .anchorTopTo(mImgLike);
+                .anchorTopToBottom(mImgLike);
 
         mBottomSeparator = new Module();
         mBottomSeparator.setBackgroundColor(0xffe4e5e5);
         mBottomSeparator.getLayoutParams()
-                .anchorTopTo(mBottomLine)
+                .anchorTopToBottom(mBottomLine)
                 .setDimensions(LayoutParams.MATCH_PARENT, mBottomSeparatorSize);
         //add modules
         addModule(mTopLine);
