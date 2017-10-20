@@ -123,11 +123,11 @@ public class SocialHeaderView extends ModulesView {
         return module;
     }
 
-    @Override
-    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(getMeasuredWidth(), mHeaderHeight +1);
-
-    }
+//    @Override
+//    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+//        setMeasuredDimension(getMeasuredWidth(), mHeaderHeight +1);
+//
+//    }
 
     //-----------------listener------------
 

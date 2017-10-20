@@ -83,11 +83,11 @@ public class SocialImageContentView extends ModulesView {
         return 0;
     }
 
-    @Override
-    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(getMeasuredWidth(), mScreenWidth);
-
-    }
+//    @Override
+//    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+//        setMeasuredDimension(getMeasuredWidth(), mScreenWidth);
+//
+//    }
 
 
     public void bindImage(int position, Bitmap bitmap) {

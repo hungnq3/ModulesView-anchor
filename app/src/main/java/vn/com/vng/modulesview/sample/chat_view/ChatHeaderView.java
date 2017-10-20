@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import vn.com.vng.modulesview.modules_view.GravityCompat;
 import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.ModulesView;
 import vn.com.vng.modulesview.modules_view.widget.ImageModule;
@@ -56,8 +57,10 @@ public class ChatHeaderView extends ModulesView {
     private final int mTimeTextSize = sp(10);
     private final int mMessagePadding = dp(4);
 
+    private final int mCircularIndexSize = dp(16);
     private final int mCircularIndexTextSize = sp(8);
     private static final int mCircularIndexTextColor = 0xfff5f5f5;
+    private static final int mCircularIndexBackgroundColor = 0xfff50000;
 
     private final int mHeight = mImageSize + mImageMarginV*2;
 
@@ -78,6 +81,16 @@ public class ChatHeaderView extends ModulesView {
         mHeaderImage.getLayoutParams()
                 .setMargin(mImageMarginH, mImageMarginV, mImageMarginH, mImageMarginV)
                 .setDimensions(mImageSize, mImageSize);
+
+        mCircularIndexText = new TextModule();
+        mCircularIndexText.setTextSize(mCircularIndexTextSize);
+        mCircularIndexText.setTextColor(mCircularIndexTextColor);
+        mCircularIndexText.setBackgroundColor(mCircularIndexBackgroundColor);
+        mCircularIndexText.getLayoutParams()
+                .setDimensions(mCircularIndexSize, mCircularIndexSize)
+                .setGravity(GravityCompat.CENTER)
+                .anchorRightToRight(mHeaderImage)
+                .anchorTopToTop(mHeaderImage);
 
         mTitleText = new TextModule();
         mTitleText.setTextColor(mTitleTextColor);
@@ -103,14 +116,10 @@ public class ChatHeaderView extends ModulesView {
                 .anchorRightToParent(true)
                 .anchorTopToTop(mTitleText)
                 .setMarginRight(dp(16));
-        
-
 
     }
 
-    private List<ImageModule> buildHeaderImages() {
-        return new LinkedList<>();
-    }
+
 
 
 }

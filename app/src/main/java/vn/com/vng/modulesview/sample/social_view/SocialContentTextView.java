@@ -58,10 +58,10 @@ public class SocialContentTextView extends ModulesView {
 
 
 
-    @Override
-    protected void onPostMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(getMeasuredWidth(), mTextContent.getHeight() + mTextContent.getLayoutParams().getMarginTop() + mTextContent.getLayoutParams().getMarginBottom());
-    }
+//    @Override
+//    protected void onPostMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+//        setMeasuredDimension(getMeasuredWidth(), mTextContent.getHeight() + mTextContent.getLayoutParams().getMarginTop() + mTextContent.getLayoutParams().getMarginBottom());
+//    }
 
     public void bindModel(SocialModel model) {
         if (model != null)

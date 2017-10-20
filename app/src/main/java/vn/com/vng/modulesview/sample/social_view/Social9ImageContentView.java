@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 
 import java.util.List;
 
+import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 
 /**
@@ -78,6 +79,7 @@ public class Social9ImageContentView extends SocialImageContentView {
                 .setDimensions(temp,temp)
                 .anchorTopToBottom(img2)
                 .anchorLeftToRight(img4)
+                .setVisibility(LayoutParams.GONE)
                 .setPadding(dp(1));
 
         img6.getLayoutParams()
@@ -93,7 +95,7 @@ public class Social9ImageContentView extends SocialImageContentView {
 
         img8.getLayoutParams()
                 .setDimensions(temp,temp)
-                .anchorTopToBottom(img5)
+                .anchorTopToTop(img7)
                 .anchorLeftToRight(img7)
                 .setPadding(dp(1),dp(1),dp(1), 0);
 

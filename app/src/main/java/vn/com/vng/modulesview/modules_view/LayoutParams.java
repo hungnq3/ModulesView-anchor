@@ -529,7 +529,7 @@ public class LayoutParams {
                 bottom = Module.BOUND_UNKNOWN;
             else
                 bottom -= mMarginBottom;
-        } else if (mHeightDimension == MATCH_PARENT) {
+        } else if (mWidthDimension == MATCH_PARENT) {
             ModulesView parent = mModule.getParent();
             if (parent != null) {
                 if (parent.mWidthMeasureMode == View.MeasureSpec.UNSPECIFIED)
@@ -567,7 +567,7 @@ public class LayoutParams {
                     top = bottom - mHeightDimension;
             } else if (top != Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
                 bottom = top + mHeightDimension;
-            } else if (top == Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
+            } else if (top == Module.BOUND_UNSPECIFIED && left == Module.BOUND_UNSPECIFIED) {
                 top = mMarginTop;
                 bottom = top + mHeightDimension;
             }

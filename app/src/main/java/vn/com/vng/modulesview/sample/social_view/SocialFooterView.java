@@ -190,11 +190,11 @@ public class SocialFooterView extends ModulesView {
         return module;
     }
 
-
-    @Override
-    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(getMeasuredWidth(), mFooterHeight);
-    }
+//
+//    @Override
+//    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+//        setMeasuredDimension(getMeasuredWidth(), mFooterHeight);
+//    }
 
     //-------------------bind data-----------------------------------
 

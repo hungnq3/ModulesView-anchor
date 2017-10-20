@@ -350,7 +350,7 @@ public class ImageModule extends Module {
         if (placeHolderResId != 0)
             request.placeholder(placeHolderResId);
 
-        if ((getWidth() > 0 || getHeight() > 0)) {
+        if ((getWidth() > 0 && getHeight() > 0)) {
             request.resize(getWidth(), getHeight())
                     .onlyScaleDown();
 

@@ -145,13 +145,11 @@ public class ModulesView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mWidthMeasureSize = MeasureSpec.getSize(widthMeasureSpec);
         mWidthMeasureMode = MeasureSpec.getMode(widthMeasureSpec);
         mHeightMeasureSize = MeasureSpec.getSize(heightMeasureSpec);
         mHeightMeasureMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        onPreMeasureChildren(widthMeasureSpec, heightMeasureSpec);
 
         for (Module module : mModules) {
             if (module == null)
@@ -160,17 +158,55 @@ public class ModulesView extends View {
             module.onPostMeasured();
         }
 
-        onPostMeasureChildren(widthMeasureSpec, heightMeasureSpec);
 
-        if (mOnMeasureListener != null)
-            mOnMeasureListener.onMeasure(this, widthMeasureSpec, heightMeasureSpec);
+        //Measure this view
+        int width, height;
+        if(mWidthMeasureMode == MeasureSpec.EXACTLY)
+            width = mWidthMeasureSize;
+        else{
+            width = getMaxRightBound();
+            if(mWidthMeasureMode == MeasureSpec.AT_MOST)
+                width = Math.min(width, mWidthMeasureSize);
+        }
+
+
+        if(mHeightMeasureMode == MeasureSpec.EXACTLY)
+            height = mHeightMeasureSize;
+        else{
+            height = getMaxBottomBound();
+            if(mHeightMeasureMode == MeasureSpec.AT_MOST)
+                height = Math.min(height, mHeightMeasureSize);
+        }
+
+        setMeasuredDimension(width, height);
+
+        onPostMeasureChildren(width, height);
+
     }
 
-    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    private int getMaxRightBound() {
+        int max = 0;
+        for (Module module : mModules) {
+            if(module == null || module.getRight() == Module.BOUND_UNSPECIFIED || module.getRight() == Module.BOUND_UNKNOWN)
+                continue;
+            max = Math.max(max, module.getRight() + module.getLayoutParams().mMarginRight);
+        }
+        return max;
     }
 
-    protected void onPostMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+    private int getMaxBottomBound() {
+        int max = 0;
+        for (Module module : mModules) {
+            if(module == null || module.getBottom() == Module.BOUND_UNSPECIFIED || module.getBottom() == Module.BOUND_UNKNOWN)
+                continue;
+            max = Math.max(max, module.getBottom() + module.getLayoutParams().mMarginBottom);
+        }
+        return max;
+    }
+
+
+    protected void onPostMeasureChildren(int width, int height) {
 
     }
 

@@ -169,6 +169,8 @@ public class Module {
         boolean needToUpdateDimensions = mWidth == DIMENSION_UNSPECIFIED || mHeight == DIMENSION_UNSPECIFIED;
 
         //step 3: internal measure
+        if(mParams.getVisibility() == LayoutParams.GONE)
+            return;
         int width, widthMode;
         int height, heightMode;
 
