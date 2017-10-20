@@ -137,20 +137,41 @@ public class ModulesView extends View {
         mOnLayoutListener = onLayoutListener;
     }
 
+
+    int mWidthMeasureSize;
+    int mWidthMeasureMode;
+    int mHeightMeasureSize;
+    int mHeightMeasureMode;
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        mWidthMeasureSize = MeasureSpec.getSize(widthMeasureSpec);
+        mWidthMeasureMode = MeasureSpec.getMode(widthMeasureSpec);
+        mHeightMeasureSize = MeasureSpec.getSize(heightMeasureSpec);
+        mHeightMeasureMode = MeasureSpec.getMode(heightMeasureSpec);
+
+        onPreMeasureChildren(widthMeasureSpec, heightMeasureSpec);
 
         for (Module module : mModules) {
-            if (module == null || module.getLayoutParams().getVisibility() == LayoutParams.GONE)
+            if (module == null)
                 continue;
             module.measure(widthMeasureSpec, heightMeasureSpec);
             module.onPostMeasured();
         }
 
+        onPostMeasureChildren(widthMeasureSpec, heightMeasureSpec);
 
         if (mOnMeasureListener != null)
             mOnMeasureListener.onMeasure(this, widthMeasureSpec, heightMeasureSpec);
+    }
+
+    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    protected void onPostMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+
     }
 
 
@@ -170,11 +191,6 @@ public class ModulesView extends View {
         if (mOnLayoutListener != null)
             mOnLayoutListener.onLayout(this, changed, width, height);
     }
-
-    public void setMeasureDimension(int width, int height) {
-        setMeasuredDimension(width, height);
-    }
-
 
     @Override
     protected void onDraw(Canvas canvas) {

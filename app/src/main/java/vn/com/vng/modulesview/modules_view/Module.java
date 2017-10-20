@@ -22,7 +22,9 @@ public class Module {
     public static final int DIMENSION_MODE_UNSPECIFIED = 3;
 
     public static final int DIMENSION_UNSPECIFIED = Integer.MIN_VALUE;
+    public static final int DIMENSION_UNKNOWN = Integer.MIN_VALUE+1;
     public static final int BOUND_UNSPECIFIED = Integer.MIN_VALUE;
+    public static final int BOUND_UNKNOWN = Integer.MIN_VALUE+1;
 
     //stuff
     protected Context mContext;
@@ -41,13 +43,7 @@ public class Module {
     private OnTouchListener mOnTouchListener;
 
     public Module() {
-        mParams = new LayoutParams();
-    }
-
-    public Module(LayoutParams params) {
-        mParams = params;
-        if (mParams == null)
-            mParams = new LayoutParams();
+        mParams = new LayoutParams(this);
     }
 
     public ModulesView getParent() {
@@ -134,8 +130,15 @@ public class Module {
         mTop = top;
         mRight = right;
         mBottom = bottom;
-        mWidth = (mLeft != BOUND_UNSPECIFIED && mRight != BOUND_UNSPECIFIED) ? mRight - mLeft : DIMENSION_UNSPECIFIED;
-        mHeight = (mTop != BOUND_UNSPECIFIED && mBottom != BOUND_UNSPECIFIED) ? mBottom - mTop : DIMENSION_UNSPECIFIED;
+        if (mLeft == BOUND_UNKNOWN || mRight == BOUND_UNKNOWN)
+            mWidth = DIMENSION_UNKNOWN;
+        else
+            mWidth = (mLeft != BOUND_UNSPECIFIED && mRight != BOUND_UNSPECIFIED) ? mRight - mLeft : DIMENSION_UNSPECIFIED;
+
+        if (mTop == BOUND_UNKNOWN || mBottom == BOUND_UNKNOWN)
+            mHeight = DIMENSION_UNKNOWN;
+        else
+            mHeight = (mTop != BOUND_UNSPECIFIED && mBottom != BOUND_UNSPECIFIED) ? mBottom - mTop : DIMENSION_UNSPECIFIED;
     }
 
     //-----------------listener-------------------------------------
@@ -156,12 +159,16 @@ public class Module {
         setContentDimensions(0, 0);
 
         //step 1: external measure
-        mParams.externalMeasure(this, parentMeasureWidthSpec, parentMeasureHeightSpec);
+        mParams.externalMeasure();
 
+        //step 2: check dimensions' state
+        boolean unknownDimensions = mWidth == DIMENSION_UNKNOWN || mHeight == DIMENSION_UNKNOWN;
+        if(unknownDimensions)
+            return;
 
-        //step 2: internal measure
         boolean needToUpdateDimensions = mWidth == DIMENSION_UNSPECIFIED || mHeight == DIMENSION_UNSPECIFIED;
 
+        //step 3: internal measure
         int width, widthMode;
         int height, heightMode;
 
@@ -183,7 +190,7 @@ public class Module {
 
         onMeasureContent(width, widthMode, height, heightMode);
 
-        //step 3: re update dimensions if needed
+        //step 4: re update dimensions if needed
         if (needToUpdateDimensions)
             updateUnspecifiedBounds(mContentWidth, mContentHeight);
     }
@@ -211,36 +218,38 @@ public class Module {
     }
 
     private final void updateUnspecifiedBounds(int width, int height) {
-        if (mLeft == BOUND_UNSPECIFIED && mRight == BOUND_UNSPECIFIED) {
-            mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
-            mLeft = mParams.getMarginLeft() + mParams.getX();
-            mRight = mLeft + mWidth;
-        } else if (mLeft == BOUND_UNSPECIFIED) {
-            mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
-            mLeft = mRight - mWidth;
-        } else if (mRight == BOUND_UNSPECIFIED) {
-            mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
-            mRight = mLeft + mWidth;
+        if(mWidth != DIMENSION_UNKNOWN) {
+            if (mLeft == BOUND_UNSPECIFIED && mRight == BOUND_UNSPECIFIED) {
+                mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
+                mLeft = mParams.getMarginLeft() + mParams.getX();
+                mRight = mLeft + mWidth;
+            } else if (mLeft == BOUND_UNSPECIFIED) {
+                mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
+                mLeft = mRight - mWidth;
+            } else if (mRight == BOUND_UNSPECIFIED) {
+                mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
+                mRight = mLeft + mWidth;
+            }
         }
 
-        if (mTop == BOUND_UNSPECIFIED && mBottom == BOUND_UNSPECIFIED) {
-            mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
-            mTop = mParams.getMarginTop() + mParams.getY();
-            mBottom = mTop + mHeight;
-        } else if (mTop == BOUND_UNSPECIFIED) {
-            mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
-            mTop = mBottom - mHeight;
-        } else if (mBottom == BOUND_UNSPECIFIED) {
-            mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
-            mBottom = mTop + mHeight;
+        if(mHeight != DIMENSION_UNKNOWN) {
+            if (mTop == BOUND_UNSPECIFIED && mBottom == BOUND_UNSPECIFIED) {
+                mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
+                mTop = mParams.getMarginTop() + mParams.getY();
+                mBottom = mTop + mHeight;
+            } else if (mTop == BOUND_UNSPECIFIED) {
+                mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
+                mTop = mBottom - mHeight;
+            } else if (mBottom == BOUND_UNSPECIFIED) {
+                mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
+                mBottom = mTop + mHeight;
+            }
         }
     }
 
 
     public void onPostMeasured() {
     }
-
-
 
 
     final void layout(int left, int top, int right, int bottom) {
@@ -302,7 +311,7 @@ public class Module {
         if (getWidth() < 0 || getHeight() <= 0)
             return;
         drawBackground(canvas);
-        onDraw(canvas, mContentLeft,  mContentTop, mContentRight, mContentBottom);
+        onDraw(canvas, mContentLeft, mContentTop, mContentRight, mContentBottom);
     }
 
     void drawBackground(Canvas canvas) {

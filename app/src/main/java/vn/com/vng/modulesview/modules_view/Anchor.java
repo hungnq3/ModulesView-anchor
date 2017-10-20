@@ -9,31 +9,24 @@ import java.lang.annotation.RetentionPolicy;
  * Created by HungNQ on 19/10/2017.
  */
 
-public class Anchor {
+abstract class Anchor {
     public static final int ANCHOR_LEFT = 1;
     public static final int ANCHOR_TOP = 2;
     public static final int ANCHOR_RIGHT = 3;
     public static final int ANCHOR_BOTTOM = 4;
+
+    public static final int BOUND_UNKNOWN = Module.BOUND_UNKNOWN;
+    public static final int BOUND_UNSPECIFIED = Module.BOUND_UNSPECIFIED;
 
 
     @IntDef({ANCHOR_LEFT, ANCHOR_TOP, ANCHOR_RIGHT, ANCHOR_BOTTOM})
     @Retention(RetentionPolicy.SOURCE)
     public @interface AnchorType{};
 
-    private Module mModule;
     private int mAnchorType;
 
-    public Anchor(Module module, @AnchorType int anchorType) {
-        mModule = module;
+    public Anchor(@AnchorType int anchorType) {
         mAnchorType = anchorType;
-    }
-
-    public Module getModule() {
-        return mModule;
-    }
-
-    public void setModule(Module module) {
-        mModule = module;
     }
 
     @AnchorType
@@ -45,31 +38,24 @@ public class Anchor {
         mAnchorType = anchorType;
     }
 
-    public int getAnchorValue(){
-        if(!isValid())
-            return 0;
+    public final int getAnchorValue(){
         switch (mAnchorType){
             case ANCHOR_LEFT:
-                return mModule.getLeft();
+                return getLeft();
             case ANCHOR_TOP:
-                return mModule.getTop();
+                return getTop();
             case ANCHOR_RIGHT:
-                return mModule.getRight();
+                return getRight();
             case ANCHOR_BOTTOM:
-                return mModule.getBottom();
+                return getBottom();
         }
-
-        return 0;
-    }
-
-    public boolean isValid(){
-        return  mModule != null && mModule.getLayoutParams().getVisibility() != LayoutParams.GONE;
+        return BOUND_UNKNOWN;
     }
 
 
-
-
-
-
+    public abstract int getLeft();
+    public abstract int getTop();
+    public abstract int getRight();
+    public abstract int getBottom();
 
 }

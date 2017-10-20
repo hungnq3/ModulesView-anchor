@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.view.View;
 
 import vn.com.vng.modulesview.R;
 import vn.com.vng.modulesview.modules_view.widget.ImageModule;
@@ -122,11 +123,10 @@ public class SocialHeaderView extends ModulesView {
         return module;
     }
 
-
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasureDimension(getMeasuredWidth(), mHeaderHeight + 1);
+    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(getMeasuredWidth(), mHeaderHeight +1);
+
     }
 
     //-----------------listener------------

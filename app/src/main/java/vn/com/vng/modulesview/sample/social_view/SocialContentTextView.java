@@ -44,7 +44,6 @@ public class SocialContentTextView extends ModulesView {
         mTextContent = buildContentTextModule();
         mTextContent.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 .setMargin(dp(8), dp(4), dp(8), dp(4));
         addModule(mTextContent);
     }
@@ -57,10 +56,11 @@ public class SocialContentTextView extends ModulesView {
         return module;
     }
 
+
+
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasureDimension(getMeasuredWidth(), mTextContent.getHeight() + mTextContent.getLayoutParams().getMarginTop() + mTextContent.getLayoutParams().getMarginBottom());
+    protected void onPostMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(getMeasuredWidth(), mTextContent.getHeight() + mTextContent.getLayoutParams().getMarginTop() + mTextContent.getLayoutParams().getMarginBottom());
     }
 
     public void bindModel(SocialModel model) {

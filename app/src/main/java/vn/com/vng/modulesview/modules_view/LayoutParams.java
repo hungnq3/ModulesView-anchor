@@ -1,10 +1,7 @@
 package vn.com.vng.modulesview.modules_view;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import java.lang.annotation.Retention;
@@ -44,13 +41,12 @@ public class LayoutParams {
     public @interface Visibility {
     }
 
-    private boolean mDirty;
 
+    private Module mModule;
 
     int mX, mY;
     int mWidthDimension, mHeightDimension;
     private Anchor mAnchorLeft, mAnchorTop, mAnchorRight, mAnchorBottom;
-    private boolean mAnchorParentLeft, mAnchorParentTop, mAnchorParentRight, mAnchorParentBottom;
 
     int mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom;
     int mMarginLeft, mMarginTop, mMarginRight, mMarginBottom;
@@ -58,6 +54,12 @@ public class LayoutParams {
 
     int mGravity;
     int mVisibility;
+
+    private boolean mDirty;
+
+    public LayoutParams(@NonNull Module module) {
+        mModule = module;
+    }
 
     //-----------builder---------------------------------------
     public LayoutParams setX(int x) {
@@ -170,49 +172,21 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorLeftToParent(Boolean anchorParent) {
-        mAnchorParentLeft = anchorParent;
-        if (anchorParent)
-            mAnchorLeft = null;
-        return this;
-    }
 
-    public LayoutParams anchorTopToParent(Boolean anchorParent) {
-        mAnchorParentTop = anchorParent;
-        if (anchorParent)
-            mAnchorTop = null;
-        return this;
-    }
-
-    public LayoutParams anchorRightToParent(Boolean anchorParent) {
-        mAnchorParentRight = anchorParent;
-        if (anchorParent)
-            mAnchorRight = null;
-        return this;
-    }
-
-
-    public LayoutParams anchorBottomToParent(Boolean anchorParent) {
-        mAnchorParentBottom = anchorParent;
-        if (anchorParent)
-            mAnchorBottom = null;
-        return this;
-    }
-
+    //------------anchor region------------------------------------
     public LayoutParams anchorLeftToLeft(Module module) {
         if (module == null) {
             mAnchorLeft = null;
             return this;
         }
 
-        if (mAnchorLeft == null) {
-            mAnchorLeft = new Anchor(module, Anchor.ANCHOR_LEFT);
-        } else {
-            mAnchorLeft.setModule(module);
+        if (mAnchorLeft instanceof ModuleAnchor) {
+            ((ModuleAnchor) mAnchorLeft).setModule(module);
             mAnchorLeft.setAnchorType(Anchor.ANCHOR_LEFT);
+        } else {
+            mAnchorLeft = new ModuleAnchor(module, Anchor.ANCHOR_LEFT);
         }
 
-        mAnchorParentLeft = false;
         return this;
     }
 
@@ -222,16 +196,32 @@ public class LayoutParams {
             return this;
         }
 
-        if (mAnchorLeft == null) {
-            mAnchorLeft = new Anchor(module, Anchor.ANCHOR_RIGHT);
-        } else {
-            mAnchorLeft.setModule(module);
+        if (mAnchorLeft instanceof ModuleAnchor) {
+            ((ModuleAnchor) mAnchorLeft).setModule(module);
             mAnchorLeft.setAnchorType(Anchor.ANCHOR_RIGHT);
+        } else {
+            mAnchorLeft = new ModuleAnchor(module, Anchor.ANCHOR_RIGHT);
         }
 
-        mAnchorParentLeft = false;
         return this;
     }
+
+    public LayoutParams anchorLeftToParent(Boolean anchorParent) {
+        if (anchorParent) {
+            if (mModule == null) {
+                mAnchorLeft = null;
+                return this;
+            }
+            if (mAnchorLeft instanceof ParentAnchor) {
+                ((ParentAnchor) mAnchorLeft).setModule(mModule);
+                mAnchorLeft.setAnchorType(Anchor.ANCHOR_LEFT);
+            } else {
+                mAnchorLeft = new ParentAnchor(mModule, Anchor.ANCHOR_LEFT);
+            }
+        }
+        return this;
+    }
+
 
     public LayoutParams anchorTopToTop(Module module) {
         if (module == null) {
@@ -239,14 +229,12 @@ public class LayoutParams {
             return this;
         }
 
-        if (mAnchorTop == null) {
-            mAnchorTop = new Anchor(module, Anchor.ANCHOR_TOP);
-        } else {
-            mAnchorTop.setModule(module);
+        if (mAnchorTop instanceof ModuleAnchor) {
+            ((ModuleAnchor) mAnchorTop).setModule(module);
             mAnchorTop.setAnchorType(Anchor.ANCHOR_TOP);
+        } else {
+            mAnchorTop = new ModuleAnchor(module, Anchor.ANCHOR_TOP);
         }
-
-        mAnchorParentTop = false;
         return this;
     }
 
@@ -256,16 +244,34 @@ public class LayoutParams {
             return this;
         }
 
-        if (mAnchorTop == null) {
-            mAnchorTop = new Anchor(module, Anchor.ANCHOR_BOTTOM);
-        } else {
-            mAnchorTop.setModule(module);
+        if (mAnchorTop instanceof ModuleAnchor) {
+            ((ModuleAnchor) mAnchorTop).setModule(module);
             mAnchorTop.setAnchorType(Anchor.ANCHOR_BOTTOM);
+        } else {
+            mAnchorTop = new ModuleAnchor(module, Anchor.ANCHOR_BOTTOM);
         }
 
-        mAnchorParentTop = false;
         return this;
     }
+
+
+    public LayoutParams anchorTopToParent(Boolean anchorParent) {
+        if (anchorParent) {
+            if (mModule == null) {
+                mAnchorTop = null;
+                return this;
+            }
+
+            if (mAnchorTop instanceof ParentAnchor) {
+                ((ParentAnchor) mAnchorTop).setModule(mModule);
+                mAnchorTop.setAnchorType(Anchor.ANCHOR_TOP);
+            } else {
+                mAnchorTop = new ParentAnchor(mModule, Anchor.ANCHOR_TOP);
+            }
+        }
+        return this;
+    }
+
 
     public LayoutParams anchorRightToRight(Module module) {
         if (module == null) {
@@ -273,14 +279,13 @@ public class LayoutParams {
             return this;
         }
 
-        if (mAnchorRight == null) {
-            mAnchorRight = new Anchor(module, Anchor.ANCHOR_RIGHT);
-        } else {
-            mAnchorRight.setModule(module);
+        if (mAnchorRight instanceof ModuleAnchor) {
+            ((ModuleAnchor) mAnchorRight).setModule(module);
             mAnchorRight.setAnchorType(Anchor.ANCHOR_RIGHT);
+        } else {
+            mAnchorRight = new ModuleAnchor(module, Anchor.ANCHOR_RIGHT);
         }
 
-        mAnchorParentRight = false;
         return this;
     }
 
@@ -290,16 +295,34 @@ public class LayoutParams {
             return this;
         }
 
-        if (mAnchorRight == null) {
-            mAnchorRight = new Anchor(module, Anchor.ANCHOR_LEFT);
-        } else {
-            mAnchorRight.setModule(module);
+        if (mAnchorRight instanceof ModuleAnchor) {
+            ((ModuleAnchor) mAnchorRight).setModule(module);
             mAnchorRight.setAnchorType(Anchor.ANCHOR_LEFT);
+        } else {
+            mAnchorRight = new ModuleAnchor(module, Anchor.ANCHOR_LEFT);
         }
 
-        mAnchorParentRight = false;
         return this;
     }
+
+
+    public LayoutParams anchorRightToParent(Boolean anchorParent) {
+        if (anchorParent) {
+            if (mModule == null) {
+                mAnchorRight = null;
+                return this;
+            }
+
+            if (mAnchorRight instanceof ParentAnchor) {
+                ((ParentAnchor) mAnchorRight).setModule(mModule);
+                mAnchorRight.setAnchorType(Anchor.ANCHOR_RIGHT);
+            } else {
+                mAnchorRight = new ParentAnchor(mModule, Anchor.ANCHOR_RIGHT);
+            }
+        }
+        return this;
+    }
+
 
     public LayoutParams anchorBottomToBottom(Module module) {
         if (module == null) {
@@ -307,14 +330,14 @@ public class LayoutParams {
             return this;
         }
 
-        if (mAnchorBottom == null) {
-            mAnchorBottom = new Anchor(module, Anchor.ANCHOR_BOTTOM);
-        } else {
-            mAnchorBottom.setModule(module);
+
+        if (mAnchorBottom instanceof ModuleAnchor) {
+            ((ModuleAnchor) mAnchorBottom).setModule(module);
             mAnchorBottom.setAnchorType(Anchor.ANCHOR_BOTTOM);
+        } else {
+            mAnchorBottom = new ModuleAnchor(module, Anchor.ANCHOR_BOTTOM);
         }
 
-        mAnchorParentBottom = false;
         return this;
     }
 
@@ -325,17 +348,35 @@ public class LayoutParams {
             return this;
         }
 
-        if (mAnchorBottom == null) {
-            mAnchorBottom = new Anchor(module, Anchor.ANCHOR_TOP);
-        } else {
-            mAnchorBottom.setModule(module);
+        if (mAnchorBottom instanceof ModuleAnchor) {
+            ((ModuleAnchor) mAnchorBottom).setModule(module);
             mAnchorBottom.setAnchorType(Anchor.ANCHOR_TOP);
+        } else {
+            mAnchorBottom = new ModuleAnchor(module, Anchor.ANCHOR_TOP);
         }
 
-        mAnchorParentBottom = false;
         return this;
     }
 
+    public LayoutParams anchorBottomToParent(Boolean anchorParent) {
+        if (anchorParent) {
+            if (mModule == null) {
+                mAnchorBottom = null;
+                return this;
+            }
+
+            if (mAnchorBottom instanceof ParentAnchor) {
+                ((ParentAnchor) mAnchorBottom).setModule(mModule);
+                mAnchorBottom.setAnchorType(Anchor.ANCHOR_BOTTOM);
+            } else {
+                mAnchorBottom = new ParentAnchor(mModule, Anchor.ANCHOR_BOTTOM);
+            }
+
+        }
+        return this;
+    }
+
+    //------------------------------------------------
 
 
 //-----------------------------------------------------------------------------
@@ -410,150 +451,129 @@ public class LayoutParams {
     }
 
 
-    Anchor getAnchorLeft() {
-        return mAnchorLeft;
-    }
-
-    Anchor getAnchorTop() {
-        return mAnchorTop;
-    }
-
-    Anchor getAnchorRight() {
-        return mAnchorRight;
-    }
-
-    Anchor getAnchorBottom() {
-        return mAnchorBottom;
-    }
-
-    public Boolean isAnchorParentLeft() {
-        return mAnchorParentLeft;
-    }
-
-    public Boolean isAnchorParentTop() {
-        return mAnchorParentTop;
-    }
-
-
-    public Boolean isAnchorParentRight() {
-        return mAnchorParentRight;
-    }
-
-
-    public Boolean isAnchorParentBottom() {
-        return mAnchorParentBottom;
-    }
-
-
     public boolean hasAnchorLeft() {
-        return (mAnchorLeft != null && mAnchorLeft.isValid()) || mAnchorParentLeft;
+        return (mAnchorLeft != null);
     }
 
     public boolean hasAnchorRight() {
-        return (mAnchorRight != null && mAnchorRight.isValid()) || mAnchorParentRight;
+        return (mAnchorRight != null);
     }
 
     public boolean hasAnchorTop() {
-        return (mAnchorTop != null && mAnchorTop.isValid()) || mAnchorParentTop;
+        return (mAnchorTop != null);
 
     }
 
     public boolean hasAnchorBottom() {
-        return (mAnchorBottom != null && mAnchorBottom.isValid())|| mAnchorParentBottom;
+        return (mAnchorBottom != null);
     }
 
 
-    private Anchor getAnchor(@Anchor.AnchorType int type) {
-        switch (type) {
-            case Anchor.ANCHOR_LEFT:
-                return mAnchorLeft;
-            case Anchor.ANCHOR_TOP:
-                return mAnchorTop;
-            case Anchor.ANCHOR_RIGHT:
-                return mAnchorRight;
-            case Anchor.ANCHOR_BOTTOM:
-                return mAnchorBottom;
-        }
-        return null;
-    }
-
-    protected void externalMeasure(Module module, int widthMeasureSpec, int heightMeasureSpec) {
-        int parentWidth = View.MeasureSpec.getSize(widthMeasureSpec);
-        int parentHeight = View.MeasureSpec.getSize(heightMeasureSpec);
-
-        //measure horizontal
+    int getAnchorLeft() {
         int left = Module.BOUND_UNSPECIFIED;
-        int right = Module.BOUND_UNSPECIFIED;
-        boolean hasAnchorLeft = hasAnchorLeft();
-        boolean hasAnchorRight = hasAnchorRight();
-        if (hasAnchorLeft) {
-            if (getAnchorLeft() != null && getAnchorLeft().isValid()) {
-                left = getAnchorLeft().getAnchorValue() + mMarginLeft;
-            } else //anchor parent
-                left = mMarginLeft;
-        } else if (mWidthDimension == MATCH_PARENT) {
-            left = mMarginLeft;
+        if (hasAnchorLeft()) {
+            left = mAnchorLeft.getAnchorValue();
+            if (left == Anchor.BOUND_UNKNOWN)
+                left = Module.BOUND_UNKNOWN;
+            else
+                left += mMarginLeft;
+        } else if (mWidthDimension == MATCH_PARENT || mX > 0) {
+            left = mX + mMarginLeft;
         }
 
-        if (hasAnchorRight) {
-            if (getAnchorRight() != null && getAnchorRight().isValid()) {
-                right = getAnchorRight().getAnchorValue() - mMarginRight;
-            } else //anchor parent
-                right = parentWidth - mMarginRight;
+        return left;
+    }
+
+    int getAnchorRight() {
+        int right = Module.BOUND_UNSPECIFIED;
+        if (hasAnchorRight()) {
+            right = mAnchorRight.getAnchorValue();
+            if (right == Anchor.BOUND_UNKNOWN)
+                right = Module.BOUND_UNKNOWN;
+            else
+                right -= mMarginRight;
         } else if (mWidthDimension == MATCH_PARENT) {
-            right = parentWidth - mMarginRight;
+            ModulesView parent = mModule.getParent();
+            if (parent != null) {
+                if (parent.mWidthMeasureMode == View.MeasureSpec.UNSPECIFIED)
+                    right = Module.BOUND_UNSPECIFIED;
+                else
+                    right = Math.max(parent.mWidthMeasureSize - mModule.getParent().getPaddingRight(), 0) - mMarginLeft;
+            }
         }
+        return right;
+    }
+
+    int getAnchorTop() {
+
+        int top = Module.BOUND_UNSPECIFIED;
+        if (hasAnchorTop()) {
+            top = mAnchorTop.getAnchorValue();
+            if (top == Anchor.BOUND_UNKNOWN)
+                top = Module.BOUND_UNKNOWN;
+            else
+                top += mMarginTop;
+        } else if (mWidthDimension == MATCH_PARENT || mY > 0) {
+            top = mY + mMarginTop;
+        }
+
+        return top;
+    }
+
+
+    int getAnchorBottom() {
+        int bottom = Module.BOUND_UNSPECIFIED;
+        if (hasAnchorBottom()) {
+            bottom = mAnchorBottom.getAnchorValue();
+            if (bottom == Anchor.BOUND_UNKNOWN)
+                bottom = Module.BOUND_UNKNOWN;
+            else
+                bottom -= mMarginBottom;
+        } else if (mHeightDimension == MATCH_PARENT) {
+            ModulesView parent = mModule.getParent();
+            if (parent != null) {
+                if (parent.mWidthMeasureMode == View.MeasureSpec.UNSPECIFIED)
+                    bottom = Module.BOUND_UNSPECIFIED;
+                else
+                    bottom = Math.max(parent.mHeightMeasureSize - mModule.getParent().getPaddingBottom(), 0) - mMarginBottom;
+            }
+        }
+        return bottom;
+    }
+
+
+    protected void externalMeasure() {
+        //measure horizontal
+        int left = getAnchorLeft();
+        int right = getAnchorRight();
 
         if (mWidthDimension >= 0) {
-            if (!hasAnchorLeft && hasAnchorRight) {
-                if (mX == 0)
-                    left = right - mWidthDimension;
-            } else if (hasAnchorLeft && !hasAnchorRight) {
+            if (left == Module.BOUND_UNSPECIFIED && right != Module.BOUND_UNSPECIFIED) {
+                left = right - mWidthDimension;
+            } else if (left != Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
                 right = left + mWidthDimension;
-            } else if (!hasAnchorLeft && !hasAnchorRight) {
-                left = mX + mMarginLeft;
+            } else if (left == Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
+                left = mMarginLeft;
                 right = left + mWidthDimension;
             }
         }
 
         //measure vertical
-        int top = Module.BOUND_UNSPECIFIED;
-        int bottom = Module.BOUND_UNSPECIFIED;
-
-        boolean hasAnchorTop = hasAnchorTop();
-        boolean hasAnchorBottom = hasAnchorBottom();
-        if (hasAnchorTop) {
-            if (getAnchorTop() != null && getAnchorTop().isValid()) {
-                top = getAnchorTop().getAnchorValue() + mMarginTop;
-            } else
-                top = mMarginTop;
-        } else if (mHeightDimension == MATCH_PARENT) {
-            top = mMarginTop;
-        }
-
-        if (hasAnchorBottom) {
-            if (getAnchorBottom() != null && getAnchorBottom().isValid()) {
-                bottom = getAnchorBottom().getAnchorValue() - mMarginBottom;
-            } else
-                bottom = parentHeight - mMarginBottom;
-        } else if (mHeightDimension == MATCH_PARENT) {
-            bottom = parentHeight - mMarginBottom;
-        }
-
+        int top = getAnchorTop();
+        int bottom = getAnchorBottom();
 
         if (mHeightDimension >= 0) {
-            if (!hasAnchorTop && hasAnchorBottom) {
-                if (mY == 0)
+            if (top == Module.BOUND_UNSPECIFIED && bottom != Module.BOUND_UNSPECIFIED) {
                     top = bottom - mHeightDimension;
-            } else if (hasAnchorTop && !hasAnchorBottom) {
+            } else if (top != Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
                 bottom = top + mHeightDimension;
-            } else if (!hasAnchorTop && !hasAnchorBottom) {
-                top = mY + mMarginTop;
+            } else if (top == Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
+                top = mMarginTop;
                 bottom = top + mHeightDimension;
             }
         }
 
-        module.setBounds(left, top, right, bottom);
+        mModule.setBounds(left, top, right, bottom);
     }
 }
 
