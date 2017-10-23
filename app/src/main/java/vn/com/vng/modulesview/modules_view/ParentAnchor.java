@@ -9,6 +9,7 @@ import android.view.View;
 public class ParentAnchor extends Anchor {
 
     Module mModule;
+
     public ParentAnchor(Module module, @AnchorType int anchorType) {
         super(anchorType);
         mModule = module;
@@ -24,35 +25,33 @@ public class ParentAnchor extends Anchor {
 
     @Override
     public int getLeft() {
-        if(mModule == null || mModule.getParent() == null)
+        if (mModule == null || mModule.getParent() == null)
             return BOUND_UNKNOWN;
         return mModule.getParent().getPaddingLeft();
     }
 
     @Override
     public int getTop() {
-        if(mModule == null || mModule.getParent() == null)
+        if (mModule == null || mModule.getParent() == null)
             return BOUND_UNKNOWN;
         return mModule.getParent().getPaddingTop();
     }
 
     @Override
     public int getRight() {
-        if(mModule == null || mModule.getParent() == null)
+        if (mModule == null || mModule.getParent() == null)
             return BOUND_UNKNOWN;
         ModulesView parent = mModule.getParent();
-        if(parent.mWidthMeasureMode == View.MeasureSpec.UNSPECIFIED)
-            return BOUND_UNSPECIFIED;
-        return Math.max(parent.mWidthMeasureSize - mModule.getParent().getPaddingRight(), 0);
+
+        return Math.max(parent.mCurrentWidth - mModule.getParent().getPaddingRight(), 0);
     }
 
     @Override
     public int getBottom() {
-        if(mModule == null || mModule.getParent() == null)
+        if (mModule == null || mModule.getParent() == null)
             return BOUND_UNKNOWN;
         ModulesView parent = mModule.getParent();
-        if(parent.mWidthMeasureMode == View.MeasureSpec.UNSPECIFIED)
-            return BOUND_UNSPECIFIED;
-        return Math.max(parent.mHeightMeasureSize - mModule.getParent().getPaddingBottom() , 0);
+
+        return Math.max(parent.mCurrentHeight - mModule.getParent().getPaddingBottom(), 0);
     }
 }

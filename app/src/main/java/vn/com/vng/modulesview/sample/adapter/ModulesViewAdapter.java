@@ -6,11 +6,13 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import vn.com.vng.modulesview.sample.adapter.holder.BaseViewHolder;
+import vn.com.vng.modulesview.sample.adapter.holder.ChatHeaderViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialFooterViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialHeaderViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialImageContentViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialTextContentViewHolder;
 import vn.com.vng.modulesview.sample.adapter.view_item.BaseViewItem;
+import vn.com.vng.modulesview.sample.chat_view.ChatHeaderView;
 import vn.com.vng.modulesview.sample.social_view.Social1ImageContentView;
 import vn.com.vng.modulesview.sample.social_view.Social2ImageContentView;
 import vn.com.vng.modulesview.sample.social_view.Social3ImageContentView;
@@ -91,6 +93,10 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
             case ViewType.SOCIAL_IMAGES_CONTENT_9:{
                 holder = new SocialImageContentViewHolder(new Social9ImageContentView(parent.getContext()));
+                break;
+            }
+            case ViewType.CHAT_HEADER:{
+                holder = new ChatHeaderViewHolder(new ChatHeaderView(parent.getContext()));
                 break;
             }
         }

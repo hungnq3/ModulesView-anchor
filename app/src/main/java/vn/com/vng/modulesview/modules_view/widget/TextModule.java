@@ -7,6 +7,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.facebook.fbui.textlayoutbuilder.TextLayoutBuilder;
 
@@ -36,6 +37,7 @@ public class TextModule extends Module {
     private TextUtils.TruncateAt mEllipsize;
     private Typeface mTypeFace;
 
+    private boolean mNeedToRebuildTextLayout;
 
     public TextModule() {
         init();
@@ -48,7 +50,7 @@ public class TextModule extends Module {
 
         //build LayoutBuilder with default properties
         mTextLayoutBuilder = new TextLayoutBuilder()
-                .setShouldCacheLayout(true)
+                .setShouldCacheLayout(false)
                 .setText(mText)
                 .setTextColor(mTextColor)
                 .setAlignment(mAlignment)
@@ -155,7 +157,7 @@ public class TextModule extends Module {
     @Override
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
 //        super.onMeasureContent(width, widthMode, height, heightMode);
-        int maxWidth = width < 0 ? 0 : width;
+        int maxWidth = width < 0 ? Integer.MAX_VALUE : width;
         mTextLayout = buildTextLayout(maxWidth);
         int textWidth = mTextLayout.getWidth();
         int textHeight = mTextLayout.getHeight();
@@ -169,25 +171,9 @@ public class TextModule extends Module {
      * @return {@link Layout}
      */
     private Layout buildTextLayout(int maxWidth) {
-        //default text size
-        if (mTextSize == 0 && mContext != null) {
-            mTextSize = (int) (DEFAULT_TEXT_SIZE_IN_SP * mContext.getResources().getDisplayMetrics().scaledDensity);
-            mTextLayoutBuilder.setTextSize(mTextSize);
-        }
-
         mTextLayoutBuilder.setWidth(0, TextLayoutBuilder.MEASURE_MODE_UNSPECIFIED);
-        if (maxWidth >= 0)
-            mTextLayoutBuilder.setMaxWidth(maxWidth);
-
-        Layout layout = mTextLayoutBuilder.build();
-
-        //fix layout null when text empty
-        if (layout == null) {
-            TextPaint textPaint = new TextPaint();
-            textPaint.setTextSize(mTextSize);
-            layout = new StaticLayout("", textPaint, maxWidth, mAlignment, mTextLayoutBuilder.getTextSpacingMultiplier(), mTextLayoutBuilder.getTextSpacingExtra(), false);
-        }
-        return layout;
+        mTextLayoutBuilder.setMaxWidth(maxWidth);
+        return buildTextLayout();
     }
 
     /**
@@ -216,7 +202,7 @@ public class TextModule extends Module {
     @Override
     public void configModule() {
         super.configModule();
-        if (getContentWidth() > 0)
+        if (mTextLayout == null)
             mTextLayout = buildTextLayout();
     }
 
@@ -237,6 +223,5 @@ public class TextModule extends Module {
 
         canvas.restore();
     }
-
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by HungNQ on 12/09/2017.
  */
 
-public class SocialModel {
+public class SocialModel extends BaseModel{
     private String mAvatar;
     private String mName;
     private String mTime;

@@ -79,7 +79,6 @@ public class Social9ImageContentView extends SocialImageContentView {
                 .setDimensions(temp,temp)
                 .anchorTopToBottom(img2)
                 .anchorLeftToRight(img4)
-                .setVisibility(LayoutParams.GONE)
                 .setPadding(dp(1));
 
         img6.getLayoutParams()

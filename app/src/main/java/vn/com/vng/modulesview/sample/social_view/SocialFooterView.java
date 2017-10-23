@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 import vn.com.vng.modulesview.R;
 import vn.com.vng.modulesview.modules_view.GravityCompat;
@@ -81,7 +82,7 @@ public class SocialFooterView extends ModulesView {
 
     private void init() {
         //build modules
-
+        setSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         mTopLine = new Module();
         mTopLine.setBackgroundColor(0xffcccccc);
@@ -138,8 +139,8 @@ public class SocialFooterView extends ModulesView {
         mBottomSeparator = new Module();
         mBottomSeparator.setBackgroundColor(0xffe4e5e5);
         mBottomSeparator.getLayoutParams()
-                .anchorTopToBottom(mBottomLine)
-                .setDimensions(LayoutParams.MATCH_PARENT, mBottomSeparatorSize);
+                .setDimensions(LayoutParams.MATCH_PARENT, mBottomSeparatorSize)
+                .anchorTopToBottom(mBottomLine);
         //add modules
         addModule(mTopLine);
         addModule(mImgLike);
@@ -190,11 +191,6 @@ public class SocialFooterView extends ModulesView {
         return module;
     }
 
-//
-//    @Override
-//    protected void onPreMeasureChildren(int widthMeasureSpec, int heightMeasureSpec) {
-//        setMeasuredDimension(getMeasuredWidth(), mFooterHeight);
-//    }
 
     //-------------------bind data-----------------------------------
 

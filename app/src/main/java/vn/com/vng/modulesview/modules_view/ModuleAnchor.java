@@ -25,12 +25,7 @@ public class ModuleAnchor extends Anchor {
         if (mModule == null)
             return BOUND_UNKNOWN;
         int left = mModule.getLeft();
-        if (left == Module.BOUND_UNKNOWN || left == Module.BOUND_UNSPECIFIED)
-            return BOUND_UNKNOWN;
-        if (mModule.getLayoutParams().getVisibility() == LayoutParams.GONE) {
-            left -= mModule.getLayoutParams().mMarginLeft;
-        }
-        return left;
+        return left == Module.BOUND_UNKNOWN || left == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : left;
     }
 
     @Override
@@ -38,26 +33,14 @@ public class ModuleAnchor extends Anchor {
         if (mModule == null || mModule.getLayoutParams().getVisibility() == LayoutParams.GONE)
             return BOUND_UNKNOWN;
         int top = mModule.getTop();
-        if (top == Module.BOUND_UNKNOWN || top == Module.BOUND_UNSPECIFIED)
-            return BOUND_UNKNOWN;
-
-        if (mModule.getLayoutParams().getVisibility() == LayoutParams.GONE)
-            top -= mModule.getLayoutParams().mMarginTop;
-
-        return top;
+        return top == Module.BOUND_UNKNOWN || top == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : top;
     }
 
     @Override
     public int getRight() {
         if (mModule == null)
             return BOUND_UNKNOWN;
-        int right;
-        if (mModule.getLayoutParams().getVisibility() == LayoutParams.GONE) {
-            right = mModule.getLeft();
-            if (right != Module.BOUND_UNKNOWN && right != Module.BOUND_UNSPECIFIED)
-                right -= mModule.getLayoutParams().mMarginLeft;
-        } else
-            right = mModule.getRight();
+        int right = mModule.getRight();
 
         return right == Module.BOUND_UNKNOWN || right == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : right;
     }
@@ -66,17 +49,7 @@ public class ModuleAnchor extends Anchor {
     public int getBottom() {
         if (mModule == null || mModule.getLayoutParams().getVisibility() == LayoutParams.GONE)
             return BOUND_UNKNOWN;
-
-        int bottom;
-        if (mModule.getLayoutParams().getVisibility() == LayoutParams.GONE) {
-            bottom = mModule.getTop();
-            if (mModule.getLayoutParams().getVisibility() == LayoutParams.GONE) {
-                bottom = mModule.getTop();
-                if (bottom != Module.BOUND_UNKNOWN && bottom != Module.BOUND_UNSPECIFIED)
-                    bottom -= mModule.getLayoutParams().mMarginTop;
-            }
-        } else
-            bottom = mModule.getBottom();
+        int bottom = mModule.getBottom();
         return bottom == Module.BOUND_UNKNOWN || bottom == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : bottom;
     }
 }

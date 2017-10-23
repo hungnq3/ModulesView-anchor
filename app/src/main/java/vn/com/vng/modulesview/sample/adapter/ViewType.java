@@ -21,4 +21,6 @@ public class ViewType {
     public static final int SOCIAL_IMAGES_CONTENT_8 = 1012;
     public static final int SOCIAL_IMAGES_CONTENT_9 = 1013;
 
+    public static final int CHAT_HEADER = 1014;
+
 }

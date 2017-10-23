@@ -27,9 +27,9 @@ public class LayoutParams {
      */
     public static final int WRAP_CONTENT = -2;
 
-    public static final int VISIBLE = 0;
-    public static final int INVISIBLE = 1;
-    public static final int GONE = 2;
+    public static final int VISIBLE = View.VISIBLE;
+    public static final int INVISIBLE = View.INVISIBLE;
+    public static final int GONE = View.GONE;
 
 //    @IntDef({GravityCompat.LEFT, GravityCompat.RIGHT, GravityCompat.TOP, GravityCompat.BOTTOM, GravityCompat.CENTER, GravityCompat.CENTER_HORIZONTAL, GravityCompat.CENTER_VERTICAL})
 //    @Retention(RetentionPolicy.SOURCE)
@@ -451,25 +451,25 @@ public class LayoutParams {
     }
 
 
-    public boolean hasAnchorLeft() {
+    private boolean hasAnchorLeft() {
         return (mAnchorLeft != null);
     }
 
-    public boolean hasAnchorRight() {
+    private boolean hasAnchorRight() {
         return (mAnchorRight != null);
     }
 
-    public boolean hasAnchorTop() {
+    private boolean hasAnchorTop() {
         return (mAnchorTop != null);
 
     }
 
-    public boolean hasAnchorBottom() {
+    private boolean hasAnchorBottom() {
         return (mAnchorBottom != null);
     }
 
 
-    int getAnchorLeft() {
+    private int getAnchorLeft() {
         int left = Module.BOUND_UNSPECIFIED;
         if (hasAnchorLeft()) {
             left = mAnchorLeft.getAnchorValue();
@@ -479,11 +479,13 @@ public class LayoutParams {
                 left += mMarginLeft;
         } else if (mWidthDimension == MATCH_PARENT || mX > 0) {
             left = mX + mMarginLeft;
+            if(mX == 0 && mModule.getParent()!=null)
+                left += mModule.getParent().getPaddingLeft();
         }
         return left;
     }
 
-    int getAnchorRight() {
+    private int getAnchorRight() {
         int right = Module.BOUND_UNSPECIFIED;
         if (hasAnchorRight()) {
             right = mAnchorRight.getAnchorValue();
@@ -503,8 +505,7 @@ public class LayoutParams {
         return right;
     }
 
-    int getAnchorTop() {
-
+    private int getAnchorTop() {
         int top = Module.BOUND_UNSPECIFIED;
         if (hasAnchorTop()) {
             top = mAnchorTop.getAnchorValue();
@@ -512,15 +513,17 @@ public class LayoutParams {
                 top = Module.BOUND_UNKNOWN;
             else
                 top += mMarginTop;
-        } else if (mWidthDimension == MATCH_PARENT || mY > 0) {
+        } else if (mHeightDimension == MATCH_PARENT || mY > 0) {
             top = mY + mMarginTop;
+            if(mY == 0 && mModule.getParent() != null)
+                top += mModule.getParent().getPaddingTop();
         }
 
         return top;
     }
 
 
-    int getAnchorBottom() {
+    private int getAnchorBottom() {
         int bottom = Module.BOUND_UNSPECIFIED;
         if (hasAnchorBottom()) {
             bottom = mAnchorBottom.getAnchorValue();
@@ -546,13 +549,13 @@ public class LayoutParams {
         int left = getAnchorLeft();
         int right = getAnchorRight();
 
-        if (mWidthDimension >= 0) {
+        if (mWidthDimension >= 0 && mVisibility != GONE) {
             if (left == Module.BOUND_UNSPECIFIED && right != Module.BOUND_UNSPECIFIED) {
                 left = right - mWidthDimension;
             } else if (left != Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
                 right = left + mWidthDimension;
             } else if (left == Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
-                left = mMarginLeft;
+                left = mMarginLeft + (mModule.getParent() != null ? mModule.getParent().getPaddingLeft() : 0);
                 right = left + mWidthDimension;
             }
         }
@@ -561,13 +564,13 @@ public class LayoutParams {
         int top = getAnchorTop();
         int bottom = getAnchorBottom();
 
-        if (mHeightDimension >= 0) {
+        if (mHeightDimension >= 0 && mVisibility != GONE) {
             if (top == Module.BOUND_UNSPECIFIED && bottom != Module.BOUND_UNSPECIFIED) {
                     top = bottom - mHeightDimension;
             } else if (top != Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
                 bottom = top + mHeightDimension;
             } else if (top == Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
-                top = mMarginTop;
+                top = mMarginTop + (mModule.getParent() != null ? mModule.getParent().getPaddingTop() : 0);
                 bottom = top + mHeightDimension;
             }
         }

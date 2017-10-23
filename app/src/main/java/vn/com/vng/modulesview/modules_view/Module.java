@@ -22,9 +22,9 @@ public class Module {
     public static final int DIMENSION_MODE_UNSPECIFIED = 3;
 
     public static final int DIMENSION_UNSPECIFIED = Integer.MIN_VALUE;
-    public static final int DIMENSION_UNKNOWN = Integer.MIN_VALUE+1;
+    public static final int DIMENSION_UNKNOWN = Integer.MIN_VALUE + 1;
     public static final int BOUND_UNSPECIFIED = Integer.MIN_VALUE;
-    public static final int BOUND_UNKNOWN = Integer.MIN_VALUE+1;
+    public static final int BOUND_UNKNOWN = Integer.MIN_VALUE + 1;
 
     //stuff
     protected Context mContext;
@@ -163,51 +163,109 @@ public class Module {
 
         //step 2: check dimensions' state
         boolean unknownDimensions = mWidth == DIMENSION_UNKNOWN || mHeight == DIMENSION_UNKNOWN;
-        if(unknownDimensions)
+        if (unknownDimensions)
             return;
 
         boolean needToUpdateDimensions = mWidth == DIMENSION_UNSPECIFIED || mHeight == DIMENSION_UNSPECIFIED;
 
         //step 3: internal measure
-        if(mParams.getVisibility() == LayoutParams.GONE)
-            return;
-        int width, widthMode;
-        int height, heightMode;
-
-        if (mWidth == DIMENSION_UNSPECIFIED) {
-            width = getRemainWidth(parentMeasureWidthSpec);
-            widthMode = View.MeasureSpec.getMode(parentMeasureWidthSpec) == View.MeasureSpec.UNSPECIFIED ? DIMENSION_MODE_UNSPECIFIED : DIMENSION_MODE_MAX;
+        if (mParams.getVisibility() == LayoutParams.GONE) {
+            goneModule();
         } else {
-            width = mWidth - mParams.getPaddingLeft() - mParams.getPaddingRight();
-            widthMode = DIMENSION_MODE_FIXED;
+            int width, widthMode;
+            int height, heightMode;
+
+            if (mWidth == DIMENSION_UNSPECIFIED) {
+                width = getRemainWidth(parentMeasureWidthSpec);
+                widthMode = View.MeasureSpec.getMode(parentMeasureWidthSpec) == View.MeasureSpec.UNSPECIFIED ? DIMENSION_MODE_UNSPECIFIED : DIMENSION_MODE_MAX;
+            } else {
+                width = mWidth - mParams.getPaddingLeft() - mParams.getPaddingRight();
+                widthMode = DIMENSION_MODE_FIXED;
+            }
+
+            if (mHeight == DIMENSION_UNSPECIFIED) {
+                height = getRemainHeight(parentMeasureHeightSpec);
+                heightMode = View.MeasureSpec.getMode(parentMeasureHeightSpec) == View.MeasureSpec.UNSPECIFIED ? DIMENSION_MODE_UNSPECIFIED : DIMENSION_MODE_MAX;
+            } else {
+                height = mHeight - mParams.getPaddingTop() - mParams.getPaddingBottom();
+                heightMode = DIMENSION_MODE_FIXED;
+            }
+
+            onMeasureContent(width, widthMode, height, heightMode);
+
+            //step 4: re update dimensions if needed
+            if (needToUpdateDimensions)
+                updateUnspecifiedBounds(mContentWidth, mContentHeight);
         }
 
-        if (mHeight == DIMENSION_UNSPECIFIED) {
-            height = getRemainHeight(parentMeasureHeightSpec);
-            heightMode = View.MeasureSpec.getMode(parentMeasureHeightSpec) == View.MeasureSpec.UNSPECIFIED ? DIMENSION_MODE_UNSPECIFIED : DIMENSION_MODE_MAX;
-        } else {
-            height = mHeight - mParams.getPaddingTop() - mParams.getPaddingBottom();
-            heightMode = DIMENSION_MODE_FIXED;
+    }
+
+    private void goneModule() {
+        mWidth = 0;
+        mHeight = 0;
+
+        if (mLeft == BOUND_UNSPECIFIED && mRight == BOUND_UNSPECIFIED) {
+            mLeft = mParams.getX() - mParams.getMarginLeft();
+            mRight = mLeft;
+        } else if (mLeft == BOUND_UNSPECIFIED) {
+            mRight -= mParams.getMarginRight();
+            mLeft = mRight;
+        } else if (mRight == BOUND_UNSPECIFIED) {
+            mLeft -= mParams.getMarginLeft();
+            mRight = mLeft;
+
         }
 
-        onMeasureContent(width, widthMode, height, heightMode);
-
-        //step 4: re update dimensions if needed
-        if (needToUpdateDimensions)
-            updateUnspecifiedBounds(mContentWidth, mContentHeight);
+        if (mTop == BOUND_UNSPECIFIED && mBottom == BOUND_UNSPECIFIED) {
+            mTop = mParams.getY() - mParams.getMarginTop();
+            mBottom = mTop;
+        } else if (mTop == BOUND_UNSPECIFIED) {
+            mBottom -= mParams.getMarginBottom();
+            mTop = mBottom;
+        } else if (mBottom == BOUND_UNSPECIFIED) {
+            mTop -= mParams.getMarginTop();
+            mBottom = mTop;
+        }
     }
 
 
     private int getRemainWidth(int parentMeasureWidthSpec) {
-        int size = mRight != BOUND_UNSPECIFIED ? mRight : View.MeasureSpec.getSize(parentMeasureWidthSpec) - mParams.getMarginRight();
-        size -= mLeft != BOUND_UNSPECIFIED ? mLeft : mParams.getMarginLeft();
-        return size - mParams.getPaddingRight() - mParams.getPaddingLeft();
+        int right, left;
+        if (mRight == BOUND_UNSPECIFIED) {
+            right = View.MeasureSpec.getSize(parentMeasureWidthSpec) - mParams.getMarginRight();
+            right -= mParent != null ? mParent.getPaddingRight() : 0;
+        } else {
+            right = mRight;
+        }
+
+        if (mLeft == BOUND_UNSPECIFIED) {
+            left = mParams.getMarginLeft();
+            left += mParent != null ? mParent.getPaddingLeft() : 0;
+        } else {
+            left = mLeft;
+        }
+
+        return Math.max(right - left - mParams.getPaddingRight() - mParams.getPaddingLeft(), 0);
     }
 
     private int getRemainHeight(int parentMeasureHeightSpec) {
-        int size = (mBottom != BOUND_UNSPECIFIED) ? mBottom : View.MeasureSpec.getSize(parentMeasureHeightSpec) - mParams.getMarginBottom();
-        size -= (mTop != BOUND_UNSPECIFIED) ? mTop : mParams.getMarginTop();
-        return size - mParams.getPaddingTop() - mParams.getPaddingTop();
+
+        int bottom, top;
+        if (mBottom == BOUND_UNSPECIFIED) {
+            bottom = View.MeasureSpec.getSize(parentMeasureHeightSpec) - mParams.getMarginBottom();
+            bottom -= mParent != null ? mParent.getPaddingBottom() : 0;
+        } else {
+            bottom = mBottom;
+        }
+
+        if (mTop == BOUND_UNSPECIFIED) {
+            top = mParams.getMarginTop();
+            top += mParent != null ? mParent.getPaddingTop() : 0;
+        } else {
+            top = mTop;
+        }
+
+        return Math.max(bottom - top - mParams.getPaddingTop() - mParams.getPaddingBottom(), 0);
     }
 
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
@@ -220,7 +278,7 @@ public class Module {
     }
 
     private final void updateUnspecifiedBounds(int width, int height) {
-        if(mWidth != DIMENSION_UNKNOWN) {
+        if (mWidth != DIMENSION_UNKNOWN) {
             if (mLeft == BOUND_UNSPECIFIED && mRight == BOUND_UNSPECIFIED) {
                 mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
                 mLeft = mParams.getMarginLeft() + mParams.getX();
@@ -234,7 +292,7 @@ public class Module {
             }
         }
 
-        if(mHeight != DIMENSION_UNKNOWN) {
+        if (mHeight != DIMENSION_UNKNOWN) {
             if (mTop == BOUND_UNSPECIFIED && mBottom == BOUND_UNSPECIFIED) {
                 mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
                 mTop = mParams.getMarginTop() + mParams.getY();
@@ -276,6 +334,7 @@ public class Module {
     private void configContentRegion() {
         if (mWidth <= 0 || mHeight <= 0)
             return;
+
         mContentLeft = mLeft + mParams.getPaddingLeft();
         mContentTop = mTop + mParams.getPaddingTop();
         mContentRight = mContentLeft + mContentWidth;

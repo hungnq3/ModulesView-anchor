@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +15,13 @@ import android.view.ViewGroup;
 import java.util.LinkedList;
 import java.util.List;
 
+import vn.com.vng.modulesview.sample.chat_view.ChatHeaderView;
+
 /**
  * Created by HungNQ on 08/09/2017.
  */
 
 public class ModulesView extends View {
-
-    public interface OnMeasureListener {
-        void onMeasure(ModulesView view, int withMeasureSpec, int heightMeasureSpec);
-    }
-
-    public interface OnLayoutListener {
-        void onLayout(ModulesView view, boolean changed, int width, int height);
-    }
 
     public ModulesView(Context context) {
         this(context, null);
@@ -48,8 +43,6 @@ public class ModulesView extends View {
 
     //stuff
     private List<Module> mModules = new LinkedList<>();
-    private OnMeasureListener mOnMeasureListener;
-    private OnLayoutListener mOnLayoutListener;
     private Module mTouchFocusModule;
 
 
@@ -111,30 +104,32 @@ public class ModulesView extends View {
 
     public void setSize(int width, int height) {
         ViewGroup.LayoutParams lParams = getLayoutParams();
-        if (lParams == null)
+        if (lParams == null) {
             lParams = new ViewGroup.LayoutParams(width, height);
-        else {
+            setLayoutParams(lParams);
+        } else {
             lParams.width = width;
             lParams.height = height;
         }
-        setLayoutParams(lParams);
     }
 
-
-    public OnMeasureListener getOnMeasureListener() {
-        return mOnMeasureListener;
+    public void setWidth(int width) {
+        ViewGroup.LayoutParams lParams = getLayoutParams();
+        if (lParams == null) {
+            lParams = new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+            setLayoutParams(lParams);
+        } else {
+            lParams.width = width;
+        }
     }
 
-    public void setOnMeasureListener(OnMeasureListener onMeasureListener) {
-        mOnMeasureListener = onMeasureListener;
-    }
-
-    public OnLayoutListener getOnLayoutListener() {
-        return mOnLayoutListener;
-    }
-
-    public void setOnLayoutListener(OnLayoutListener onLayoutListener) {
-        mOnLayoutListener = onLayoutListener;
+    public void setHeight(int height) {
+        ViewGroup.LayoutParams lParams = getLayoutParams();
+        if (lParams == null) {
+            lParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
+            setLayoutParams(lParams);
+        } else
+            lParams.height = height;
     }
 
 
@@ -142,6 +137,8 @@ public class ModulesView extends View {
     int mWidthMeasureMode;
     int mHeightMeasureSize;
     int mHeightMeasureMode;
+    int mCurrentWidth;
+    int mCurrentHeight;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -150,37 +147,69 @@ public class ModulesView extends View {
         mHeightMeasureSize = MeasureSpec.getSize(heightMeasureSpec);
         mHeightMeasureMode = MeasureSpec.getMode(heightMeasureSpec);
 
+        mCurrentWidth = mWidthMeasureMode == MeasureSpec.EXACTLY ?  mWidthMeasureSize : 0;
+        mCurrentHeight = mHeightMeasureMode == MeasureSpec.EXACTLY ? mHeightMeasureSize : 0;
+
 
         for (Module module : mModules) {
             if (module == null)
                 continue;
             module.measure(widthMeasureSpec, heightMeasureSpec);
             module.onPostMeasured();
+
+            //resolve current dimensions
+            if (mWidthMeasureMode != MeasureSpec.EXACTLY) {
+                if(module.getWidth() >=0) {
+                    int width = module.getRight()
+                            + module.getLayoutParams().getMarginRight()
+                            + getPaddingRight();
+                    mCurrentWidth = Math.max(mCurrentWidth, width);
+                    if (mWidthMeasureMode == MeasureSpec.AT_MOST)
+                        mCurrentWidth = Math.min(mCurrentWidth, mWidthMeasureSize);
+                }
+            }
+
+            if (mHeightMeasureMode != MeasureSpec.EXACTLY) {
+                if(module.getHeight() >=0) {
+                    int height = module.getBottom()
+                            + module.getLayoutParams().getMarginBottom()
+                            + getPaddingBottom();
+                    mCurrentHeight = Math.max(mCurrentHeight, height);
+                    if (mHeightMeasureMode == MeasureSpec.AT_MOST)
+                        mCurrentHeight = Math.min(mCurrentHeight, mHeightMeasureSize);
+                }
+            }
+
+//            if(this instanceof ChatHeaderView)
+//                if (mModules.indexOf(module) == 5)
+//                    Log.d("onMeasureContent", " width = [" + module.getWidth()  + "] contentW = [" +module.getContentWidth() +"]" );
         }
 
+//
+//        //Measure this view
+//        int width, height;
+//        if (mWidthMeasureMode == MeasureSpec.EXACTLY)
+//            width = mWidthMeasureSize;
+//        else {
+//            width = getMaxRightBound();
+//            if (mWidthMeasureMode == MeasureSpec.AT_MOST)
+//                width = Math.min(width, mWidthMeasureSize);
+//        }
+//
+//
+//        if (mHeightMeasureMode == MeasureSpec.EXACTLY)
+//            height = mHeightMeasureSize;
+//        else {
+//            height = getMaxBottomBound();
+//            if (mHeightMeasureMode == MeasureSpec.AT_MOST)
+//                height = Math.min(height, mHeightMeasureSize);
+//        }
+//
+//        setMeasuredDimension(width, height);
+//        onPostMeasureChildren(width, height);
 
-        //Measure this view
-        int width, height;
-        if(mWidthMeasureMode == MeasureSpec.EXACTLY)
-            width = mWidthMeasureSize;
-        else{
-            width = getMaxRightBound();
-            if(mWidthMeasureMode == MeasureSpec.AT_MOST)
-                width = Math.min(width, mWidthMeasureSize);
-        }
-
-
-        if(mHeightMeasureMode == MeasureSpec.EXACTLY)
-            height = mHeightMeasureSize;
-        else{
-            height = getMaxBottomBound();
-            if(mHeightMeasureMode == MeasureSpec.AT_MOST)
-                height = Math.min(height, mHeightMeasureSize);
-        }
-
-        setMeasuredDimension(width, height);
-
-        onPostMeasureChildren(width, height);
+        setMeasuredDimension(mCurrentWidth, mCurrentHeight);
+        onPostMeasureChildren(mCurrentWidth, mCurrentHeight);
 
     }
 
@@ -188,20 +217,27 @@ public class ModulesView extends View {
     private int getMaxRightBound() {
         int max = 0;
         for (Module module : mModules) {
-            if(module == null || module.getRight() == Module.BOUND_UNSPECIFIED || module.getRight() == Module.BOUND_UNKNOWN)
+            if (module == null || module.getRight() == Module.BOUND_UNSPECIFIED || module.getRight() == Module.BOUND_UNKNOWN)
                 continue;
             max = Math.max(max, module.getRight() + module.getLayoutParams().mMarginRight);
         }
+        if(getParent() != null)
+            max+= getPaddingRight();
+
         return max;
     }
 
     private int getMaxBottomBound() {
         int max = 0;
         for (Module module : mModules) {
-            if(module == null || module.getBottom() == Module.BOUND_UNSPECIFIED || module.getBottom() == Module.BOUND_UNKNOWN)
+            if (module == null || module.getBottom() == Module.BOUND_UNSPECIFIED || module.getBottom() == Module.BOUND_UNKNOWN)
                 continue;
             max = Math.max(max, module.getBottom() + module.getLayoutParams().mMarginBottom);
         }
+
+        if(getParent() != null)
+            max+= getPaddingBottom();
+
         return max;
     }
 
@@ -215,17 +251,11 @@ public class ModulesView extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        int width = right - left;
-        int height = bottom - top;
         for (Module module : mModules) {
             if (module == null)
                 continue;
             module.layout(module.getLeft(), module.getTop(), module.getRight(), module.getBottom());
         }
-
-        //notify listener & config modules
-        if (mOnLayoutListener != null)
-            mOnLayoutListener.onLayout(this, changed, width, height);
     }
 
     @Override

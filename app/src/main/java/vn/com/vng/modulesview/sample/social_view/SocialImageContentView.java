@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -50,8 +51,11 @@ public class SocialImageContentView extends ModulesView {
     Module.OnLongClickListener mOnImageLongClickListener;
 
     private void init() {
-        mScreenWidth =getScreenWidth();
+        setSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mScreenWidth = getScreenWidth();
         mImageModules = buildImageModules(getImagesContentCount());
+
+
         addModules(mImageModules);
 
         configModules(mImageModules);
@@ -63,7 +67,7 @@ public class SocialImageContentView extends ModulesView {
 
     private int getScreenWidth() {
         Point point = new Point();
-        ((Activity)getContext()).getWindowManager().getDefaultDisplay().getSize(point);
+        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getSize(point);
         return point.x;
     }
 
