@@ -76,7 +76,7 @@ public class SocialImageContentView extends ModulesView {
         List<ImageModule> list;
         list = new LinkedList<>();
         for (int i = 0; i < n; ++i) {
-            ImageModule imgModule = new ImageModule();
+            ImageModule imgModule = new ImageModule(getContext());
             imgModule.setScaleType(ImageModule.CENTER_CROP);
             list.add(imgModule);
         }

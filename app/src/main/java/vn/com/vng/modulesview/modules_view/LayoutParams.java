@@ -31,10 +31,12 @@ public class LayoutParams {
     public static final int INVISIBLE = View.INVISIBLE;
     public static final int GONE = View.GONE;
 
-//    @IntDef({GravityCompat.LEFT, GravityCompat.RIGHT, GravityCompat.TOP, GravityCompat.BOTTOM, GravityCompat.CENTER, GravityCompat.CENTER_HORIZONTAL, GravityCompat.CENTER_VERTICAL})
-//    @Retention(RetentionPolicy.SOURCE)
-//    public @interface Gravity {
-//    }
+    @IntDef({BiasMode.SPAN, BiasMode.COLLAPSE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface BiasMode {
+        int SPAN = 0;
+        int COLLAPSE = 1;
+    }
 
     @IntDef({VISIBLE, INVISIBLE, GONE})
     @Retention(RetentionPolicy.SOURCE)
@@ -51,11 +53,13 @@ public class LayoutParams {
     int mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom;
     int mMarginLeft, mMarginTop, mMarginRight, mMarginBottom;
 
+    int mHorizontalBiasMode, mVerticalBiasMode;
+    float mHorizontalBias, mVerticalBias;
+
 
     int mGravity;
     int mVisibility;
 
-    private boolean mDirty;
 
     public LayoutParams(@NonNull Module module) {
         mModule = module;
@@ -96,7 +100,6 @@ public class LayoutParams {
 
     public LayoutParams setPaddingTop(int paddingTop) {
         if (mPaddingTop != paddingTop) {
-            mDirty = true;
             mPaddingTop = paddingTop;
         }
         return this;
@@ -172,6 +175,50 @@ public class LayoutParams {
         return this;
     }
 
+
+    @BiasMode
+    public int getHorizontalBiasMode() {
+        return mHorizontalBiasMode;
+    }
+
+    public void setHorizontalBiasMode(@BiasMode int horizontalBiasMode) {
+        mHorizontalBiasMode = horizontalBiasMode;
+    }
+
+    @BiasMode
+    public int getVerticalBiasMode() {
+        return mVerticalBiasMode;
+    }
+
+    public void setVerticalBiasMode(@BiasMode int verticalBiasMode) {
+        mVerticalBiasMode = verticalBiasMode;
+    }
+
+    public float getHorizontalBias() {
+        return mHorizontalBias;
+    }
+
+    public void setHorizontalBias(int bias) {
+        if (bias > 1f)
+            mHorizontalBias = 1f;
+        else if (bias < 0f)
+            mHorizontalBias = 0f;
+        else
+            mHorizontalBias = bias;
+    }
+
+    public float getVerticalBias() {
+        return mVerticalBias;
+    }
+
+    public void setVerticalBias(int bias) {
+        if (bias > 1f)
+            mVerticalBias = 1f;
+        else if (bias < 0f)
+            mVerticalBias = 0f;
+        else
+            mVerticalBias = bias;
+    }
 
     //------------anchor region------------------------------------
     public LayoutParams anchorLeftToLeft(Module module) {
@@ -479,7 +526,7 @@ public class LayoutParams {
                 left += mMarginLeft;
         } else if (mWidthDimension == MATCH_PARENT || mX > 0) {
             left = mX + mMarginLeft;
-            if(mX == 0 && mModule.getParent()!=null)
+            if (mX == 0 && mModule.getParent() != null)
                 left += mModule.getParent().getPaddingLeft();
         }
         return left;
@@ -494,12 +541,12 @@ public class LayoutParams {
             else
                 right -= mMarginRight;
         } else if (mWidthDimension == MATCH_PARENT) {
-            ModulesView parent = mModule.getParent();
+            Parent parent = mModule.getParent();
             if (parent != null) {
-                if (parent.mWidthMeasureMode == View.MeasureSpec.UNSPECIFIED)
+                if (parent.getWidthMeasureMode() == View.MeasureSpec.UNSPECIFIED)
                     right = Module.BOUND_UNSPECIFIED;
                 else
-                    right = Math.max(parent.mWidthMeasureSize - mModule.getParent().getPaddingRight(), 0) - mMarginLeft;
+                    right = Math.max(parent.getWidthMeasureSize() - mModule.getParent().getPaddingRight(), 0) - mMarginLeft;
             }
         }
         return right;
@@ -515,7 +562,7 @@ public class LayoutParams {
                 top += mMarginTop;
         } else if (mHeightDimension == MATCH_PARENT || mY > 0) {
             top = mY + mMarginTop;
-            if(mY == 0 && mModule.getParent() != null)
+            if (mY == 0 && mModule.getParent() != null)
                 top += mModule.getParent().getPaddingTop();
         }
 
@@ -532,12 +579,12 @@ public class LayoutParams {
             else
                 bottom -= mMarginBottom;
         } else if (mWidthDimension == MATCH_PARENT) {
-            ModulesView parent = mModule.getParent();
+            Parent parent = mModule.getParent();
             if (parent != null) {
-                if (parent.mHeightMeasureMode == View.MeasureSpec.UNSPECIFIED)
+                if (parent.getHeightMeasureMode() == View.MeasureSpec.UNSPECIFIED)
                     bottom = Module.BOUND_UNSPECIFIED;
                 else
-                    bottom = Math.max(parent.mHeightMeasureSize - mModule.getParent().getPaddingBottom(), 0) - mMarginBottom;
+                    bottom = Math.max(parent.getHeightMeasureSize() - mModule.getParent().getPaddingBottom(), 0) - mMarginBottom;
             }
         }
         return bottom;
@@ -566,7 +613,7 @@ public class LayoutParams {
 
         if (mHeightDimension >= 0 && mVisibility != GONE) {
             if (top == Module.BOUND_UNSPECIFIED && bottom != Module.BOUND_UNSPECIFIED) {
-                    top = bottom - mHeightDimension;
+                top = bottom - mHeightDimension;
             } else if (top != Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
                 bottom = top + mHeightDimension;
             } else if (top == Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {

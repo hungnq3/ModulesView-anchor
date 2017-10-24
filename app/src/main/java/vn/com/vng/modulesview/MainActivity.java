@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import vn.com.vng.modulesview.sample.adapter.view_item.ChatHeaderViewItem;
+import vn.com.vng.modulesview.sample.adapter.view_item.TestViewItem;
 import vn.com.vng.modulesview.sample.model.ChatHeaderModel;
 import vn.com.vng.modulesview.sample.model.SocialModel;
 import vn.com.vng.modulesview.sample.adapter.ModulesViewAdapter;
@@ -124,6 +125,17 @@ public class MainActivity extends AppCompatActivity {
     private List<BaseViewItem> buildItems() {
 
         List<BaseViewItem> items = new ArrayList<>(40);
+
+        items.add(new TestViewItem());
+
+
+
+
+
+
+
+
+
 
 
         items.add(mockChatHeaderModel(getRandomImg(), getRandomName(), getRandomMsg(), getRandomChatTime(), 0, true));

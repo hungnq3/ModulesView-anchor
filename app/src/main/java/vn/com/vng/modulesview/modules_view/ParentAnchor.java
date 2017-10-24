@@ -41,17 +41,17 @@ public class ParentAnchor extends Anchor {
     public int getRight() {
         if (mModule == null || mModule.getParent() == null)
             return BOUND_UNKNOWN;
-        ModulesView parent = mModule.getParent();
+        Parent parent = mModule.getParent();
 
-        return Math.max(parent.mCurrentWidth - mModule.getParent().getPaddingRight(), 0);
+        return Math.max(parent.getCurrentWidth() - mModule.getParent().getPaddingRight(), 0);
     }
 
     @Override
     public int getBottom() {
         if (mModule == null || mModule.getParent() == null)
             return BOUND_UNKNOWN;
-        ModulesView parent = mModule.getParent();
+        Parent parent = mModule.getParent();
 
-        return Math.max(parent.mCurrentHeight - mModule.getParent().getPaddingBottom(), 0);
+        return Math.max(parent.getCurrentHeight() - mModule.getParent().getPaddingBottom(), 0);
     }
 }

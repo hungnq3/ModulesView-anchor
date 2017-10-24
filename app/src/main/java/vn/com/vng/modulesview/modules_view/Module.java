@@ -17,9 +17,9 @@ import android.view.View;
 public class Module {
     private static final long LONG_CLICK_TIME = 500;
 
-    public static final int DIMENSION_MODE_FIXED = 1;
-    public static final int DIMENSION_MODE_MAX = 2;
-    public static final int DIMENSION_MODE_UNSPECIFIED = 3;
+    public static final int DIMENSION_MODE_EXACTLY = View.MeasureSpec.EXACTLY;
+    public static final int DIMENSION_MODE_AT_MOST = View.MeasureSpec.AT_MOST;
+    public static final int DIMENSION_MODE_UNSPECIFIED = View.MeasureSpec.UNSPECIFIED;
 
     public static final int DIMENSION_UNSPECIFIED = Integer.MIN_VALUE;
     public static final int DIMENSION_UNKNOWN = Integer.MIN_VALUE + 1;
@@ -28,7 +28,7 @@ public class Module {
 
     //stuff
     protected Context mContext;
-    private ModulesView mParent;
+    private Parent mParent;
     private LayoutParams mParams;
 
     private int mWidth, mHeight;
@@ -42,17 +42,18 @@ public class Module {
     private OnLongClickListener mOnLongClickListener;
     private OnTouchListener mOnTouchListener;
 
-    public Module() {
+    public Module(Context context) {
+        mContext = context;
         mParams = new LayoutParams(this);
     }
 
-    public ModulesView getParent() {
+
+    public Parent getParent() {
         return mParent;
     }
 
-    void setParent(ModulesView parent) {
+    void setParent(Parent parent) {
         mParent = parent;
-        mContext = mParent != null ? mParent.getContext() : null;
     }
 
     public Context getContext() {
@@ -153,7 +154,7 @@ public class Module {
 
     //--------------config region-------------
 
-    final void measure(int parentMeasureWidthSpec, int parentMeasureHeightSpec) {
+    final void measure(int parentWidth, int parentWidthMode, int parentHeight, int parentHeightMode) {
         //clear layout state
         setBounds(BOUND_UNSPECIFIED, BOUND_UNSPECIFIED, BOUND_UNSPECIFIED, BOUND_UNSPECIFIED);
         setContentDimensions(0, 0);
@@ -176,19 +177,19 @@ public class Module {
             int height, heightMode;
 
             if (mWidth == DIMENSION_UNSPECIFIED) {
-                width = getRemainWidth(parentMeasureWidthSpec);
-                widthMode = View.MeasureSpec.getMode(parentMeasureWidthSpec) == View.MeasureSpec.UNSPECIFIED ? DIMENSION_MODE_UNSPECIFIED : DIMENSION_MODE_MAX;
+                width = getRemainWidth(parentWidth);
+                widthMode = parentWidthMode == View.MeasureSpec.UNSPECIFIED ? DIMENSION_MODE_UNSPECIFIED : DIMENSION_MODE_AT_MOST;
             } else {
                 width = mWidth - mParams.getPaddingLeft() - mParams.getPaddingRight();
-                widthMode = DIMENSION_MODE_FIXED;
+                widthMode = DIMENSION_MODE_EXACTLY;
             }
 
             if (mHeight == DIMENSION_UNSPECIFIED) {
-                height = getRemainHeight(parentMeasureHeightSpec);
-                heightMode = View.MeasureSpec.getMode(parentMeasureHeightSpec) == View.MeasureSpec.UNSPECIFIED ? DIMENSION_MODE_UNSPECIFIED : DIMENSION_MODE_MAX;
+                height = getRemainHeight(parentHeight);
+                heightMode = parentHeightMode == View.MeasureSpec.UNSPECIFIED ? DIMENSION_MODE_UNSPECIFIED : DIMENSION_MODE_AT_MOST;
             } else {
                 height = mHeight - mParams.getPaddingTop() - mParams.getPaddingBottom();
-                heightMode = DIMENSION_MODE_FIXED;
+                heightMode = DIMENSION_MODE_EXACTLY;
             }
 
             onMeasureContent(width, widthMode, height, heightMode);
@@ -229,10 +230,10 @@ public class Module {
     }
 
 
-    private int getRemainWidth(int parentMeasureWidthSpec) {
+    private int getRemainWidth(int parentWidth) {
         int right, left;
         if (mRight == BOUND_UNSPECIFIED) {
-            right = View.MeasureSpec.getSize(parentMeasureWidthSpec) - mParams.getMarginRight();
+            right = parentWidth - mParams.getMarginRight();
             right -= mParent != null ? mParent.getPaddingRight() : 0;
         } else {
             right = mRight;
@@ -248,11 +249,11 @@ public class Module {
         return Math.max(right - left - mParams.getPaddingRight() - mParams.getPaddingLeft(), 0);
     }
 
-    private int getRemainHeight(int parentMeasureHeightSpec) {
+    private int getRemainHeight(int parentHeight) {
 
         int bottom, top;
         if (mBottom == BOUND_UNSPECIFIED) {
-            bottom = View.MeasureSpec.getSize(parentMeasureHeightSpec) - mParams.getMarginBottom();
+            bottom = View.MeasureSpec.getSize(parentHeight) - mParams.getMarginBottom();
             bottom -= mParent != null ? mParent.getPaddingBottom() : 0;
         } else {
             bottom = mBottom;
@@ -281,7 +282,7 @@ public class Module {
         if (mWidth != DIMENSION_UNKNOWN) {
             if (mLeft == BOUND_UNSPECIFIED && mRight == BOUND_UNSPECIFIED) {
                 mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
-                mLeft = mParams.getMarginLeft() + mParams.getX();
+                mLeft = mParams.getMarginLeft() + mParams.getX() +  (mParent != null ?mParent.getPaddingLeft() : 0);
                 mRight = mLeft + mWidth;
             } else if (mLeft == BOUND_UNSPECIFIED) {
                 mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
@@ -295,7 +296,7 @@ public class Module {
         if (mHeight != DIMENSION_UNKNOWN) {
             if (mTop == BOUND_UNSPECIFIED && mBottom == BOUND_UNSPECIFIED) {
                 mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
-                mTop = mParams.getMarginTop() + mParams.getY();
+                mTop = mParams.getMarginTop() + mParams.getY()  +  (mParent != null ?mParent.getPaddingTop() : 0);
                 mBottom = mTop + mHeight;
             } else if (mTop == BOUND_UNSPECIFIED) {
                 mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
@@ -343,8 +344,8 @@ public class Module {
         int gravity = mParams.getGravity();
         if (GravityCompat.isNone(gravity) || (GravityCompat.isHorizontalLeft(gravity) && GravityCompat.isVerticalTop(gravity)))
             return;
-        int dWidth = mWidth - mContentWidth;
-        int dHeight = mHeight - mContentHeight;
+        int dWidth = mWidth - (mContentWidth + getLayoutParams().getPaddingLeft() + getLayoutParams().getPaddingRight());
+        int dHeight = mHeight - (mContentHeight + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom());
         if (dWidth != 0) {
             if (GravityCompat.isHorizontalRight(gravity)) {
                 mContentLeft += dWidth;
@@ -374,6 +375,7 @@ public class Module {
         drawBackground(canvas);
         onDraw(canvas, mContentLeft, mContentTop, mContentRight, mContentBottom);
     }
+
 
     void drawBackground(Canvas canvas) {
         if (canvas != null && mBackgroundDrawable != null) {
@@ -439,7 +441,7 @@ public class Module {
             performLongClick();
             //trigger a cancel touch event to parent view after long click
             if (mParent != null)
-                mParent.onTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, getLeft(), getTop(), 0));
+                mParent.cancelTouchEvent();
         }
     };
 

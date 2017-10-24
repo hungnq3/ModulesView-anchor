@@ -84,7 +84,7 @@ public class SocialFooterView extends ModulesView {
         //build modules
         setSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        mTopLine = new Module();
+        mTopLine = new Module(getContext());
         mTopLine.setBackgroundColor(0xffcccccc);
         mTopLine.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, 1)
@@ -129,14 +129,14 @@ public class SocialFooterView extends ModulesView {
                 .setPadding(dp(4));
 
 
-        mBottomLine = new Module();
+        mBottomLine = new Module(getContext());
         mBottomLine.setBackgroundColor(0xffcccccc);
         mBottomLine.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, 1)
                 .setMarginTop(dp(8))
                 .anchorTopToBottom(mImgLike);
 
-        mBottomSeparator = new Module();
+        mBottomSeparator = new Module(getContext());
         mBottomSeparator.setBackgroundColor(0xffe4e5e5);
         mBottomSeparator.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, mBottomSeparatorSize)
@@ -155,14 +155,14 @@ public class SocialFooterView extends ModulesView {
 
 
     private ImageModule buildLikeImgModule() {
-        ImageModule module = new ImageModule();
+        ImageModule module = new ImageModule(getContext());
         module.setScaleType(ImageModule.FIT_CENTER);
         module.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_heart));
         return module;
     }
 
     private TextModule buildLikeTextModule() {
-        TextModule module = new TextModule();
+        TextModule module = new TextModule(getContext());
         module.setTextSize(sp(14));
         module.setTextColor(0xff222222);
         return module;
@@ -170,14 +170,14 @@ public class SocialFooterView extends ModulesView {
 
     private ImageModule buildCommentImgModule() {
         ImageModule module;
-        module = new ImageModule();
+        module = new ImageModule(getContext());
         module.setScaleType(ImageModule.FIT_CENTER);
         module.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_comment));
         return module;
     }
 
     private TextModule buildCommentTextModule() {
-        TextModule module = new TextModule();
+        TextModule module = new TextModule(getContext());
         module.setTextSize(sp(14));
         module.setTextColor(0xff222222);
         return module;
@@ -185,7 +185,7 @@ public class SocialFooterView extends ModulesView {
 
 
     private ImageModule buildMoreImgModule() {
-        ImageModule module = new ImageModule();
+        ImageModule module = new ImageModule(getContext());
         module.setScaleType(ImageModule.FIT_CENTER);
         module.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_more));
         return module;

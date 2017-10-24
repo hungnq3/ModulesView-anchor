@@ -87,7 +87,7 @@ public class SocialHeaderView extends ModulesView {
                 .anchorLeftToLeft(mNameTextModule)
                 .anchorTopToBottom(mNameTextModule);
 
-        mTopLine = new Module();
+        mTopLine = new Module(getContext());
         mTopLine.setBackgroundColor(0xffcccccc);
         mTopLine.getLayoutParams()
                 .setWidthDimension(LayoutParams.MATCH_PARENT)
@@ -101,7 +101,7 @@ public class SocialHeaderView extends ModulesView {
 
 
     private ImageModule buildAvaModule() {
-        ImageModule module = new ImageModule();
+        ImageModule module = new ImageModule(getContext());
         module.setScaleType(ImageModule.CENTER_CROP);
         module.setRoundCorner(ImageModule.ROUND_CIRCLE);
 
@@ -109,7 +109,7 @@ public class SocialHeaderView extends ModulesView {
     }
 
     private TextModule buildNameModule() {
-        TextModule module = new TextModule();
+        TextModule module = new TextModule(getContext());
         module.setTextSize(mNameTextSize);
         module.setTextColor(mNameTextColor);
 
@@ -117,7 +117,7 @@ public class SocialHeaderView extends ModulesView {
     }
 
     private TextModule buildTimeModule() {
-        TextModule module = new TextModule();
+        TextModule module = new TextModule(getContext());
         module.setTextSize(mTimeTextSize);
         module.setTextColor(mTimeTextColor);
         return module;

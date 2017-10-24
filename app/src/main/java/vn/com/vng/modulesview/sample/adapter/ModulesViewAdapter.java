@@ -11,6 +11,7 @@ import vn.com.vng.modulesview.sample.adapter.holder.SocialFooterViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialHeaderViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialImageContentViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialTextContentViewHolder;
+import vn.com.vng.modulesview.sample.adapter.holder.TestViewHolder;
 import vn.com.vng.modulesview.sample.adapter.view_item.BaseViewItem;
 import vn.com.vng.modulesview.sample.chat_view.ChatHeaderView;
 import vn.com.vng.modulesview.sample.social_view.Social1ImageContentView;
@@ -26,6 +27,7 @@ import vn.com.vng.modulesview.sample.social_view.SocialContentTextView;
 import vn.com.vng.modulesview.sample.social_view.SocialFooterView;
 import vn.com.vng.modulesview.sample.social_view.SocialHeaderView;
 import vn.com.vng.modulesview.sample.social_view.SocialImageContentView;
+import vn.com.vng.modulesview.sample.test_view.TestView;
 
 /**
  * Created by HungNQ on 15/09/2017.
@@ -43,6 +45,10 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         BaseViewHolder holder = null;
         switch (viewType){
+            case ViewType.TEST:{
+                holder = new TestViewHolder(new TestView(parent.getContext()));
+                break;
+            }
             case ViewType.SOCIAL_HEADER:{
                 holder = new SocialHeaderViewHolder(new SocialHeaderView(parent.getContext()));
                 break;

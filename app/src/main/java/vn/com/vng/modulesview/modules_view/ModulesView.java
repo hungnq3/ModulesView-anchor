@@ -21,7 +21,7 @@ import vn.com.vng.modulesview.sample.chat_view.ChatHeaderView;
  * Created by HungNQ on 08/09/2017.
  */
 
-public class ModulesView extends View {
+public class ModulesView extends View implements Parent {
 
     public ModulesView(Context context) {
         this(context, null);
@@ -46,6 +46,7 @@ public class ModulesView extends View {
     private Module mTouchFocusModule;
 
 
+    @Override
     public void addModules(@NonNull List<? extends Module> modules) {
         for (Module module : modules) {
             if (module != null && module.getParent() == null) {
@@ -55,7 +56,7 @@ public class ModulesView extends View {
         }
     }
 
-
+    @Override
     public void addModule(@NonNull Module module) {
         if (module.getParent() != null)
             return;
@@ -63,13 +64,15 @@ public class ModulesView extends View {
         module.setParent(this);
     }
 
-
+    @Override
     public void clearModules() {
         for (Module module : mModules) {
             module.setParent(null);
         }
         mModules.clear();
     }
+
+    @Override
 
     public void removeModule(Module module) {
         if (module != null) {
@@ -78,6 +81,7 @@ public class ModulesView extends View {
         }
     }
 
+    @Override
     public Module removeModule(int position) {
         if (position >= 0 && position < mModules.size()) {
             Module module = mModules.remove(position);
@@ -87,14 +91,17 @@ public class ModulesView extends View {
         return null;
     }
 
+    @Override
     public List<Module> getModules() {
         return mModules;
     }
 
+    @Override
     public int getModulesCount() {
         return mModules.size();
     }
 
+    @Override
     public Module getModule(int position) {
         if (position >= 0 && position < mModules.size())
             return mModules.get(position);
@@ -147,19 +154,19 @@ public class ModulesView extends View {
         mHeightMeasureSize = MeasureSpec.getSize(heightMeasureSpec);
         mHeightMeasureMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        mCurrentWidth = mWidthMeasureMode == MeasureSpec.EXACTLY ?  mWidthMeasureSize : 0;
+        mCurrentWidth = mWidthMeasureMode == MeasureSpec.EXACTLY ? mWidthMeasureSize : 0;
         mCurrentHeight = mHeightMeasureMode == MeasureSpec.EXACTLY ? mHeightMeasureSize : 0;
 
 
         for (Module module : mModules) {
             if (module == null)
                 continue;
-            module.measure(widthMeasureSpec, heightMeasureSpec);
+            module.measure(mWidthMeasureSize, mWidthMeasureMode, mHeightMeasureSize, mHeightMeasureMode);
             module.onPostMeasured();
 
             //resolve current dimensions
             if (mWidthMeasureMode != MeasureSpec.EXACTLY) {
-                if(module.getWidth() >=0) {
+                if (module.getWidth() >= 0) {
                     int width = module.getRight()
                             + module.getLayoutParams().getMarginRight()
                             + getPaddingRight();
@@ -170,7 +177,7 @@ public class ModulesView extends View {
             }
 
             if (mHeightMeasureMode != MeasureSpec.EXACTLY) {
-                if(module.getHeight() >=0) {
+                if (module.getHeight() >= 0) {
                     int height = module.getBottom()
                             + module.getLayoutParams().getMarginBottom()
                             + getPaddingBottom();
@@ -180,9 +187,6 @@ public class ModulesView extends View {
                 }
             }
 
-//            if(this instanceof ChatHeaderView)
-//                if (mModules.indexOf(module) == 5)
-//                    Log.d("onMeasureContent", " width = [" + module.getWidth()  + "] contentW = [" +module.getContentWidth() +"]" );
         }
 
 //
@@ -214,32 +218,34 @@ public class ModulesView extends View {
     }
 
 
-    private int getMaxRightBound() {
-        int max = 0;
-        for (Module module : mModules) {
-            if (module == null || module.getRight() == Module.BOUND_UNSPECIFIED || module.getRight() == Module.BOUND_UNKNOWN)
-                continue;
-            max = Math.max(max, module.getRight() + module.getLayoutParams().mMarginRight);
-        }
-        if(getParent() != null)
-            max+= getPaddingRight();
+//
+//    private int getMaxRightBound() {
+//        int max = 0;
+//        for (Module module : mModules) {
+//            if (module == null || module.getRight() == Module.BOUND_UNSPECIFIED || module.getRight() == Module.BOUND_UNKNOWN)
+//                continue;
+//            max = Math.max(max, module.getRight() + module.getLayoutParams().mMarginRight);
+//        }
+//        if(getParent() != null)
+//            max+= getPaddingRight();
+//
+//        return max;
+//    }
+//
+//    private int getMaxBottomBound() {
+//        int max = 0;
+//        for (Module module : mModules) {
+//            if (module == null || module.getBottom() == Module.BOUND_UNSPECIFIED || module.getBottom() == Module.BOUND_UNKNOWN)
+//                continue;
+//            max = Math.max(max, module.getBottom() + module.getLayoutParams().mMarginBottom);
+//        }
+//
+//        if(getParent() != null)
+//            max+= getPaddingBottom();
+//
+//        return max;
+//    }
 
-        return max;
-    }
-
-    private int getMaxBottomBound() {
-        int max = 0;
-        for (Module module : mModules) {
-            if (module == null || module.getBottom() == Module.BOUND_UNSPECIFIED || module.getBottom() == Module.BOUND_UNKNOWN)
-                continue;
-            max = Math.max(max, module.getBottom() + module.getLayoutParams().mMarginBottom);
-        }
-
-        if(getParent() != null)
-            max+= getPaddingBottom();
-
-        return max;
-    }
 
 
     protected void onPostMeasureChildren(int width, int height) {
@@ -319,12 +325,42 @@ public class ModulesView extends View {
         return handle || super.onTouchEvent(event);
     }
 
+    @Override
+    public void cancelTouchEvent() {
+        onTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0, 0, 0));
+    }
 
-//    void invalidateChild(Module child){
-//        if(child != null){
-//            invalidate(child.getRealLeft(), child.getRealTop(), child.getRealRight(), child.getRealBottom());
-//        }
-//    }
+    @Override
+    public int getWidthMeasureMode() {
+        return mWidthMeasureMode;
+    }
+
+    @Override
+    public int getWidthMeasureSize() {
+        return mWidthMeasureSize;
+    }
+
+    @Override
+    public int getHeightMeasureMode() {
+        return mHeightMeasureMode;
+    }
+
+    @Override
+    public int getHeightMeasureSize() {
+        return mHeightMeasureSize;
+    }
+
+    @Override
+    public int getCurrentWidth() {
+        return mCurrentWidth;
+    }
+
+    @Override
+    public int getCurrentHeight() {
+        return mCurrentHeight;
+    }
+
+
 
     /**
      * @param module
@@ -340,11 +376,6 @@ public class ModulesView extends View {
                 && y > module.getTop() && y < module.getBottom();
     }
 
-//
-//    @Override
-//    public boolean isInTouchMode() {
-//        return true;
-//    }
 
     public int sp(float sp) {
         return (int) (getContext().getResources().getDisplayMetrics().scaledDensity * sp);

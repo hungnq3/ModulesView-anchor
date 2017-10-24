@@ -6,6 +6,8 @@ package vn.com.vng.modulesview.sample.adapter;
 
 public class ViewType {
 
+    public static final int TEST = 101;
+
     public static final int SOCIAL_HEADER = 1001;
     public static final int SOCIAL_TEXT_CONTENT = 1002;
     public static final int SOCIAL_FOOTER = 1003;

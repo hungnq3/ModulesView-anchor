@@ -50,7 +50,7 @@ public class SocialContentTextView extends ModulesView {
 
 
     private TextModule buildContentTextModule() {
-        TextModule module = new TextModule();
+        TextModule module = new TextModule(getContext());
         module.setTextSize(sp(14));
         module.setTextColor(0xff222222);
         return module;

@@ -78,17 +78,16 @@ public class ChatHeaderView extends ModulesView {
 
 
     private void init() {
-
         setSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        mHeaderImage = new ImageModule();
+        mHeaderImage = new ImageModule(getContext());
         mHeaderImage.setScaleType(ImageModule.CENTER_CROP);
         mHeaderImage.setRoundCorner(ImageModule.ROUND_CIRCLE);
         mHeaderImage.getLayoutParams()
                 .setDimensions(mImageSize, mImageSize)
                 .setMargin(dp(12),dp(4),dp(8),dp(4));
 
-        mCircularNewCountText = new TextModule();
+        mCircularNewCountText = new TextModule(getContext());
         mCircularNewCountText.setTextSize(mCircularIndexTextSize);
         mCircularNewCountText.setTextColor(mCircularIndexTextColor);
         mCircularNewCountText.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.header_circle_point_background));
@@ -100,7 +99,7 @@ public class ChatHeaderView extends ModulesView {
                 .anchorRightToRight(mHeaderImage)
                 .anchorTopToTop(mHeaderImage);
 
-        mTitleText = new TextModule();
+        mTitleText = new TextModule(getContext());
         mTitleText.setTextColor(mTitleTextColor);
         mTitleText.setTextSize(mTitleTextSize);
         mTitleText.setEllipsize(TextUtils.TruncateAt.END);
@@ -113,7 +112,7 @@ public class ChatHeaderView extends ModulesView {
 
 
 
-        mTimeText = new TextModule();
+        mTimeText = new TextModule(getContext());
         mTimeText.setTextSize(mTimeTextSize);
         mTimeText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
@@ -122,7 +121,7 @@ public class ChatHeaderView extends ModulesView {
                 .anchorRightToParent(true);
 
 
-        mNotificationOff = new ImageModule();
+        mNotificationOff = new ImageModule(getContext());
         mNotificationOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_notifications_off));
         mNotificationOff.getLayoutParams()
                 .setDimensions(dp(18), dp(18))
@@ -130,7 +129,7 @@ public class ChatHeaderView extends ModulesView {
                 .anchorTopToBottom(mTimeText)
                 .setMarginTop(dp(4));
 
-        mMessageText = new TextModule();
+        mMessageText = new TextModule(getContext());
         mMessageText.setTextSize(mMessageTextSize);
         mMessageText.setMaxLines(1);
         mMessageText.setEllipsize(TextUtils.TruncateAt.END);
@@ -141,7 +140,7 @@ public class ChatHeaderView extends ModulesView {
                 .anchorTopToBottom(mTitleText);
 //                .setMarginRight(dp(4));
 
-        mBottomLine = new Module();
+        mBottomLine = new Module(getContext());
         mBottomLine.setBackgroundColor(0xffcccccc);
         mBottomLine.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, 1)
@@ -179,8 +178,4 @@ public class ChatHeaderView extends ModulesView {
         }
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
 }

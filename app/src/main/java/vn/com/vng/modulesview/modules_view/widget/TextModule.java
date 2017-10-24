@@ -1,5 +1,6 @@
 package vn.com.vng.modulesview.modules_view.widget;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.graphics.Typeface;
@@ -39,7 +40,8 @@ public class TextModule extends Module {
 
     private boolean mNeedToRebuildTextLayout;
 
-    public TextModule() {
+    public TextModule(Context context) {
+        super(context);
         init();
     }
 

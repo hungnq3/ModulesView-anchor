@@ -4,7 +4,7 @@ package vn.com.vng.modulesview.modules_view;
  * Created by HungNQ on 20/10/2017.
  */
 
-public class ModuleAnchor extends Anchor {
+class ModuleAnchor extends Anchor {
     private Module mModule;
 
     public ModuleAnchor(Module module, @AnchorType int anchorType) {

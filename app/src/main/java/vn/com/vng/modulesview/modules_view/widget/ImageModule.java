@@ -1,5 +1,6 @@
 package vn.com.vng.modulesview.modules_view.widget;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -40,6 +41,10 @@ public class ImageModule extends Module {
     public static final int CENTER = 2;
     public static final int CENTER_CROP = 3;
     public static final int CENTER_INSIDE = 4;
+
+    public ImageModule(Context context) {
+        super(context);
+    }
 
     @IntDef({FIT_CENTER, FIT_XY, CENTER, CENTER_CROP, CENTER_INSIDE})
     @Retention(RetentionPolicy.SOURCE)
