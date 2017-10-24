@@ -14,7 +14,7 @@ import android.view.View;
  * Created by HungNQ on 08/09/2017.
  */
 
-public class Module {
+public class SaveModule {
     private static final long LONG_CLICK_TIME = 500;
 
     public static final int DIMENSION_MODE_EXACTLY = View.MeasureSpec.EXACTLY;
@@ -42,9 +42,9 @@ public class Module {
     private OnLongClickListener mOnLongClickListener;
     private OnTouchListener mOnTouchListener;
 
-    public Module(Context context) {
+    public SaveModule(Context context) {
         mContext = context;
-        mParams = new LayoutParams(this);
+//        mParams = new LayoutParams(this);
     }
 
 
@@ -488,15 +488,15 @@ public class Module {
 
     //-------------interface region--------------------
     public interface OnClickListener {
-        void onClick(Module module);
+        void onClick(SaveModule module);
     }
 
     public interface OnLongClickListener {
-        void onLongClick(Module module);
+        void onLongClick(SaveModule module);
     }
 
     public interface OnTouchListener {
-        boolean onTouch(Module module, MotionEvent event);
+        boolean onTouch(SaveModule module, MotionEvent event);
     }
 
     public OnTouchListener getOnTouchListener() {

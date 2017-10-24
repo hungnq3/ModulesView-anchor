@@ -3,6 +3,7 @@ package vn.com.vng.modulesview.sample.test_view;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import vn.com.vng.modulesview.modules_view.Fence;
 import vn.com.vng.modulesview.modules_view.GroupModule;
 import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.ModulesView;
@@ -36,7 +37,7 @@ public class TestView extends ModulesView {
 
         mGroup1.getLayoutParams()
                 .anchorTopToParent(true)
-                .setPadding(dp(8))
+                .setPaddingBottom(dp(100))
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         mText1 = new TextModule(getContext());
@@ -84,8 +85,9 @@ public class TestView extends ModulesView {
         mText5.setText("HELLO");
         mText5.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+                .setMarginTop(dp(12))
                 .anchorLeftToRight(mGroup2)
-                .anchorTopToParent(true);
+                .anchorTopToBottom(new Fence(mGroup1, mGroup2));
 
 
         addModule(mGroup1);

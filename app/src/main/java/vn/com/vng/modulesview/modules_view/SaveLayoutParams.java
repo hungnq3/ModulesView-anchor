@@ -11,7 +11,7 @@ import java.lang.annotation.RetentionPolicy;
  * Created by HungNQ on 17/10/2017.
  */
 
-public class LayoutParams {
+public class SaveLayoutParams {
 
     /**
      * Special value for the height or width requested by a Module.
@@ -61,63 +61,63 @@ public class LayoutParams {
     int mVisibility;
 
 
-    public LayoutParams(@NonNull Module module) {
+    public SaveLayoutParams(@NonNull Module module) {
         mModule = module;
     }
 
     //-----------builder---------------------------------------
-    public LayoutParams setX(int x) {
+    public SaveLayoutParams setX(int x) {
         mX = x;
         return this;
     }
 
-    public LayoutParams setY(int y) {
+    public SaveLayoutParams setY(int y) {
         mY = y;
         return this;
     }
 
-    public LayoutParams setWidthDimension(int widthDimension) {
+    public SaveLayoutParams setWidthDimension(int widthDimension) {
         mWidthDimension = widthDimension;
         return this;
     }
 
-    public LayoutParams setHeightDimension(int heightDimension) {
+    public SaveLayoutParams setHeightDimension(int heightDimension) {
         mHeightDimension = heightDimension;
         return this;
     }
 
-    public LayoutParams setDimensions(int widthDimension, int heightDimension) {
+    public SaveLayoutParams setDimensions(int widthDimension, int heightDimension) {
         mWidthDimension = widthDimension;
         mHeightDimension = heightDimension;
         return this;
     }
 
-    public LayoutParams setPaddingLeft(int paddingLeft) {
+    public SaveLayoutParams setPaddingLeft(int paddingLeft) {
         mPaddingLeft = paddingLeft;
         return this;
 
     }
 
-    public LayoutParams setPaddingTop(int paddingTop) {
+    public SaveLayoutParams setPaddingTop(int paddingTop) {
         if (mPaddingTop != paddingTop) {
             mPaddingTop = paddingTop;
         }
         return this;
     }
 
-    public LayoutParams setPaddingRight(int paddingRight) {
+    public SaveLayoutParams setPaddingRight(int paddingRight) {
         mPaddingRight = paddingRight;
         return this;
 
     }
 
-    public LayoutParams setPaddingBottom(int paddingBottom) {
+    public SaveLayoutParams setPaddingBottom(int paddingBottom) {
         mPaddingBottom = paddingBottom;
         return this;
 
     }
 
-    public LayoutParams setPadding(int left, int top, int right, int bottom) {
+    public SaveLayoutParams setPadding(int left, int top, int right, int bottom) {
         mPaddingLeft = left;
         mPaddingTop = top;
         mPaddingRight = right;
@@ -125,38 +125,38 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams setPadding(int padding) {
+    public SaveLayoutParams setPadding(int padding) {
         mPaddingLeft = mPaddingTop = mPaddingRight = mPaddingBottom = padding;
         return this;
     }
 
-    public LayoutParams setMarginLeft(int marginLeft) {
+    public SaveLayoutParams setMarginLeft(int marginLeft) {
         mMarginLeft = marginLeft;
         return this;
     }
 
-    public LayoutParams setMarginTop(int marginTop) {
+    public SaveLayoutParams setMarginTop(int marginTop) {
         mMarginTop = marginTop;
         return this;
     }
 
-    public LayoutParams setMarginRight(int marginRight) {
+    public SaveLayoutParams setMarginRight(int marginRight) {
         mMarginRight = marginRight;
         return this;
 
     }
 
-    public LayoutParams setMarginBottom(int marginBottom) {
+    public SaveLayoutParams setMarginBottom(int marginBottom) {
         mMarginBottom = marginBottom;
         return this;
     }
 
-    public LayoutParams setMargin(int margin) {
+    public SaveLayoutParams setMargin(int margin) {
         mMarginLeft = mMarginTop = mMarginRight = mMarginBottom = margin;
         return this;
     }
 
-    public LayoutParams setMargin(int left, int top, int right, int bottom) {
+    public SaveLayoutParams setMargin(int left, int top, int right, int bottom) {
         mMarginLeft = left;
         mMarginRight = right;
         mMarginTop = top;
@@ -165,12 +165,12 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams setGravity(int gravity) {
+    public SaveLayoutParams setGravity(int gravity) {
         mGravity = gravity;
         return this;
     }
 
-    public LayoutParams setVisibility(@Visibility int visibility) {
+    public SaveLayoutParams setVisibility(@Visibility int visibility) {
         mVisibility = visibility;
         return this;
     }
@@ -221,7 +221,7 @@ public class LayoutParams {
     }
 
     //------------anchor region------------------------------------
-    public LayoutParams anchorLeftToLeft(Module module) {
+    public SaveLayoutParams anchorLeftToLeft(Module module) {
         if (module == null) {
             mAnchorLeft = null;
             return this;
@@ -237,7 +237,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorLeftToRight(Module module) {
+    public SaveLayoutParams anchorLeftToRight(Module module) {
         if (module == null) {
             mAnchorLeft = null;
             return this;
@@ -251,42 +251,9 @@ public class LayoutParams {
         }
 
         return this;
-
     }
 
-    public LayoutParams anchorLeftToLeft(Fence fence) {
-        if (fence == null) {
-            mAnchorLeft = null;
-            return this;
-        }
-
-        if (mAnchorLeft instanceof FenceAnchor) {
-            ((FenceAnchor) mAnchorLeft).setFence(fence);
-            mAnchorLeft.setAnchorType(Anchor.ANCHOR_LEFT);
-        } else {
-            mAnchorLeft = new FenceAnchor(fence, Anchor.ANCHOR_LEFT);
-        }
-
-        return this;
-    }
-
-    public LayoutParams anchorLeftToRight(Fence fence) {
-        if (fence == null) {
-            mAnchorLeft = null;
-            return this;
-        }
-
-        if (mAnchorLeft instanceof FenceAnchor) {
-            ((FenceAnchor) mAnchorLeft).setFence(fence);
-            mAnchorLeft.setAnchorType(Anchor.ANCHOR_RIGHT);
-        } else {
-            mAnchorLeft = new FenceAnchor(fence, Anchor.ANCHOR_RIGHT);
-        }
-
-        return this;
-    }
-
-    public LayoutParams anchorLeftToParent(Boolean anchorParent) {
+    public SaveLayoutParams anchorLeftToParent(Boolean anchorParent) {
         if (anchorParent) {
             if (mModule == null) {
                 mAnchorLeft = null;
@@ -303,7 +270,7 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams anchorTopToTop(Module module) {
+    public SaveLayoutParams anchorTopToTop(Module module) {
         if (module == null) {
             mAnchorTop = null;
             return this;
@@ -318,7 +285,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorTopToBottom(Module module) {
+    public SaveLayoutParams anchorTopToBottom(Module module) {
         if (module == null) {
             mAnchorTop = null;
             return this;
@@ -334,39 +301,8 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorTopToTop(Fence fence) {
-        if (fence == null) {
-            mAnchorTop = null;
-            return this;
-        }
 
-        if (mAnchorTop instanceof FenceAnchor) {
-            ((FenceAnchor) mAnchorTop).setFence(fence);
-            mAnchorTop.setAnchorType(Anchor.ANCHOR_TOP);
-        } else {
-            mAnchorTop = new FenceAnchor(fence, Anchor.ANCHOR_TOP);
-        }
-        return this;
-    }
-
-    public LayoutParams anchorTopToBottom(Fence fence) {
-        if (fence == null) {
-            mAnchorTop = null;
-            return this;
-        }
-
-        if (mAnchorTop instanceof FenceAnchor) {
-            ((FenceAnchor) mAnchorTop).setFence(fence);
-            mAnchorTop.setAnchorType(Anchor.ANCHOR_BOTTOM);
-        } else {
-            mAnchorTop = new FenceAnchor(fence, Anchor.ANCHOR_BOTTOM);
-        }
-
-        return this;
-    }
-
-
-    public LayoutParams anchorTopToParent(Boolean anchorParent) {
+    public SaveLayoutParams anchorTopToParent(Boolean anchorParent) {
         if (anchorParent) {
             if (mModule == null) {
                 mAnchorTop = null;
@@ -384,7 +320,7 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams anchorRightToRight(Module module) {
+    public SaveLayoutParams anchorRightToRight(Module module) {
         if (module == null) {
             mAnchorRight = null;
             return this;
@@ -400,7 +336,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorRightToLeft(Module module) {
+    public SaveLayoutParams anchorRightToLeft(Module module) {
         if (module == null) {
             mAnchorRight = null;
             return this;
@@ -416,40 +352,8 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorRightToRight(Fence fence) {
-        if (fence == null) {
-            mAnchorRight = null;
-            return this;
-        }
 
-        if (mAnchorRight instanceof FenceAnchor) {
-            ((FenceAnchor) mAnchorRight).setFence(fence);
-            mAnchorRight.setAnchorType(Anchor.ANCHOR_RIGHT);
-        } else {
-            mAnchorRight = new FenceAnchor(fence, Anchor.ANCHOR_RIGHT);
-        }
-
-        return this;
-    }
-
-    public LayoutParams anchorRightToLeft(Fence fence) {
-        if (fence == null) {
-            mAnchorRight = null;
-            return this;
-        }
-
-        if (mAnchorRight instanceof FenceAnchor) {
-            ((FenceAnchor) mAnchorRight).setFence(fence);
-            mAnchorRight.setAnchorType(Anchor.ANCHOR_LEFT);
-        } else {
-            mAnchorRight = new FenceAnchor(fence, Anchor.ANCHOR_LEFT);
-        }
-
-        return this;
-    }
-
-
-    public LayoutParams anchorRightToParent(Boolean anchorParent) {
+    public SaveLayoutParams anchorRightToParent(Boolean anchorParent) {
         if (anchorParent) {
             if (mModule == null) {
                 mAnchorRight = null;
@@ -467,7 +371,7 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams anchorBottomToBottom(Module module) {
+    public SaveLayoutParams anchorBottomToBottom(Module module) {
         if (module == null) {
             mAnchorBottom = null;
             return this;
@@ -485,7 +389,7 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams anchorBottomToTop(Module module) {
+    public SaveLayoutParams anchorBottomToTop(Module module) {
         if (module == null) {
             mAnchorBottom = null;
             return this;
@@ -501,41 +405,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorBottomToBottom(Fence fence) {
-        if (fence == null) {
-            mAnchorBottom = null;
-            return this;
-        }
-
-
-        if (mAnchorBottom instanceof FenceAnchor) {
-            ((FenceAnchor) mAnchorBottom).setFence(fence);
-            mAnchorBottom.setAnchorType(Anchor.ANCHOR_BOTTOM);
-        } else {
-            mAnchorBottom = new FenceAnchor(fence, Anchor.ANCHOR_BOTTOM);
-        }
-
-        return this;
-    }
-
-
-    public LayoutParams anchorBottomToTop(Fence fence) {
-        if (fence == null) {
-            mAnchorBottom = null;
-            return this;
-        }
-
-        if (mAnchorBottom instanceof FenceAnchor) {
-            ((FenceAnchor) mAnchorBottom).setFence(fence);
-            mAnchorBottom.setAnchorType(Anchor.ANCHOR_TOP);
-        } else {
-            mAnchorBottom = new FenceAnchor(fence, Anchor.ANCHOR_TOP);
-        }
-
-        return this;
-    }
-
-    public LayoutParams anchorBottomToParent(Boolean anchorParent) {
+    public SaveLayoutParams anchorBottomToParent(Boolean anchorParent) {
         if (anchorParent) {
             if (mModule == null) {
                 mAnchorBottom = null;
