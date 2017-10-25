@@ -12,7 +12,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.HalfFloat;
 import android.support.annotation.IntDef;
 
 import com.squareup.picasso.Picasso;
@@ -291,8 +290,8 @@ public class ImageModule extends Module {
         canvas.save();
 
 //        translate if needed
-        int translateLeft = getLeft() + getLayoutParams().getPaddingLeft() + mDrawTranslateX;
-        int translateTop = getTop() + getLayoutParams().getPaddingTop() + mDrawTranslateY;
+        int translateLeft = getCoordinateX() + getLayoutParams().getPaddingLeft() + dX + mDrawTranslateX;
+        int translateTop = getCoordinateY() + getLayoutParams().getPaddingTop() + dY + mDrawTranslateY;
         canvas.translate(translateLeft, translateTop);
 
         if (!mClipPath.isEmpty())

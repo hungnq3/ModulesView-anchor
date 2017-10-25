@@ -43,13 +43,13 @@ public class GroupModule extends Module implements Parent {
     }
 
     @Override
-    public int getCoordinateX() {
-        return getLeft();
+    public int getChildCoordinateX() {
+        return getCoordinateX() + dX + getPaddingLeft();
     }
 
     @Override
-    public int getCoordinateY() {
-        return getTop();
+    public int getChildCoordinateY() {
+        return getCoordinateY() + dY + getPaddingTop();
     }
 
     @Override
@@ -174,8 +174,8 @@ public class GroupModule extends Module implements Parent {
         mCurrentWidth = mWidthMeasureMode == View.MeasureSpec.EXACTLY ? mWidthMeasureSize : 0;
         mCurrentHeight = mHeightMeasureMode == View.MeasureSpec.EXACTLY ? mHeightMeasureSize : 0;
 
-        int boundLeft = 0;
-        int boundTop = 0;
+        int boundLeft = Integer.MAX_VALUE;
+        int boundTop = Integer.MAX_VALUE;
         int boundRight = 0;
         int boundBottom = 0;
 
@@ -244,13 +244,13 @@ public class GroupModule extends Module implements Parent {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int countToRestore = canvas.save();
-        canvas.translate(getLeft(), getTop());
+//        int countToRestore = canvas.save();
+//        canvas.translate(getLeft(), getTop());
         for (Module module : mModules) {
             if (module.getLayoutParams().getVisibility() == LayoutParams.VISIBLE)
                 module.draw(canvas);
         }
-        canvas.restoreToCount(countToRestore);
+//        canvas.restoreToCount(countToRestore);
     }
 
     @Override
@@ -261,9 +261,7 @@ public class GroupModule extends Module implements Parent {
             case MotionEvent.ACTION_DOWN: {
                 for (Module module : mModules) {
                     if (checkEventRegion(module, event)) {
-                        MotionEvent e = MotionEvent.obtain(event);
-                        e.offsetLocation(-dX, -dY);
-                        handle = module.onTouchEvent(e);
+                        handle = module.onTouchEvent(event);
                         if (handle) {
                             mTouchFocusModule = module;
                             break;
@@ -276,9 +274,7 @@ public class GroupModule extends Module implements Parent {
             case MotionEvent.ACTION_UP: {
                 if (mTouchFocusModule != null) {
                     if (checkEventRegion(mTouchFocusModule, event)) {
-                        MotionEvent e = MotionEvent.obtain(event);
-                        e.offsetLocation(-dX, -dY);
-                        handle = mTouchFocusModule.onTouchEvent(e);
+                        handle = mTouchFocusModule.onTouchEvent(event);
                     }
                     mTouchFocusModule = null;
                 }
@@ -287,12 +283,11 @@ public class GroupModule extends Module implements Parent {
 
             case MotionEvent.ACTION_MOVE: {
                 if (mTouchFocusModule != null) {
-                    MotionEvent e = MotionEvent.obtain(event);
-                    e.offsetLocation(-dX, -dY);
                     if (checkEventRegion(mTouchFocusModule, event)) {
-                        handle = mTouchFocusModule.onTouchEvent(e);
+                        handle = mTouchFocusModule.onTouchEvent(event);
                     }
                     else {
+                        MotionEvent e = MotionEvent.obtain(event);
                         e.setAction(MotionEvent.ACTION_CANCEL);
                         handle = mTouchFocusModule.onTouchEvent(e);
                         mTouchFocusModule = null;
@@ -303,7 +298,7 @@ public class GroupModule extends Module implements Parent {
             case MotionEvent.ACTION_CANCEL: {
                 if (mTouchFocusModule != null) {
                     MotionEvent e = MotionEvent.obtain(event);
-                    e.offsetLocation(-dX, -dY);
+                    e.setAction(MotionEvent.ACTION_CANCEL);
                     handle = mTouchFocusModule.onTouchEvent(e);
                     mTouchFocusModule = null;
                 }
@@ -322,8 +317,8 @@ public class GroupModule extends Module implements Parent {
 
     private boolean checkEventRegion(Module module, MotionEvent event) {
 
-        int x = (int) (event.getX() - getLeft() - dX - getLayoutParams().getPaddingLeft());
-        int y = (int) (event.getY() - getTop() - dY - getLayoutParams().getPaddingTop());
+        int x = (int) (event.getX() - getChildCoordinateX());
+        int y = (int) (event.getY() - getChildCoordinateY());
         Log.d("checkEventRegion: ", "x: " + x + "y: " + y);
         return x < module.getRight() && x > module.getLeft()
                 && y > module.getTop() && y < module.getBottom();

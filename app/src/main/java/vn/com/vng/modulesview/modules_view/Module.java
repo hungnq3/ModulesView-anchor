@@ -36,6 +36,7 @@ public class Module {
     private int mContentWidth, mContentHeight;
     protected int mContentLeft, mContentTop, mContentRight, mContentBottom;
     protected int dX, dY;
+    private int mCoordinateX, mCoordinateY;
 
     private Drawable mBackgroundDrawable;
 
@@ -127,6 +128,21 @@ public class Module {
     }
 
 
+
+    //-----------------listener-------------------------------------
+    public void setOnClickListener(OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
+    }
+
+    public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
+        mOnLongClickListener = onLongClickListener;
+    }
+
+
+    //--------------config region-------------
+
+
+
     protected void setBounds(int left, int top, int right, int bottom) {
         mLeft = left;
         mTop = top;
@@ -143,18 +159,6 @@ public class Module {
             mHeight = (mTop != BOUND_UNSPECIFIED && mBottom != BOUND_UNSPECIFIED) ? mBottom - mTop : DIMENSION_UNSPECIFIED;
     }
 
-
-    //-----------------listener-------------------------------------
-    public void setOnClickListener(OnClickListener onClickListener) {
-        mOnClickListener = onClickListener;
-    }
-
-    public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
-        mOnLongClickListener = onLongClickListener;
-    }
-
-
-    //--------------config region-------------
 
     final void measure(int parentWidth, int parentWidthMode, int parentHeight, int parentHeightMode) {
         //clear layout state
@@ -324,16 +328,33 @@ public class Module {
     }
 
 
+    public int getCoordinateX() {
+        return mCoordinateX;
+    }
+
+
+    public int getCoordinateY() {
+        return mCoordinateY;
+    }
+
+
     final void layout(int left, int top, int right, int bottom) {
+        int parentCooX = getParent() != null ? getParent().getChildCoordinateX() : 0;
+        int parentCooY = getParent() != null ? getParent().getChildCoordinateY() : 0;
+        mCoordinateX = parentCooX + left;
+        mCoordinateY = parentCooY + top;
+
         int oldWidth = mWidth;
         int oldHeight = mHeight;
         setBounds(left, top, right, bottom);
         boolean changed = oldWidth != mWidth && oldHeight != mHeight;
+
         onLayout(changed, left, top, right, bottom);
 
         configGravityPosition();
         configModule();
     }
+
 
     void onLayout(boolean layoutChanged, int left, int top, int right, int bottom) {
 
@@ -374,20 +395,24 @@ public class Module {
 
     //this method was called in ModuleView parent to let module draw on the canvas of parent view.
     final void draw(Canvas canvas) {
-        if (getWidth() < 0 || getHeight() <= 0)
+        if (getWidth() < 0 || getHeight() <= 0 || mContentWidth <= 0 || mContentHeight <= 0)
             return;
         drawBackground(canvas);
-        int saveToRestore = canvas.save();
-        canvas.translate(dX + getLayoutParams().getPaddingLeft(), dY + getLayoutParams().getPaddingTop());
+//        int saveToRestore = canvas.save();
+//        canvas.translate(dX + getLayoutParams().getPaddingLeft(), dY + getLayoutParams().getPaddingTop());
         onDraw(canvas);
-        canvas.restoreToCount(saveToRestore);
+//        canvas.restoreToCount(saveToRestore);
     }
 
 
     void drawBackground(Canvas canvas) {
         if (canvas != null && mBackgroundDrawable != null) {
-            if (mLeft >= 0 && mTop >= 0 && mRight > 0 && mBottom > 0) {
-                mBackgroundDrawable.setBounds(mLeft, mTop, mRight, mBottom);
+            if (mWidth > 0 && mHeight > 0) {
+                int left = getCoordinateX();
+                int top = getCoordinateY();
+                int right = left + mWidth;
+                int bottom = top + mHeight;
+                mBackgroundDrawable.setBounds(left, top, right, bottom);
                 mBackgroundDrawable.draw(canvas);
             }
         }

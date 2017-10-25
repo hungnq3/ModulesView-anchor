@@ -39,7 +39,7 @@ public class TestView extends ModulesView {
 
     private void init() {
         setSize(ViewGroup.LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        setGravity(GravityCompat.CENTER);
+        setGravity(GravityCompat.RIGHT | GravityCompat.BOTTOM);
         setPadding(dp(8),dp(16),dp(16),dp(16));
 
         mGroup1 = new GroupModule(getContext());
@@ -51,7 +51,7 @@ public class TestView extends ModulesView {
             }
         });
         mGroup1.getLayoutParams()
-                .anchorTopToParent(true)
+                .anchorRightToParent(true)
                 .setPadding(dp(8))
                 .setGravity(GravityCompat.RIGHT | GravityCompat.BOTTOM)
                 .setDimensions(dp(100), dp(100));
@@ -60,7 +60,6 @@ public class TestView extends ModulesView {
         mText1.setText("TEXT 1");
         mText1.setOnClickListener(mOnClickListener);
         mText1.getLayoutParams()
-                .setGravity(GravityCompat.TOP)
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         mText2 = new TextModule(getContext());
@@ -82,7 +81,7 @@ public class TestView extends ModulesView {
                 .setDimensions(LayoutParams.WRAP_CONTENT, dp(100))
                 .setMargin(dp(4))
                 .setGravity(GravityCompat.CENTER)
-                .anchorLeftToRight(mGroup1);
+                .anchorRightToLeft(mGroup1);
 
         mText3 = new TextModule(getContext());
         mText3.setText("TEXT 3");
@@ -108,7 +107,9 @@ public class TestView extends ModulesView {
         mText5.setOnClickListener(mOnClickListener);
         mText5.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                .setMarginTop(dp(1))
+                .setMarginTop(dp(8))
+                .setPadding(dp(4))
+                .anchorRightToLeft(mGroup2)
                 .anchorTopToBottom(new Fence(mGroup1, mGroup2));
 
 

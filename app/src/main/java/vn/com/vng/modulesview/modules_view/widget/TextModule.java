@@ -8,7 +8,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.facebook.fbui.textlayoutbuilder.TextLayoutBuilder;
 
@@ -221,8 +220,8 @@ public class TextModule extends Module {
         canvas.save();
 
         //clip drawing region
-        int left = getLeft() + getLayoutParams().getPaddingLeft();
-        int top = getTop() + getLayoutParams().getPaddingTop();
+        int left = getCoordinateX() + getLayoutParams().getPaddingLeft() + dX;
+        int top = getCoordinateY() + getLayoutParams().getPaddingTop() + dY;
         canvas.translate(left, top);
 
         canvas.clipRect(0, 0, getWidth() - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight(), getHeight() - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom());

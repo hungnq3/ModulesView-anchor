@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.Px;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -163,8 +162,8 @@ public class ModulesView extends View implements Parent {
         mContentWidth = 0;
         mContentHeight = 0;
 
-        int boundLeft = 0;
-        int boundTop = 0;
+        int boundLeft = Integer.MAX_VALUE;
+        int boundTop = Integer.MAX_VALUE;
         int boundRight = 0;
         int boundBottom = 0;
         for (Module module : mModules) {
@@ -276,13 +275,15 @@ public class ModulesView extends View implements Parent {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int countToRestore = canvas.save();
-        canvas.translate(dX + getPaddingLeft(), dY + getPaddingTop());
+        if(getWidth()<=0 || getHeight() <=0  || mContentWidth <= 0 || mContentHeight <= 0)
+            return;
+//        int countToRestore = canvas.save();
+//        canvas.translate(dX + getPaddingLeft(), dY + getPaddingTop());
         for (Module module : mModules) {
             if (module.getLayoutParams().getVisibility() == LayoutParams.VISIBLE)
                 module.draw(canvas);
         }
-        canvas.restoreToCount(countToRestore);
+//        canvas.restoreToCount(countToRestore);
     }
 
     @Override
@@ -294,9 +295,7 @@ public class ModulesView extends View implements Parent {
                 for (Module module : mModules) {
 
                     if (checkEventRegion(module, event)) {
-                        MotionEvent e = MotionEvent.obtain(event);
-                        e.offsetLocation(-dX, -dY);
-                        handle = module.onTouchEvent(e);
+                        handle = module.onTouchEvent(event);
                         if (handle) {
                             mTouchFocusModule = module;
                             break;
@@ -309,9 +308,7 @@ public class ModulesView extends View implements Parent {
             case MotionEvent.ACTION_UP: {
                 if (mTouchFocusModule != null) {
                     if (checkEventRegion(mTouchFocusModule, event)) {
-                        MotionEvent e = MotionEvent.obtain(event);
-                        e.offsetLocation(-dX, -dY);
-                        handle = mTouchFocusModule.onTouchEvent(e);
+                        handle = mTouchFocusModule.onTouchEvent(event);
                     }
                     mTouchFocusModule = null;
                 }
@@ -320,12 +317,11 @@ public class ModulesView extends View implements Parent {
 
             case MotionEvent.ACTION_MOVE: {
                 if (mTouchFocusModule != null) {
-                    MotionEvent e = MotionEvent.obtain(event);
-                    e.offsetLocation(-dX, -dY);
                     if (checkEventRegion(mTouchFocusModule, event)) {
-                        handle = mTouchFocusModule.onTouchEvent(e);
+                        handle = mTouchFocusModule.onTouchEvent(event);
                     }
                     else {
+                        MotionEvent e = MotionEvent.obtain(event);
                         e.setAction(MotionEvent.ACTION_CANCEL);
                         handle = mTouchFocusModule.onTouchEvent(e);
                         mTouchFocusModule = null;
@@ -336,7 +332,7 @@ public class ModulesView extends View implements Parent {
             case MotionEvent.ACTION_CANCEL: {
                 if (mTouchFocusModule != null) {
                     MotionEvent e = MotionEvent.obtain(event);
-                    e.offsetLocation(-dX, -dY);
+                    e.setAction(MotionEvent.ACTION_CANCEL);
                     handle = mTouchFocusModule.onTouchEvent(e);
                     mTouchFocusModule = null;
                 }
@@ -383,13 +379,13 @@ public class ModulesView extends View implements Parent {
 
 
     @Override
-    public int getCoordinateX() {
-        return 0;
+    public int getChildCoordinateX() {
+        return (int)getX() + getPaddingLeft() + dX;
     }
 
     @Override
-    public int getCoordinateY() {
-        return 0;
+    public int getChildCoordinateY() {
+        return (int)getY() + getPaddingTop() + dY;
     }
 
     /**
@@ -399,8 +395,8 @@ public class ModulesView extends View implements Parent {
      */
 
     private boolean checkEventRegion(Module module, MotionEvent event) {
-        int x = (int) (event.getX() - getX() - dX - getPaddingLeft());
-        int y = (int) (event.getY() - getX() - dY) - getPaddingBottom();
+        int x = (int) (event.getX() - getChildCoordinateX());
+        int y = (int) (event.getY() - getChildCoordinateY());
 
         return x < module.getRight() && x > module.getLeft()
                 && y > module.getTop() && y < module.getBottom();
