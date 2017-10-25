@@ -302,6 +302,21 @@ public class LayoutParams {
         return this;
     }
 
+    public LayoutParams anchorLeftToGuideLine(Guideline guideline) {
+        if (guideline == null) {
+            mAnchorLeft = null;
+            return this;
+        }
+
+        if (mAnchorLeft instanceof GuideLineAnchor) {
+            ((GuideLineAnchor) mAnchorLeft).setGuideline(guideline);
+            mAnchorLeft.setAnchorType(Anchor.ANCHOR_LEFT);
+        } else {
+            mAnchorLeft = new GuideLineAnchor(guideline, Anchor.ANCHOR_LEFT);
+        }
+        return this;
+    }
+
 
     public LayoutParams anchorTopToTop(Module module) {
         if (module == null) {
@@ -383,6 +398,20 @@ public class LayoutParams {
         return this;
     }
 
+    public LayoutParams anchorTopToGuideLine(Guideline guideline) {
+        if (guideline == null) {
+            mAnchorTop = null;
+            return this;
+        }
+
+        if (mAnchorTop instanceof GuideLineAnchor) {
+            ((GuideLineAnchor) mAnchorTop).setGuideline(guideline);
+            mAnchorTop.setAnchorType(Anchor.ANCHOR_TOP);
+        } else {
+            mAnchorTop = new GuideLineAnchor(guideline, Anchor.ANCHOR_TOP);
+        }
+        return this;
+    }
 
     public LayoutParams anchorRightToRight(Module module) {
         if (module == null) {
@@ -466,6 +495,20 @@ public class LayoutParams {
         return this;
     }
 
+    public LayoutParams anchorRightToGuideLine(Guideline guideline) {
+        if (guideline == null) {
+            mAnchorRight = null;
+            return this;
+        }
+
+        if (mAnchorRight instanceof GuideLineAnchor) {
+            ((GuideLineAnchor) mAnchorRight).setGuideline(guideline);
+            mAnchorRight.setAnchorType(Anchor.ANCHOR_RIGHT);
+        } else {
+            mAnchorRight = new GuideLineAnchor(guideline, Anchor.ANCHOR_RIGHT);
+        }
+        return this;
+    }
 
     public LayoutParams anchorBottomToBottom(Module module) {
         if (module == null) {
@@ -552,6 +595,32 @@ public class LayoutParams {
         }
         return this;
     }
+
+    public LayoutParams anchorBottomToGuideLine(GuideLineAnchor anchor) {
+        if (mModule == null) {
+            mAnchorBottom = null;
+            return this;
+        }
+        mAnchorBottom = anchor;
+        return this;
+    }
+
+
+    public LayoutParams anchorBottomToGuideLine(Guideline guideline) {
+        if (guideline == null) {
+            mAnchorBottom = null;
+            return this;
+        }
+
+        if (mAnchorBottom instanceof GuideLineAnchor) {
+            ((GuideLineAnchor) mAnchorBottom).setGuideline(guideline);
+            mAnchorBottom.setAnchorType(Anchor.ANCHOR_BOTTOM);
+        } else {
+            mAnchorBottom = new GuideLineAnchor(guideline, Anchor.ANCHOR_BOTTOM);
+        }
+        return this;
+    }
+
 
     //------------------------------------------------
 

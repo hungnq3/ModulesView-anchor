@@ -7,6 +7,7 @@ import android.widget.Toast;
 import vn.com.vng.modulesview.modules_view.Fence;
 import vn.com.vng.modulesview.modules_view.GravityCompat;
 import vn.com.vng.modulesview.modules_view.GroupModule;
+import vn.com.vng.modulesview.modules_view.Guideline;
 import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.Module;
 import vn.com.vng.modulesview.modules_view.ModulesView;
@@ -42,6 +43,7 @@ public class TestView extends ModulesView {
         setGravity(GravityCompat.RIGHT | GravityCompat.BOTTOM);
         setPadding(dp(8),dp(16),dp(16),dp(16));
 
+
         mGroup1 = new GroupModule(getContext());
         mGroup1.setBackgroundColor(0xffbbccdd);
         mGroup1.setOnClickListener(new Module.OnClickListener() {
@@ -52,6 +54,7 @@ public class TestView extends ModulesView {
         });
         mGroup1.getLayoutParams()
                 .anchorRightToParent(true)
+                .anchorLeftToGuideLine(new Guideline(mGroup1).setXBias(2/3f))
                 .setPadding(dp(8))
                 .setGravity(GravityCompat.RIGHT | GravityCompat.BOTTOM)
                 .setDimensions(dp(100), dp(100));
@@ -81,6 +84,7 @@ public class TestView extends ModulesView {
                 .setDimensions(LayoutParams.WRAP_CONTENT, dp(100))
                 .setMargin(dp(4))
                 .setGravity(GravityCompat.CENTER)
+                .anchorLeftToGuideLine(new Guideline(mGroup2).setXBias(1/3f))
                 .anchorRightToLeft(mGroup1);
 
         mText3 = new TextModule(getContext());
@@ -109,7 +113,8 @@ public class TestView extends ModulesView {
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setMarginTop(dp(8))
                 .setPadding(dp(4))
-                .anchorRightToLeft(mGroup2)
+                .anchorLeftToParent(true)
+                .anchorRightToGuideLine(new Guideline(mText5).setXBias(1/3f))
                 .anchorTopToBottom(new Fence(mGroup1, mGroup2));
 
 

@@ -319,7 +319,6 @@ public class GroupModule extends Module implements Parent {
 
         int x = (int) (event.getX() - getChildCoordinateX());
         int y = (int) (event.getY() - getChildCoordinateY());
-        Log.d("checkEventRegion: ", "x: " + x + "y: " + y);
         return x < module.getRight() && x > module.getLeft()
                 && y > module.getTop() && y < module.getBottom();
     }
