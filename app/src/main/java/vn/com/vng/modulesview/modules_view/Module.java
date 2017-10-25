@@ -395,7 +395,7 @@ public class Module {
 
     //this method was called in ModuleView parent to let module draw on the canvas of parent view.
     final void draw(Canvas canvas) {
-        if (getWidth() < 0 || getHeight() <= 0 || mContentWidth <= 0 || mContentHeight <= 0)
+        if (getWidth() <= 0 || getHeight() <= 0)
             return;
         drawBackground(canvas);
 //        int saveToRestore = canvas.save();

@@ -128,16 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
         items.add(new TestViewItem());
 
-
-
-
-
-
-
-
-
-
-
         items.add(mockChatHeaderModel(getRandomImg(), getRandomName(), getRandomMsg(), getRandomChatTime(), 0, true));
         items.add(mockChatHeaderModel(getRandomImg(), getRandomName(), getRandomMsg(), getRandomChatTime(), 1, false));
         items.add(mockChatHeaderModel(getRandomImg(), getRandomName(), getRandomMsg(), getRandomChatTime(), 2, false));

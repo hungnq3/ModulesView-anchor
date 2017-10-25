@@ -380,12 +380,12 @@ public class ModulesView extends View implements Parent {
 
     @Override
     public int getChildCoordinateX() {
-        return (int)getX() + getPaddingLeft() + dX;
+        return  getPaddingLeft() + dX;
     }
 
     @Override
     public int getChildCoordinateY() {
-        return (int)getY() + getPaddingTop() + dY;
+        return getPaddingTop() + dY;
     }
 
     /**

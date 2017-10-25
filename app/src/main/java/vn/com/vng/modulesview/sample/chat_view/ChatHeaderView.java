@@ -79,7 +79,6 @@ public class ChatHeaderView extends ModulesView {
 
     private void init() {
         setSize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
         mHeaderImage = new ImageModule(getContext());
         mHeaderImage.setScaleType(ImageModule.CENTER_CROP);
         mHeaderImage.setRoundCorner(ImageModule.ROUND_CIRCLE);
