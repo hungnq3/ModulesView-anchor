@@ -159,9 +159,10 @@ public class TextModule extends Module {
     @Override
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
 //        super.onMeasureContent(width, widthMode, height, heightMode);
-        int maxWidth = width < 0 ? Integer.MAX_VALUE : width;
-        mTextLayout = buildTextLayout(maxWidth);
-        int textWidth = mTextLayout.getWidth();
+        int maxWidth = width <= 0 ? Integer.MAX_VALUE : width;
+        int textWidth = widthMode == Module.DIMENSION_MODE_EXACTLY ? width : 0;
+        mTextLayout = buildTextLayout(textWidth, maxWidth);
+        textWidth = mTextLayout.getWidth();
         int textHeight = mTextLayout.getHeight();
         setContentDimensions(textWidth, textHeight);
     }
@@ -172,8 +173,11 @@ public class TextModule extends Module {
      *
      * @return {@link Layout}
      */
-    private Layout buildTextLayout(int maxWidth) {
-        mTextLayoutBuilder.setWidth(0, TextLayoutBuilder.MEASURE_MODE_UNSPECIFIED);
+    private Layout buildTextLayout(int with, int maxWidth) {
+        if (with > 0)
+            mTextLayoutBuilder.setWidth(with);
+        else
+            mTextLayoutBuilder.setWidth(0, TextLayoutBuilder.MEASURE_MODE_UNSPECIFIED);
         mTextLayoutBuilder.setMaxWidth(maxWidth);
         return buildTextLayout();
     }
@@ -209,16 +213,19 @@ public class TextModule extends Module {
     }
 
     @Override
-    protected void onDraw(Canvas canvas, int contentLeft, int contentTop, int contentRight, int contentBottom) {
-        super.onDraw(canvas, contentLeft, contentTop, contentRight, contentBottom);
-        if (getContentHeight() <= 0 || getContentWidth() <= 0)
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (getWidth() <= 0 || getHeight() <= 0)
             return;
 
         canvas.save();
 
         //clip drawing region
-        canvas.clipRect(contentLeft, contentTop, contentRight, contentBottom);
-        canvas.translate(contentLeft, contentTop);
+        int left = getLeft() + getLayoutParams().getPaddingLeft();
+        int top = getTop() + getLayoutParams().getPaddingTop();
+        canvas.translate(left, top);
+
+        canvas.clipRect(0, 0, getWidth() - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight(), getHeight() - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom());
 
         if (mTextLayout != null)
             mTextLayout.draw(canvas);

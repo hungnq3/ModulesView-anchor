@@ -4,6 +4,7 @@ package vn.com.vng.modulesview.modules_view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -39,6 +40,16 @@ public class GroupModule extends Module implements Parent {
                 module.setParent(this);
             }
         }
+    }
+
+    @Override
+    public int getCoordinateX() {
+        return getLeft();
+    }
+
+    @Override
+    public int getCoordinateY() {
+        return getTop();
     }
 
     @Override
@@ -163,6 +174,10 @@ public class GroupModule extends Module implements Parent {
         mCurrentWidth = mWidthMeasureMode == View.MeasureSpec.EXACTLY ? mWidthMeasureSize : 0;
         mCurrentHeight = mHeightMeasureMode == View.MeasureSpec.EXACTLY ? mHeightMeasureSize : 0;
 
+        int boundLeft = 0;
+        int boundTop = 0;
+        int boundRight = 0;
+        int boundBottom = 0;
 
         for (Module module : mModules) {
             if (module == null)
@@ -171,31 +186,44 @@ public class GroupModule extends Module implements Parent {
             module.onPostMeasured();
 
             //resolve current dimensions
-            if (mWidthMeasureMode != View.MeasureSpec.EXACTLY) {
-                if (module.getWidth() >= 0) {
+            if (module.getLeft() != Module.BOUND_UNSPECIFIED && module.getLeft() != Module.BOUND_UNKNOWN)
+                boundLeft = Math.min(boundLeft, module.getLeft());
+            if (module.getTop() != Module.BOUND_UNSPECIFIED && module.getTop() != Module.BOUND_UNKNOWN)
+                boundTop = Math.min(boundTop, module.getTop());
+            if (module.getRight() != Module.BOUND_UNSPECIFIED && module.getRight() != Module.BOUND_UNKNOWN)
+                boundRight = Math.max(boundRight, module.getRight());
+            if (module.getBottom() != Module.BOUND_UNSPECIFIED && module.getBottom() != Module.BOUND_UNKNOWN)
+                boundBottom = Math.max(boundBottom, module.getBottom());
+
+            //resolve current dimensions
+            if (module.getWidth() >= 0) {
+                if (mWidthMeasureMode != View.MeasureSpec.EXACTLY) {
                     int tempWidth = module.getRight()
-                            + module.getLayoutParams().getMarginRight();
+                            + module.getLayoutParams().getMarginRight()
+                            + getPaddingRight();
                     mCurrentWidth = Math.max(mCurrentWidth, tempWidth);
-                    if (mWidthMeasureMode == View.MeasureSpec.AT_MOST)
+                    if (mWidthMeasureMode == View.MeasureSpec.AT_MOST) {
                         mCurrentWidth = Math.min(mCurrentWidth, mWidthMeasureSize);
+                    }
                 }
             }
 
-            if (mHeightMeasureMode != View.MeasureSpec.EXACTLY) {
-                if (module.getHeight() >= 0) {
-                    int tempHeight = module.getBottom()
-                            + module.getLayoutParams().getMarginBottom() ;
-                    mCurrentHeight = Math.max(mCurrentHeight, tempHeight);
+            if (module.getHeight() >= 0) {
+                if (mHeightMeasureMode != View.MeasureSpec.EXACTLY) {
+                    int tempHight = module.getBottom()
+                            + module.getLayoutParams().getMarginBottom()
+                            + getPaddingBottom();
+                    mCurrentHeight = Math.max(mCurrentHeight, tempHight);
                     if (mHeightMeasureMode == View.MeasureSpec.AT_MOST)
                         mCurrentHeight = Math.min(mCurrentHeight, mHeightMeasureSize);
                 }
             }
-
         }
 
-        setContentDimensions(mCurrentWidth, mCurrentHeight);
+        setContentBounds(boundLeft, boundTop, boundRight, boundBottom);
         onPostMeasureChildren(mCurrentWidth, mCurrentHeight);
     }
+
 
     void onPostMeasureChildren(int currentWidth, int currentHeight) {
 
@@ -213,18 +241,17 @@ public class GroupModule extends Module implements Parent {
     }
 
     @Override
-    protected void onDraw(Canvas canvas, int contentLeft, int contentTop, int contentRight, int contentBottom) {
-        super.onDraw(canvas, contentLeft, contentTop, contentRight, contentBottom);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
-        canvas.save();
-        canvas.translate(contentLeft, contentTop);
+        int countToRestore = canvas.save();
+        canvas.translate(getLeft(), getTop());
         for (Module module : mModules) {
             if (module.getLayoutParams().getVisibility() == LayoutParams.VISIBLE)
                 module.draw(canvas);
         }
-        canvas.restore();
+        canvas.restoreToCount(countToRestore);
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -232,10 +259,11 @@ public class GroupModule extends Module implements Parent {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-
                 for (Module module : mModules) {
                     if (checkEventRegion(module, event)) {
-                        handle = module.onTouchEvent(event);
+                        MotionEvent e = MotionEvent.obtain(event);
+                        e.offsetLocation(-dX, -dY);
+                        handle = module.onTouchEvent(e);
                         if (handle) {
                             mTouchFocusModule = module;
                             break;
@@ -247,8 +275,11 @@ public class GroupModule extends Module implements Parent {
 
             case MotionEvent.ACTION_UP: {
                 if (mTouchFocusModule != null) {
-                    if (checkEventRegion(mTouchFocusModule, event))
-                        handle = mTouchFocusModule.onTouchEvent(event);
+                    if (checkEventRegion(mTouchFocusModule, event)) {
+                        MotionEvent e = MotionEvent.obtain(event);
+                        e.offsetLocation(-dX, -dY);
+                        handle = mTouchFocusModule.onTouchEvent(e);
+                    }
                     mTouchFocusModule = null;
                 }
                 break;
@@ -256,12 +287,14 @@ public class GroupModule extends Module implements Parent {
 
             case MotionEvent.ACTION_MOVE: {
                 if (mTouchFocusModule != null) {
-                    if (checkEventRegion(mTouchFocusModule, event))
-                        handle = mTouchFocusModule.onTouchEvent(event);
+                    MotionEvent e = MotionEvent.obtain(event);
+                    e.offsetLocation(-dX, -dY);
+                    if (checkEventRegion(mTouchFocusModule, event)) {
+                        handle = mTouchFocusModule.onTouchEvent(e);
+                    }
                     else {
-                        MotionEvent eventCancel = MotionEvent.obtain(event);
-                        eventCancel.setAction(MotionEvent.ACTION_CANCEL);
-                        handle = mTouchFocusModule.onTouchEvent(eventCancel);
+                        e.setAction(MotionEvent.ACTION_CANCEL);
+                        handle = mTouchFocusModule.onTouchEvent(e);
                         mTouchFocusModule = null;
                     }
                 }
@@ -269,7 +302,9 @@ public class GroupModule extends Module implements Parent {
             }
             case MotionEvent.ACTION_CANCEL: {
                 if (mTouchFocusModule != null) {
-                    handle = mTouchFocusModule.onTouchEvent(event);
+                    MotionEvent e = MotionEvent.obtain(event);
+                    e.offsetLocation(-dX, -dY);
+                    handle = mTouchFocusModule.onTouchEvent(e);
                     mTouchFocusModule = null;
                 }
                 break;
@@ -286,9 +321,10 @@ public class GroupModule extends Module implements Parent {
      */
 
     private boolean checkEventRegion(Module module, MotionEvent event) {
-        int x = (int) (event.getX() - getLeft());
-        int y = (int) (event.getY() - getTop());
 
+        int x = (int) (event.getX() - getLeft() - dX - getLayoutParams().getPaddingLeft());
+        int y = (int) (event.getY() - getTop() - dY - getLayoutParams().getPaddingTop());
+        Log.d("checkEventRegion: ", "x: " + x + "y: " + y);
         return x < module.getRight() && x > module.getLeft()
                 && y > module.getTop() && y < module.getBottom();
     }

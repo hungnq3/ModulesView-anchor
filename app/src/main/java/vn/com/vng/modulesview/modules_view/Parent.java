@@ -13,6 +13,10 @@ import java.util.List;
 interface Parent {
     Context getContext();
 
+    int getCoordinateX();
+
+    int getCoordinateY();
+
     int getPaddingLeft();
 
     int getPaddingTop();
@@ -57,4 +61,5 @@ interface Parent {
     int getCurrentWidth();
 
     int getCurrentHeight();
+
 }

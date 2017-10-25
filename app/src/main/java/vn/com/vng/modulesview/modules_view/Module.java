@@ -34,9 +34,10 @@ public class Module {
     private int mWidth, mHeight;
     private int mLeft, mTop, mRight, mBottom;
     private int mContentWidth, mContentHeight;
-    private int mContentLeft, mContentTop, mContentRight, mContentBottom;
+    protected int mContentLeft, mContentTop, mContentRight, mContentBottom;
+    protected int dX, dY;
 
-    Drawable mBackgroundDrawable;
+    private Drawable mBackgroundDrawable;
 
     private OnClickListener mOnClickListener;
     private OnLongClickListener mOnLongClickListener;
@@ -143,7 +144,6 @@ public class Module {
     }
 
 
-
     //-----------------listener-------------------------------------
     public void setOnClickListener(OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
@@ -200,7 +200,6 @@ public class Module {
             if (needToUpdateDimensions)
                 updateUnspecifiedBounds(mContentWidth, mContentHeight);
         }
-
     }
 
     private void goneModule() {
@@ -272,19 +271,29 @@ public class Module {
     }
 
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
-        setContentDimensions(width, height);
+        setContentDimensions(widthMode == Module.DIMENSION_MODE_EXACTLY ? width : 0, heightMode == Module.DIMENSION_MODE_EXACTLY ? height : 0);
     }
 
-    protected final void setContentDimensions(int contentWidth, int contentHeight) {
-        mContentWidth = contentWidth < 0 ? 0 : contentWidth;
-        mContentHeight = contentHeight < 0 ? 0 : contentHeight;
+    protected void setContentDimensions(int contentWidth, int contentHeigh) {
+        setContentBounds(getLayoutParams().getPaddingLeft(), getLayoutParams().getPaddingTop(), contentWidth + getLayoutParams().getPaddingLeft(), contentHeigh + getLayoutParams().getPaddingTop());
+    }
+
+
+    protected final void setContentBounds(int left, int top, int right, int bottom) {
+        mContentLeft = left;
+        mContentTop = top;
+        mContentRight = right;
+        mContentBottom = bottom;
+
+        mContentWidth = Math.max(right - left, 0);
+        mContentHeight = Math.max(bottom - top, 0);
     }
 
     private final void updateUnspecifiedBounds(int width, int height) {
-        if (mWidth != DIMENSION_UNKNOWN) {
+        if (mWidth == DIMENSION_UNSPECIFIED) {
             if (mLeft == BOUND_UNSPECIFIED && mRight == BOUND_UNSPECIFIED) {
                 mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
-                mLeft = mParams.getMarginLeft() + mParams.getX() +  (mParent != null ?mParent.getPaddingLeft() : 0);
+                mLeft = mParams.getMarginLeft() + mParams.getX() + (mParent != null ? mParent.getPaddingLeft() : 0);
                 mRight = mLeft + mWidth;
             } else if (mLeft == BOUND_UNSPECIFIED) {
                 mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
@@ -295,10 +304,10 @@ public class Module {
             }
         }
 
-        if (mHeight != DIMENSION_UNKNOWN) {
+        if (mHeight == DIMENSION_UNSPECIFIED) {
             if (mTop == BOUND_UNSPECIFIED && mBottom == BOUND_UNSPECIFIED) {
                 mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
-                mTop = mParams.getMarginTop() + mParams.getY()  +  (mParent != null ?mParent.getPaddingTop() : 0);
+                mTop = mParams.getMarginTop() + mParams.getY() + (mParent != null ? mParent.getPaddingTop() : 0);
                 mBottom = mTop + mHeight;
             } else if (mTop == BOUND_UNSPECIFIED) {
                 mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
@@ -322,7 +331,7 @@ public class Module {
         boolean changed = oldWidth != mWidth && oldHeight != mHeight;
         onLayout(changed, left, top, right, bottom);
 
-        configContentRegion();
+        configGravityPosition();
         configModule();
     }
 
@@ -334,38 +343,31 @@ public class Module {
 
     }
 
-    private void configContentRegion() {
-        if (mWidth <= 0 || mHeight <= 0)
+    private void configGravityPosition() {
+        if (mWidth <= 0 || mHeight <= 0 || mContentWidth <= 0 || mContentHeight <= 0)
             return;
 
-        mContentLeft = mLeft + mParams.getPaddingLeft();
-        mContentTop = mTop + mParams.getPaddingTop();
-        mContentRight = mContentLeft + mContentWidth;
-        mContentBottom = mContentTop + mContentHeight;
+        dX = 0;
+        dY = 0;
 
         int gravity = mParams.getGravity();
         if (GravityCompat.isNone(gravity) || (GravityCompat.isHorizontalLeft(gravity) && GravityCompat.isVerticalTop(gravity)))
             return;
+
         int dWidth = mWidth - (mContentWidth + getLayoutParams().getPaddingLeft() + getLayoutParams().getPaddingRight());
         int dHeight = mHeight - (mContentHeight + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom());
         if (dWidth != 0) {
             if (GravityCompat.isHorizontalRight(gravity)) {
-                mContentLeft += dWidth;
-                mContentRight += dHeight;
+                dX = dWidth - mContentLeft;
             } else if (GravityCompat.isHorizontalCenter(gravity)) {
-                int temp = dWidth / 2;
-                mContentLeft += temp;
-                mContentRight += temp;
+                dX = dWidth / 2 - mContentLeft;
             }
         }
         if (dHeight != 0) {
             if (GravityCompat.isVerticalBottom(gravity)) {
-                mContentTop += dHeight;
-                mContentBottom += dHeight;
+                dY = dHeight - mContentTop;
             } else if (GravityCompat.isVerticalCenter(gravity)) {
-                int temp = dHeight / 2;
-                mContentTop += temp;
-                mContentBottom += temp;
+                dY = dHeight / 2 - mContentTop;
             }
         }
     }
@@ -375,7 +377,10 @@ public class Module {
         if (getWidth() < 0 || getHeight() <= 0)
             return;
         drawBackground(canvas);
-        onDraw(canvas, mContentLeft, mContentTop, mContentRight, mContentBottom);
+        int saveToRestore = canvas.save();
+        canvas.translate(dX + getLayoutParams().getPaddingLeft(), dY + getLayoutParams().getPaddingTop());
+        onDraw(canvas);
+        canvas.restoreToCount(saveToRestore);
     }
 
 
@@ -389,7 +394,7 @@ public class Module {
     }
 
 
-    protected void onDraw(Canvas canvas, int contentLeft, int contentTop, int contentRight, int contentBottom) {
+    protected void onDraw(Canvas canvas) {
 
     }
 

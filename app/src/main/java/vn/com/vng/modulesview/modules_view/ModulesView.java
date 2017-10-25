@@ -5,17 +5,15 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Px;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import vn.com.vng.modulesview.sample.chat_view.ChatHeaderView;
 
 /**
  * Created by HungNQ on 08/09/2017.
@@ -44,6 +42,11 @@ public class ModulesView extends View implements Parent {
     //stuff
     private List<Module> mModules = new LinkedList<>();
     private Module mTouchFocusModule;
+
+    private int mContentWidth, mContentHeight;
+    private int mContentLeft, mContentTop, mContentRight, mContentBottom;
+    private int mGravity;
+    private int dX, dY;
 
 
     @Override
@@ -157,27 +160,43 @@ public class ModulesView extends View implements Parent {
         mCurrentWidth = mWidthMeasureMode == MeasureSpec.EXACTLY ? mWidthMeasureSize : 0;
         mCurrentHeight = mHeightMeasureMode == MeasureSpec.EXACTLY ? mHeightMeasureSize : 0;
 
+        mContentWidth = 0;
+        mContentHeight = 0;
 
+        int boundLeft = 0;
+        int boundTop = 0;
+        int boundRight = 0;
+        int boundBottom = 0;
         for (Module module : mModules) {
             if (module == null)
                 continue;
             module.measure(mWidthMeasureSize, mWidthMeasureMode, mHeightMeasureSize, mHeightMeasureMode);
             module.onPostMeasured();
 
+            if (module.getLeft() != Module.BOUND_UNSPECIFIED && module.getLeft() != Module.BOUND_UNKNOWN)
+                boundLeft = Math.min(boundLeft, module.getLeft());
+            if (module.getTop() != Module.BOUND_UNSPECIFIED && module.getTop() != Module.BOUND_UNKNOWN)
+                boundTop = Math.min(boundTop, module.getTop());
+            if (module.getRight() != Module.BOUND_UNSPECIFIED && module.getRight() != Module.BOUND_UNKNOWN)
+                boundRight = Math.max(boundRight, module.getRight());
+            if (module.getBottom() != Module.BOUND_UNSPECIFIED && module.getBottom() != Module.BOUND_UNKNOWN)
+                boundBottom = Math.max(boundBottom, module.getBottom());
+
             //resolve current dimensions
-            if (mWidthMeasureMode != MeasureSpec.EXACTLY) {
-                if (module.getWidth() >= 0) {
+            if (module.getWidth() >= 0) {
+                if (mWidthMeasureMode != MeasureSpec.EXACTLY) {
                     int width = module.getRight()
                             + module.getLayoutParams().getMarginRight()
                             + getPaddingRight();
                     mCurrentWidth = Math.max(mCurrentWidth, width);
-                    if (mWidthMeasureMode == MeasureSpec.AT_MOST)
+                    if (mWidthMeasureMode == MeasureSpec.AT_MOST) {
                         mCurrentWidth = Math.min(mCurrentWidth, mWidthMeasureSize);
+                    }
                 }
             }
 
-            if (mHeightMeasureMode != MeasureSpec.EXACTLY) {
-                if (module.getHeight() >= 0) {
+            if (module.getHeight() >= 0) {
+                if (mHeightMeasureMode != MeasureSpec.EXACTLY) {
                     int height = module.getBottom()
                             + module.getLayoutParams().getMarginBottom()
                             + getPaddingBottom();
@@ -186,31 +205,9 @@ public class ModulesView extends View implements Parent {
                         mCurrentHeight = Math.min(mCurrentHeight, mHeightMeasureSize);
                 }
             }
-
         }
 
-//
-//        //Measure this view
-//        int width, height;
-//        if (mWidthMeasureMode == MeasureSpec.EXACTLY)
-//            width = mWidthMeasureSize;
-//        else {
-//            width = getMaxRightBound();
-//            if (mWidthMeasureMode == MeasureSpec.AT_MOST)
-//                width = Math.min(width, mWidthMeasureSize);
-//        }
-//
-//
-//        if (mHeightMeasureMode == MeasureSpec.EXACTLY)
-//            height = mHeightMeasureSize;
-//        else {
-//            height = getMaxBottomBound();
-//            if (mHeightMeasureMode == MeasureSpec.AT_MOST)
-//                height = Math.min(height, mHeightMeasureSize);
-//        }
-//
-//        setMeasuredDimension(width, height);
-//        onPostMeasureChildren(width, height);
+        setContentBounds(boundLeft, boundTop, boundRight, boundBottom);
 
         setMeasuredDimension(mCurrentWidth, mCurrentHeight);
         onPostMeasureChildren(mCurrentWidth, mCurrentHeight);
@@ -218,35 +215,16 @@ public class ModulesView extends View implements Parent {
     }
 
 
-//
-//    private int getMaxRightBound() {
-//        int max = 0;
-//        for (Module module : mModules) {
-//            if (module == null || module.getRight() == Module.BOUND_UNSPECIFIED || module.getRight() == Module.BOUND_UNKNOWN)
-//                continue;
-//            max = Math.max(max, module.getRight() + module.getLayoutParams().mMarginRight);
-//        }
-//        if(getParent() != null)
-//            max+= getPaddingRight();
-//
-//        return max;
-//    }
-//
-//    private int getMaxBottomBound() {
-//        int max = 0;
-//        for (Module module : mModules) {
-//            if (module == null || module.getBottom() == Module.BOUND_UNSPECIFIED || module.getBottom() == Module.BOUND_UNKNOWN)
-//                continue;
-//            max = Math.max(max, module.getBottom() + module.getLayoutParams().mMarginBottom);
-//        }
-//
-//        if(getParent() != null)
-//            max+= getPaddingBottom();
-//
-//        return max;
-//    }
 
+    protected final void setContentBounds(int left, int top, int right, int bottom) {
+        mContentLeft = left;
+        mContentTop = top;
+        mContentRight = right;
+        mContentBottom = bottom;
 
+        mContentWidth = Math.max(right - left, 0);
+        mContentHeight = Math.max(bottom - top, 0);
+    }
 
     protected void onPostMeasureChildren(int width, int height) {
 
@@ -262,15 +240,49 @@ public class ModulesView extends View implements Parent {
                 continue;
             module.layout(module.getLeft(), module.getTop(), module.getRight(), module.getBottom());
         }
+
+        configGravityPosition();
+    }
+
+
+    private void configGravityPosition() {
+        if (getWidth() <= 0 || getHeight() <= 0)
+            return;
+
+        dX = 0;
+        dY = 0;
+        int gravity = getGravity();
+        if (GravityCompat.isNone(gravity) || (GravityCompat.isHorizontalLeft(gravity) && GravityCompat.isVerticalTop(gravity)))
+            return;
+
+        int dWidth = getWidth() - (mContentWidth + getPaddingLeft() + getPaddingRight());
+        int dHeight = getHeight() - (mContentHeight + getPaddingTop() + getPaddingBottom());
+        if (dWidth != 0) {
+            if (GravityCompat.isHorizontalRight(gravity)) {
+                dX = dWidth - mContentLeft;
+            } else if (GravityCompat.isHorizontalCenter(gravity)) {
+                dX = dWidth / 2 - mContentLeft;
+            }
+        }
+        if (dHeight != 0) {
+            if (GravityCompat.isVerticalBottom(gravity)) {
+                dY = dHeight - mContentTop;
+            } else if (GravityCompat.isVerticalCenter(gravity)) {
+                dY = dHeight / 2 - mContentTop;
+            }
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        int countToRestore = canvas.save();
+        canvas.translate(dX + getPaddingLeft(), dY + getPaddingTop());
         for (Module module : mModules) {
             if (module.getLayoutParams().getVisibility() == LayoutParams.VISIBLE)
                 module.draw(canvas);
         }
+        canvas.restoreToCount(countToRestore);
     }
 
     @Override
@@ -279,10 +291,12 @@ public class ModulesView extends View implements Parent {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-
                 for (Module module : mModules) {
+
                     if (checkEventRegion(module, event)) {
-                        handle = module.onTouchEvent(event);
+                        MotionEvent e = MotionEvent.obtain(event);
+                        e.offsetLocation(-dX, -dY);
+                        handle = module.onTouchEvent(e);
                         if (handle) {
                             mTouchFocusModule = module;
                             break;
@@ -294,8 +308,11 @@ public class ModulesView extends View implements Parent {
 
             case MotionEvent.ACTION_UP: {
                 if (mTouchFocusModule != null) {
-                    if (checkEventRegion(mTouchFocusModule, event))
-                        handle = mTouchFocusModule.onTouchEvent(event);
+                    if (checkEventRegion(mTouchFocusModule, event)) {
+                        MotionEvent e = MotionEvent.obtain(event);
+                        e.offsetLocation(-dX, -dY);
+                        handle = mTouchFocusModule.onTouchEvent(e);
+                    }
                     mTouchFocusModule = null;
                 }
                 break;
@@ -303,12 +320,14 @@ public class ModulesView extends View implements Parent {
 
             case MotionEvent.ACTION_MOVE: {
                 if (mTouchFocusModule != null) {
-                    if (checkEventRegion(mTouchFocusModule, event))
-                        handle = mTouchFocusModule.onTouchEvent(event);
+                    MotionEvent e = MotionEvent.obtain(event);
+                    e.offsetLocation(-dX, -dY);
+                    if (checkEventRegion(mTouchFocusModule, event)) {
+                        handle = mTouchFocusModule.onTouchEvent(e);
+                    }
                     else {
-                        MotionEvent eventCancel = MotionEvent.obtain(event);
-                        eventCancel.setAction(MotionEvent.ACTION_CANCEL);
-                        handle = mTouchFocusModule.onTouchEvent(eventCancel);
+                        e.setAction(MotionEvent.ACTION_CANCEL);
+                        handle = mTouchFocusModule.onTouchEvent(e);
                         mTouchFocusModule = null;
                     }
                 }
@@ -316,7 +335,9 @@ public class ModulesView extends View implements Parent {
             }
             case MotionEvent.ACTION_CANCEL: {
                 if (mTouchFocusModule != null) {
-                    handle = mTouchFocusModule.onTouchEvent(event);
+                    MotionEvent e = MotionEvent.obtain(event);
+                    e.offsetLocation(-dX, -dY);
+                    handle = mTouchFocusModule.onTouchEvent(e);
                     mTouchFocusModule = null;
                 }
                 break;
@@ -361,6 +382,15 @@ public class ModulesView extends View implements Parent {
     }
 
 
+    @Override
+    public int getCoordinateX() {
+        return 0;
+    }
+
+    @Override
+    public int getCoordinateY() {
+        return 0;
+    }
 
     /**
      * @param module
@@ -369,8 +399,8 @@ public class ModulesView extends View implements Parent {
      */
 
     private boolean checkEventRegion(Module module, MotionEvent event) {
-        int x = (int) (event.getX() - getX());
-        int y = (int) (event.getY() - getX());
+        int x = (int) (event.getX() - getX() - dX - getPaddingLeft());
+        int y = (int) (event.getY() - getX() - dY) - getPaddingBottom();
 
         return x < module.getRight() && x > module.getLeft()
                 && y > module.getTop() && y < module.getBottom();
@@ -387,4 +417,11 @@ public class ModulesView extends View implements Parent {
     }
 
 
+    public int getGravity() {
+        return mGravity;
+    }
+
+    public void setGravity(int gravity) {
+        mGravity = gravity;
+    }
 }

@@ -708,7 +708,7 @@ public class LayoutParams {
                 bottom = Module.BOUND_UNKNOWN;
             else
                 bottom -= mMarginBottom;
-        } else if (mWidthDimension == MATCH_PARENT) {
+        } else if (mHeightDimension == MATCH_PARENT) {
             Parent parent = mModule.getParent();
             if (parent != null) {
                 if (parent.getHeightMeasureMode() == View.MeasureSpec.UNSPECIFIED)
@@ -741,7 +741,9 @@ public class LayoutParams {
         int top = getAnchorTop();
         int bottom = getAnchorBottom();
 
-        if (mHeightDimension >= 0 && mVisibility != GONE) {
+        if (mHeightDimension >= 0 && mVisibility != GONE)
+
+        {
             if (top == Module.BOUND_UNSPECIFIED && bottom != Module.BOUND_UNSPECIFIED) {
                 top = bottom - mHeightDimension;
             } else if (top != Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {

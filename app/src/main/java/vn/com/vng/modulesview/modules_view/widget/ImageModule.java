@@ -276,8 +276,8 @@ public class ImageModule extends Module {
 
 
     @Override
-    protected void onDraw(Canvas canvas, int contentLeft, int contentTop, int contentRight, int contentBottom) {
-        super.onDraw(canvas, contentLeft, contentTop, contentRight, contentBottom);
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
 
         if (mBitmap == null)
             return;
@@ -291,8 +291,8 @@ public class ImageModule extends Module {
         canvas.save();
 
 //        translate if needed
-        int translateLeft = contentLeft + mDrawTranslateX;
-        int translateTop = contentTop + mDrawTranslateY;
+        int translateLeft = getLeft() + getLayoutParams().getPaddingLeft() + mDrawTranslateX;
+        int translateTop = getTop() + getLayoutParams().getPaddingTop() + mDrawTranslateY;
         canvas.translate(translateLeft, translateTop);
 
         if (!mClipPath.isEmpty())
