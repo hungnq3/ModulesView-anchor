@@ -3,6 +3,7 @@ package vn.com.vng.modulesview.modules_view;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,25 +19,18 @@ public class LayoutParams {
      * MATCH_PARENT means that the m wants to be as big as its parent,
      * minus the parent's padding, if anyodule.
      */
-    public static final int MATCH_PARENT = -1;
+    public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
 
     /**
      * Special value for the height or width requested by a Module.
      * WRAP_CONTENT means that the module wants to be just large enough to fit
      * its own internal content, taking its own padding into account.
      */
-    public static final int WRAP_CONTENT = -2;
+    public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
     public static final int VISIBLE = View.VISIBLE;
     public static final int INVISIBLE = View.INVISIBLE;
     public static final int GONE = View.GONE;
-
-    @IntDef({BiasMode.SPAN, BiasMode.COLLAPSE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface BiasMode {
-        int SPAN = 0;
-        int COLLAPSE = 1;
-    }
 
     @IntDef({VISIBLE, INVISIBLE, GONE})
     @Retention(RetentionPolicy.SOURCE)
@@ -46,19 +40,17 @@ public class LayoutParams {
 
     private Module mModule;
 
-    int mX, mY;
-    int mWidthDimension, mHeightDimension;
+    private int mX, mY;
+    private int mWidthDimension, mHeightDimension;
     private Anchor mAnchorLeft, mAnchorTop, mAnchorRight, mAnchorBottom;
+    private boolean mCenterInHorizontal, mCenterInVertical;
 
-    int mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom;
-    int mMarginLeft, mMarginTop, mMarginRight, mMarginBottom;
-
-    int mHorizontalBiasMode, mVerticalBiasMode;
-    float mHorizontalBias, mVerticalBias;
+    private int mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom;
+    private int mMarginLeft, mMarginTop, mMarginRight, mMarginBottom;
 
 
-    int mGravity;
-    int mVisibility;
+    private int mGravity;
+    private  int mVisibility;
 
 
     public LayoutParams(@NonNull Module module) {
@@ -173,51 +165,6 @@ public class LayoutParams {
     public LayoutParams setVisibility(@Visibility int visibility) {
         mVisibility = visibility;
         return this;
-    }
-
-
-    @BiasMode
-    public int getHorizontalBiasMode() {
-        return mHorizontalBiasMode;
-    }
-
-    public void setHorizontalBiasMode(@BiasMode int horizontalBiasMode) {
-        mHorizontalBiasMode = horizontalBiasMode;
-    }
-
-    @BiasMode
-    public int getVerticalBiasMode() {
-        return mVerticalBiasMode;
-    }
-
-    public void setVerticalBiasMode(@BiasMode int verticalBiasMode) {
-        mVerticalBiasMode = verticalBiasMode;
-    }
-
-    public float getHorizontalBias() {
-        return mHorizontalBias;
-    }
-
-    public void setHorizontalBias(int bias) {
-        if (bias > 1f)
-            mHorizontalBias = 1f;
-        else if (bias < 0f)
-            mHorizontalBias = 0f;
-        else
-            mHorizontalBias = bias;
-    }
-
-    public float getVerticalBias() {
-        return mVerticalBias;
-    }
-
-    public void setVerticalBias(int bias) {
-        if (bias > 1f)
-            mVerticalBias = 1f;
-        else if (bias < 0f)
-            mVerticalBias = 0f;
-        else
-            mVerticalBias = bias;
     }
 
     //------------anchor region------------------------------------
@@ -621,6 +568,21 @@ public class LayoutParams {
         return this;
     }
 
+    public LayoutParams setCenterInHorizontal(boolean center) {
+        mCenterInHorizontal = center;
+        return this;
+    }
+
+    public LayoutParams setCenterInVertical(boolean center) {
+        mCenterInVertical = center;
+        return this;
+    }
+
+    public LayoutParams setCenterInParent(boolean center){
+        mCenterInHorizontal = mCenterInVertical = center;
+        return this;
+    }
+
 
     //------------------------------------------------
 
@@ -690,6 +652,15 @@ public class LayoutParams {
         return mGravity;
     }
 
+    public boolean isCenterInHorizontal() {
+        return mCenterInHorizontal && !hasAnchorLeft() && !hasAnchorRight();
+    }
+
+    public boolean isCenterInVertical() {
+        return mCenterInVertical && !hasAnchorTop() && !hasAnchorBottom();
+    }
+
+
     public
     @Visibility
     int getVisibility() {
@@ -697,20 +668,20 @@ public class LayoutParams {
     }
 
 
-    private boolean hasAnchorLeft() {
+    boolean hasAnchorLeft() {
         return (mAnchorLeft != null);
     }
 
-    private boolean hasAnchorRight() {
+    boolean hasAnchorRight() {
         return (mAnchorRight != null);
     }
 
-    private boolean hasAnchorTop() {
+    boolean hasAnchorTop() {
         return (mAnchorTop != null);
 
     }
 
-    private boolean hasAnchorBottom() {
+    boolean hasAnchorBottom() {
         return (mAnchorBottom != null);
     }
 
@@ -790,7 +761,7 @@ public class LayoutParams {
     }
 
 
-    protected void externalMeasure() {
+    protected void onMeasureAnchors() {
         //measure horizontal
         int left = getAnchorLeft();
         int right = getAnchorRight();

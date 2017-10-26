@@ -4,7 +4,6 @@ package vn.com.vng.modulesview.modules_view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -44,12 +43,12 @@ public class GroupModule extends Module implements Parent {
 
     @Override
     public int getChildCoordinateX() {
-        return getCoordinateX() + dX + getPaddingLeft();
+        return getCoordinateX() + mDeltaContentCoordinateX + getPaddingLeft();
     }
 
     @Override
     public int getChildCoordinateY() {
-        return getCoordinateY() + dY + getPaddingTop();
+        return getCoordinateY() + mDeltaContentCoordinateY + getPaddingTop();
     }
 
     @Override

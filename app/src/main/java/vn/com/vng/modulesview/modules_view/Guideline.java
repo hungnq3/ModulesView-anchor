@@ -6,8 +6,8 @@ package vn.com.vng.modulesview.modules_view;
 
 public class Guideline {
     private int dX, dY;
-    private float mXBias;
-    private float mYBias;
+    private float mXPercent;
+    private float mYPercent;
 
     private Module mModule;
 
@@ -42,31 +42,31 @@ public class Guideline {
         return this;
     }
 
-    public float getXBias() {
-        return mXBias;
+    public float getXPercent() {
+        return mXPercent;
     }
 
-    public Guideline setXBias(float bias) {
+    public Guideline setXPercent(float bias) {
         if (bias < 0)
-            mXBias = 0;
+            mXPercent = 0;
         else if (bias > 1)
-            mXBias = 1;
+            mXPercent = 1;
         else
-            mXBias = bias;
+            mXPercent = bias;
         return this;
     }
 
-    public float getYBias() {
-        return mYBias;
+    public float getYPercent() {
+        return mYPercent;
     }
 
-    public Guideline setYBias(float bias) {
+    public Guideline setYPercent(float bias) {
         if (bias < 0f)
-            mYBias = 0f;
+            mYPercent = 0f;
         else if (bias > 1f)
-            mYBias = 1f;
+            mYPercent = 1f;
         else
-            mYBias = bias;
+            mYPercent = bias;
         return this;
     }
 
@@ -74,7 +74,7 @@ public class Guideline {
         int value = dX;
         if (mModule != null && mModule.getParent() != null) {
             Parent parent = mModule.getParent();
-            value += parent.getCurrentWidth() * mXBias;
+            value += parent.getCurrentWidth() * mXPercent;
         }
         return value;
     }
@@ -83,7 +83,7 @@ public class Guideline {
         int value = dY;
         if (mModule != null && mModule.getParent() != null) {
             Parent parent = mModule.getParent();
-            value += parent.getCurrentHeight() * mYBias;
+            value += parent.getCurrentHeight() * mYPercent;
         }
         return value;
     }

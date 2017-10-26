@@ -35,8 +35,8 @@ public class Module {
     private int mLeft, mTop, mRight, mBottom;
     private int mContentWidth, mContentHeight;
     protected int mContentLeft, mContentTop, mContentRight, mContentBottom;
-    protected int dX, dY;
     private int mCoordinateX, mCoordinateY;
+    protected int mDeltaContentCoordinateX, mDeltaContentCoordinateY;
 
     private Drawable mBackgroundDrawable;
 
@@ -128,7 +128,6 @@ public class Module {
     }
 
 
-
     //-----------------listener-------------------------------------
     public void setOnClickListener(OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
@@ -142,8 +141,7 @@ public class Module {
     //--------------config region-------------
 
 
-
-    protected void setBounds(int left, int top, int right, int bottom) {
+    void setBounds(int left, int top, int right, int bottom) {
         mLeft = left;
         mTop = top;
         mRight = right;
@@ -166,7 +164,7 @@ public class Module {
         setContentDimensions(0, 0);
 
         //step 1: external measure
-        mParams.externalMeasure();
+        mParams.onMeasureAnchors();
 
         //step 2: check dimensions' state
         boolean unknownDimensions = mWidth == DIMENSION_UNKNOWN || mHeight == DIMENSION_UNKNOWN;
@@ -203,6 +201,22 @@ public class Module {
             //step 4: re update dimensions if needed
             if (needToUpdateDimensions)
                 updateUnspecifiedBounds(mContentWidth, mContentHeight);
+
+            //step 5: resolve center
+            if (mParams.isCenterInHorizontal()) {
+                if (mWidth != DIMENSION_UNSPECIFIED && parentWidthMode == DIMENSION_MODE_EXACTLY) {
+                    int dx = (parentWidth - mParent.getPaddingLeft() - mParent.getPaddingRight() - mParams.getMarginLeft() - mParams.getMarginRight() - mWidth) / 2;
+                    mLeft += dx;
+                    mRight += dx;
+                }
+            }
+            if (mParams.isCenterInVertical()) {
+                if (mHeight != DIMENSION_UNSPECIFIED && parentHeightMode == DIMENSION_MODE_EXACTLY) {
+                    int dy = (parentHeight - mParent.getPaddingTop() - mParent.getPaddingBottom() - mParams.getMarginTop() - mParams.getMarginBottom() - mHeight) / 2;
+                    mTop += dy;
+                    mBottom += dy;
+                }
+            }
         }
     }
 
@@ -339,20 +353,44 @@ public class Module {
 
 
     final void layout(int left, int top, int right, int bottom) {
-        int parentCooX = getParent() != null ? getParent().getChildCoordinateX() : 0;
-        int parentCooY = getParent() != null ? getParent().getChildCoordinateY() : 0;
-        mCoordinateX = parentCooX + left;
-        mCoordinateY = parentCooY + top;
 
         int oldWidth = mWidth;
         int oldHeight = mHeight;
         setBounds(left, top, right, bottom);
         boolean changed = oldWidth != mWidth && oldHeight != mHeight;
 
-        onLayout(changed, left, top, right, bottom);
+        //reconfig center if needed
+        reconfigCenterInParentIfNeeded();
 
         configGravityPosition();
+
+        int parentCooX = getParent() != null ? getParent().getChildCoordinateX() : 0;
+        int parentCooY = getParent() != null ? getParent().getChildCoordinateY() : 0;
+        mCoordinateX = parentCooX + mLeft;
+        mCoordinateY = parentCooY + mTop;
+
+        onLayout(changed, mLeft, mTop, mRight, mBottom);
+
+
+
         configModule();
+    }
+
+    private void reconfigCenterInParentIfNeeded() {
+        if (mParams.isCenterInHorizontal() && mParent.getWidthMeasureMode() != Module.DIMENSION_MODE_EXACTLY) {
+            if (mWidth != DIMENSION_UNSPECIFIED) {
+                int newLeft = (mParent.getCurrentWidth() - mParent.getPaddingLeft() - mParent.getPaddingRight() - mParams.getMarginLeft() - mParams.getMarginRight() - mWidth) / 2 + mParams.getMarginLeft();
+                mRight = mRight + newLeft - mLeft;
+                mLeft = newLeft;
+            }
+        }
+        if (mParams.isCenterInVertical() && mParent.getHeightMeasureMode() != Module.DIMENSION_MODE_EXACTLY) {
+            if (mHeight != DIMENSION_UNSPECIFIED) {
+                int newTop = (mParent.getCurrentHeight() - mParent.getPaddingTop() - mParent.getPaddingBottom() - mParams.getMarginTop() - mParams.getMarginBottom() - mHeight) / 2 + mParams.getMarginTop();
+                mBottom = mBottom + newTop - mTop;
+                mTop = newTop;
+            }
+        }
     }
 
 
@@ -368,8 +406,8 @@ public class Module {
         if (mWidth <= 0 || mHeight <= 0 || mContentWidth <= 0 || mContentHeight <= 0)
             return;
 
-        dX = 0;
-        dY = 0;
+        mDeltaContentCoordinateX = 0;
+        mDeltaContentCoordinateY = 0;
 
         int gravity = mParams.getGravity();
         if (GravityCompat.isNone(gravity) || (GravityCompat.isHorizontalLeft(gravity) && GravityCompat.isVerticalTop(gravity)))
@@ -379,16 +417,16 @@ public class Module {
         int dHeight = mHeight - (mContentHeight + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom());
         if (dWidth != 0) {
             if (GravityCompat.isHorizontalRight(gravity)) {
-                dX = dWidth - mContentLeft;
+                mDeltaContentCoordinateX = dWidth - mContentLeft;
             } else if (GravityCompat.isHorizontalCenter(gravity)) {
-                dX = dWidth / 2 - mContentLeft;
+                mDeltaContentCoordinateX = dWidth / 2 - mContentLeft;
             }
         }
         if (dHeight != 0) {
             if (GravityCompat.isVerticalBottom(gravity)) {
-                dY = dHeight - mContentTop;
+                mDeltaContentCoordinateY = dHeight - mContentTop;
             } else if (GravityCompat.isVerticalCenter(gravity)) {
-                dY = dHeight / 2 - mContentTop;
+                mDeltaContentCoordinateY = dHeight / 2 - mContentTop;
             }
         }
     }
@@ -399,7 +437,7 @@ public class Module {
             return;
         drawBackground(canvas);
 //        int saveToRestore = canvas.save();
-//        canvas.translate(dX + getLayoutParams().getPaddingLeft(), dY + getLayoutParams().getPaddingTop());
+//        canvas.translate(mDeltaContentCoordinateX + getLayoutParams().getPaddingLeft(), mDeltaContentCoordinateY + getLayoutParams().getPaddingTop());
         onDraw(canvas);
 //        canvas.restoreToCount(saveToRestore);
     }

@@ -34,14 +34,15 @@ public class TestView extends ModulesView {
     Module.OnClickListener mOnClickListener = new Module.OnClickListener() {
         @Override
         public void onClick(Module module) {
-            Toast.makeText(getContext(), ((TextModule)module).getText(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ((TextModule) module).getText(), Toast.LENGTH_SHORT).show();
         }
     };
 
     private void init() {
-        setSize(ViewGroup.LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        setGravity(GravityCompat.RIGHT | GravityCompat.BOTTOM);
-        setPadding(dp(8),dp(16),dp(16),dp(16));
+        setSize(ViewGroup.LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+//        setGravity(GravityCompat.RIGHT);
+//        setPadding(dp(8),dp(16),dp(16),dp(16));
+//        setBackgroundColor(0xffdddddd);
 
 
         mGroup1 = new GroupModule(getContext());
@@ -53,9 +54,8 @@ public class TestView extends ModulesView {
             }
         });
         mGroup1.getLayoutParams()
-                .anchorRightToParent(true)
-                .anchorLeftToGuideLine(new Guideline(mGroup1).setXBias(2/3f))
                 .setPadding(dp(8))
+                .setCenterInParent(true)
                 .setGravity(GravityCompat.RIGHT | GravityCompat.BOTTOM)
                 .setDimensions(dp(100), dp(100));
 
@@ -63,6 +63,7 @@ public class TestView extends ModulesView {
         mText1.setText("TEXT 1");
         mText1.setOnClickListener(mOnClickListener);
         mText1.getLayoutParams()
+                .setCenterInParent(true)
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         mText2 = new TextModule(getContext());
@@ -73,28 +74,26 @@ public class TestView extends ModulesView {
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .anchorTopToBottom(mText1);
 
-
         mGroup1.addModule(mText1);
         mGroup1.addModule(mText2);
-
 
         mGroup2 = new GroupModule(getContext());
         mGroup2.setBackgroundColor(0xff556677);
         mGroup2.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, dp(100))
                 .setMargin(dp(4))
-                .setGravity(GravityCompat.CENTER)
-                .anchorLeftToGuideLine(new Guideline(mGroup2).setXBias(1/3f))
-                .anchorRightToLeft(mGroup1);
+                .anchorRightToLeft(mGroup1)
+                .anchorTopToBottom(mGroup1);
 
         mText3 = new TextModule(getContext());
         mText3.setText("TEXT 3");
         mText3.setOnClickListener(mOnClickListener);
         mText3.getLayoutParams()
+                .setCenterInParent(true)
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         mText4 = new TextModule(getContext());
-        mText4.setText("TEXT 4");
+        mText4.setText("TEXT 4 123 123 123");
         mText4.setOnClickListener(mOnClickListener);
         mText4.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
@@ -114,13 +113,13 @@ public class TestView extends ModulesView {
                 .setMarginTop(dp(8))
                 .setPadding(dp(4))
                 .anchorLeftToParent(true)
-                .anchorRightToGuideLine(new Guideline(mText5).setXBias(1/3f))
+                .anchorRightToGuideLine(new Guideline(mText5).setXPercent(1 / 3f))
                 .anchorTopToBottom(new Fence(mGroup1, mGroup2));
 
 
         addModule(mGroup1);
         addModule(mGroup2);
-        addModule(mText5);
+//        addModule(mText5);
 
     }
 }

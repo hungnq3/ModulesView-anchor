@@ -239,7 +239,6 @@ public class ModulesView extends View implements Parent {
                 continue;
             module.layout(module.getLeft(), module.getTop(), module.getRight(), module.getBottom());
         }
-
         configGravityPosition();
     }
 
@@ -278,7 +277,7 @@ public class ModulesView extends View implements Parent {
         if(getWidth()<=0 || getHeight() <=0  || mContentWidth <= 0 || mContentHeight <= 0)
             return;
 //        int countToRestore = canvas.save();
-//        canvas.translate(dX + getPaddingLeft(), dY + getPaddingTop());
+//        canvas.translate(mDeltaContentCoordinateX + getPaddingLeft(), mDeltaContentCoordinateY + getPaddingTop());
         for (Module module : mModules) {
             if (module.getLayoutParams().getVisibility() == LayoutParams.VISIBLE)
                 module.draw(canvas);
