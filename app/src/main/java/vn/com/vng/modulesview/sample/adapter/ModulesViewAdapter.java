@@ -7,6 +7,7 @@ import java.util.List;
 
 import vn.com.vng.modulesview.sample.adapter.holder.BaseViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.ChatHeaderViewHolder;
+import vn.com.vng.modulesview.sample.adapter.holder.GroupChatHeaderViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialFooterViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialHeaderViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialImageContentViewHolder;
@@ -14,6 +15,7 @@ import vn.com.vng.modulesview.sample.adapter.holder.SocialTextContentViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.TestViewHolder;
 import vn.com.vng.modulesview.sample.adapter.view_item.BaseViewItem;
 import vn.com.vng.modulesview.sample.chat_view.ChatHeaderView;
+import vn.com.vng.modulesview.sample.chat_view.GroupChatHeaderView;
 import vn.com.vng.modulesview.sample.social_view.Social1ImageContentView;
 import vn.com.vng.modulesview.sample.social_view.Social2ImageContentView;
 import vn.com.vng.modulesview.sample.social_view.Social3ImageContentView;
@@ -103,6 +105,10 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
             case ViewType.CHAT_HEADER:{
                 holder = new ChatHeaderViewHolder(new ChatHeaderView(parent.getContext()));
+                break;
+            }
+            case ViewType.GROUP_CHAT_HEADER:{
+                holder = new GroupChatHeaderViewHolder(new GroupChatHeaderView(parent.getContext()));
                 break;
             }
         }

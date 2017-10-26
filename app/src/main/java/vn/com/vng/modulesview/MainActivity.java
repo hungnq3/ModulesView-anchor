@@ -12,8 +12,11 @@ import java.util.List;
 import java.util.Random;
 
 import vn.com.vng.modulesview.sample.adapter.view_item.ChatHeaderViewItem;
+import vn.com.vng.modulesview.sample.adapter.view_item.GroupChatHeaderViewItem;
 import vn.com.vng.modulesview.sample.adapter.view_item.TestViewItem;
+import vn.com.vng.modulesview.sample.chat_view.GroupChatHeaderView;
 import vn.com.vng.modulesview.sample.model.ChatHeaderModel;
+import vn.com.vng.modulesview.sample.model.GroupChatHeaderModel;
 import vn.com.vng.modulesview.sample.model.SocialModel;
 import vn.com.vng.modulesview.sample.adapter.ModulesViewAdapter;
 import vn.com.vng.modulesview.sample.adapter.view_item.BaseViewItem;
@@ -25,15 +28,14 @@ import vn.com.vng.modulesview.sample.adapter.view_item.SocialTextContentViewItem
 public class MainActivity extends AppCompatActivity {
 
     static final String[] IMGS = new String[]{
-            "https://www.smashingmagazine.com/wp-content/uploads/2015/06/10-dithering-opt.jpg",
             "https://www.w3schools.com/css/img_fjords.jpg",
             "https://3.bp.blogspot.com/-W__wiaHUjwI/Vt3Grd8df0I/AAAAAAAAA78/7xqUNj8ujtY/s1600/image02.png",
             "https://cdn.athemes.com/wp-content/uploads/Original-JPG-Image.jpg",
             "https://i.sharefa.st/1295569823374302192636.jpg",
             "http://iforo.3djuegos.com/files_foros/89/894.jpg",
-            "http://www.ikea.com/gb/en/images/products/pj%C3%A4tteryd-picture-silver-deer__0455534_pe603586_s4.jpg",
             "http://cdn1-www.dogtime.com/assets/uploads/gallery/bull-terier-dog-breed-pictures/6-siderun.jpg",
             "https://cdn.pixabay.com/photo/2016/10/27/16/58/full-moon-1775764_640.jpg",
+            "https://www.smashingmagazine.com/wp-content/uploads/2015/06/10-dithering-opt.jpg",
             "http://southafrica.worldswimsuit.com/images/made/images/uploads/website_images/195/sports_12_ler_21_56239-v1.web_1360_907_c1.jpg"
     };
 
@@ -100,6 +102,13 @@ public class MainActivity extends AppCompatActivity {
         return imgs;
     }
 
+    static  private List<String> getRandomImgs(int size) {
+        List<String> imgs = new LinkedList<>();
+        for (int i = 0; i < size; ++i)
+            imgs.add(getRandomImg());
+        return imgs;
+    }
+
 
 
 
@@ -111,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         setupRecycler();
     }
@@ -126,7 +136,12 @@ public class MainActivity extends AppCompatActivity {
 
         List<BaseViewItem> items = new ArrayList<>(40);
 
-        items.add(new TestViewItem());
+//        items.add(new TestViewItem());\
+
+        items.add(mockGroupChatHeaderModel(getRandomImgs(3), getRandomName(), getRandomMsg(), getRandomChatTime(), 3, true));
+        items.add(mockGroupChatHeaderModel(getRandomImgs(4), getRandomName(), getRandomMsg(), getRandomChatTime(), 4, false));
+        items.add(mockGroupChatHeaderModel(getRandomImgs(5), getRandomName(), getRandomMsg(), getRandomChatTime(), 0, false));
+        items.add(mockGroupChatHeaderModel(getRandomImgs(10), getRandomName(), getRandomMsg(), getRandomChatTime(), 10, true));
 
         items.add(mockChatHeaderModel(getRandomImg(), getRandomName(), getRandomMsg(), getRandomChatTime(), 0, true));
         items.add(mockChatHeaderModel(getRandomImg(), getRandomName(), getRandomMsg(), getRandomChatTime(), 1, false));
@@ -174,6 +189,11 @@ public class MainActivity extends AppCompatActivity {
             items.add(new SocialImageContentViewItem(model));
         items.add(new SocialFooterViewItem(model));
         return items;
+    }
+
+    private GroupChatHeaderViewItem mockGroupChatHeaderModel(List<String> avatars, String name, String message, String time, int newCount, boolean notificationOff) {
+        GroupChatHeaderModel model = new GroupChatHeaderModel(avatars,avatars.size(), name, message, time, newCount, notificationOff);
+        return new GroupChatHeaderViewItem(model);
     }
 
     private ChatHeaderViewItem mockChatHeaderModel(String avatar, String name, String message, String time, int newCount, boolean notificationOff) {

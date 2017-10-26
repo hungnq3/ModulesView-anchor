@@ -245,7 +245,8 @@ public class LayoutParams {
             } else {
                 mAnchorLeft = new ParentAnchor(mModule, Anchor.ANCHOR_LEFT);
             }
-        }
+        }else if (mAnchorLeft instanceof ParentAnchor)
+            mAnchorLeft = null;
         return this;
     }
 
@@ -341,7 +342,9 @@ public class LayoutParams {
             } else {
                 mAnchorTop = new ParentAnchor(mModule, Anchor.ANCHOR_TOP);
             }
-        }
+        }else if (mAnchorTop instanceof ParentAnchor)
+                mAnchorTop = null;
+
         return this;
     }
 
@@ -438,7 +441,8 @@ public class LayoutParams {
             } else {
                 mAnchorRight = new ParentAnchor(mModule, Anchor.ANCHOR_RIGHT);
             }
-        }
+        }else if (mAnchorRight instanceof ParentAnchor)
+            mAnchorRight = null;
         return this;
     }
 
@@ -538,8 +542,8 @@ public class LayoutParams {
             } else {
                 mAnchorBottom = new ParentAnchor(mModule, Anchor.ANCHOR_BOTTOM);
             }
-
-        }
+        }else if (mAnchorBottom instanceof ParentAnchor)
+            mAnchorBottom = null;
         return this;
     }
 
