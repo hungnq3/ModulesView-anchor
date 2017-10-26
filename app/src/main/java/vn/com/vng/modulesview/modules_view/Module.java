@@ -311,7 +311,7 @@ public class Module {
         if (mWidth == DIMENSION_UNSPECIFIED) {
             if (mLeft == BOUND_UNSPECIFIED && mRight == BOUND_UNSPECIFIED) {
                 mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
-                mLeft = mParams.getMarginLeft() + mParams.getX() + (mParent != null ? mParent.getPaddingLeft() : 0);
+                mLeft = mParams.getMarginLeft() + mParams.getX();
                 mRight = mLeft + mWidth;
             } else if (mLeft == BOUND_UNSPECIFIED) {
                 mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();
@@ -325,7 +325,7 @@ public class Module {
         if (mHeight == DIMENSION_UNSPECIFIED) {
             if (mTop == BOUND_UNSPECIFIED && mBottom == BOUND_UNSPECIFIED) {
                 mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();
-                mTop = mParams.getMarginTop() + mParams.getY() + (mParent != null ? mParent.getPaddingTop() : 0);
+                mTop = mParams.getMarginTop() + mParams.getY();
                 mBottom = mTop + mHeight;
             } else if (mTop == BOUND_UNSPECIFIED) {
                 mHeight = height + mParams.getPaddingTop() + mParams.getPaddingBottom();

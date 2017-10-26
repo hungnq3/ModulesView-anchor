@@ -696,8 +696,8 @@ public class LayoutParams {
                 left += mMarginLeft;
         } else if (mWidthDimension == MATCH_PARENT || mX > 0) {
             left = mX + mMarginLeft;
-            if (mX == 0 && mModule.getParent() != null)
-                left += mModule.getParent().getPaddingLeft();
+//            if (mX == 0 && mModule.getParent() != null)
+//                left += mModule.getParent().getPaddingLeft();
         }
         return left;
     }
@@ -716,7 +716,7 @@ public class LayoutParams {
                 if (parent.getWidthMeasureMode() == View.MeasureSpec.UNSPECIFIED)
                     right = Module.BOUND_UNSPECIFIED;
                 else
-                    right = Math.max(parent.getWidthMeasureSize() - mModule.getParent().getPaddingRight(), 0) - mMarginLeft;
+                    right = Math.max(parent.getWidthMeasureSize() -mModule.getParent().getPaddingLeft() - mModule.getParent().getPaddingRight(), 0) - mMarginRight;
             }
         }
         return right;
@@ -754,7 +754,7 @@ public class LayoutParams {
                 if (parent.getHeightMeasureMode() == View.MeasureSpec.UNSPECIFIED)
                     bottom = Module.BOUND_UNSPECIFIED;
                 else
-                    bottom = Math.max(parent.getHeightMeasureSize() - mModule.getParent().getPaddingBottom(), 0) - mMarginBottom;
+                    bottom = Math.max(parent.getHeightMeasureSize() -mModule.getParent().getPaddingTop() - mModule.getParent().getPaddingBottom(), 0) - mMarginBottom;
             }
         }
         return bottom;
@@ -772,7 +772,7 @@ public class LayoutParams {
             } else if (left != Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
                 right = left + mWidthDimension;
             } else if (left == Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
-                left = mMarginLeft + (mModule.getParent() != null ? mModule.getParent().getPaddingLeft() : 0);
+                left = mMarginLeft;
                 right = left + mWidthDimension;
             }
         }
@@ -789,7 +789,7 @@ public class LayoutParams {
             } else if (top != Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
                 bottom = top + mHeightDimension;
             } else if (top == Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
-                top = mMarginTop + (mModule.getParent() != null ? mModule.getParent().getPaddingTop() : 0);
+                top = mMarginTop;
                 bottom = top + mHeightDimension;
             }
         }

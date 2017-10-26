@@ -173,20 +173,18 @@ public class ModulesView extends View implements Parent {
             module.onPostMeasured();
 
             if (module.getLeft() != Module.BOUND_UNSPECIFIED && module.getLeft() != Module.BOUND_UNKNOWN)
-                boundLeft = Math.min(boundLeft, module.getLeft());
+                boundLeft = Math.min(boundLeft, module.getLeft() - module.getLayoutParams().getMarginLeft());
             if (module.getTop() != Module.BOUND_UNSPECIFIED && module.getTop() != Module.BOUND_UNKNOWN)
-                boundTop = Math.min(boundTop, module.getTop());
+                boundTop = Math.min(boundTop, module.getTop() - module.getLayoutParams().getMarginTop());
             if (module.getRight() != Module.BOUND_UNSPECIFIED && module.getRight() != Module.BOUND_UNKNOWN)
-                boundRight = Math.max(boundRight, module.getRight());
+                boundRight = Math.max(boundRight, module.getRight() + module.getLayoutParams().getMarginRight());
             if (module.getBottom() != Module.BOUND_UNSPECIFIED && module.getBottom() != Module.BOUND_UNKNOWN)
-                boundBottom = Math.max(boundBottom, module.getBottom());
+                boundBottom = Math.max(boundBottom, module.getBottom() + module.getLayoutParams().getMarginBottom());
 
             //resolve current dimensions
             if (module.getWidth() >= 0) {
                 if (mWidthMeasureMode != MeasureSpec.EXACTLY) {
-                    int width = module.getRight()
-                            + module.getLayoutParams().getMarginRight()
-                            + getPaddingRight();
+                    int width = boundRight + getPaddingLeft() + getPaddingRight();
                     mCurrentWidth = Math.max(mCurrentWidth, width);
                     if (mWidthMeasureMode == MeasureSpec.AT_MOST) {
                         mCurrentWidth = Math.min(mCurrentWidth, mWidthMeasureSize);
@@ -196,9 +194,7 @@ public class ModulesView extends View implements Parent {
 
             if (module.getHeight() >= 0) {
                 if (mHeightMeasureMode != MeasureSpec.EXACTLY) {
-                    int height = module.getBottom()
-                            + module.getLayoutParams().getMarginBottom()
-                            + getPaddingBottom();
+                    int height = boundBottom + getPaddingTop() + getPaddingBottom();
                     mCurrentHeight = Math.max(mCurrentHeight, height);
                     if (mHeightMeasureMode == MeasureSpec.AT_MOST)
                         mCurrentHeight = Math.min(mCurrentHeight, mHeightMeasureSize);

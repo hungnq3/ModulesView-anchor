@@ -186,20 +186,18 @@ public class GroupModule extends Module implements Parent {
 
             //resolve current dimensions
             if (module.getLeft() != Module.BOUND_UNSPECIFIED && module.getLeft() != Module.BOUND_UNKNOWN)
-                boundLeft = Math.min(boundLeft, module.getLeft());
+                boundLeft = Math.min(boundLeft, module.getLeft() - module.getLayoutParams().getMarginLeft());
             if (module.getTop() != Module.BOUND_UNSPECIFIED && module.getTop() != Module.BOUND_UNKNOWN)
-                boundTop = Math.min(boundTop, module.getTop());
+                boundTop = Math.min(boundTop, module.getTop() - module.getLayoutParams().getMarginTop());
             if (module.getRight() != Module.BOUND_UNSPECIFIED && module.getRight() != Module.BOUND_UNKNOWN)
-                boundRight = Math.max(boundRight, module.getRight());
+                boundRight = Math.max(boundRight, module.getRight()  +  module.getLayoutParams().getMarginRight());
             if (module.getBottom() != Module.BOUND_UNSPECIFIED && module.getBottom() != Module.BOUND_UNKNOWN)
-                boundBottom = Math.max(boundBottom, module.getBottom());
+                boundBottom = Math.max(boundBottom, module.getBottom() + module.getLayoutParams().getMarginBottom());
 
             //resolve current dimensions
             if (module.getWidth() >= 0) {
                 if (mWidthMeasureMode != View.MeasureSpec.EXACTLY) {
-                    int tempWidth = module.getRight()
-                            + module.getLayoutParams().getMarginRight()
-                            + getPaddingRight();
+                    int tempWidth = boundRight + getPaddingLeft() + getPaddingRight();
                     mCurrentWidth = Math.max(mCurrentWidth, tempWidth);
                     if (mWidthMeasureMode == View.MeasureSpec.AT_MOST) {
                         mCurrentWidth = Math.min(mCurrentWidth, mWidthMeasureSize);
@@ -209,9 +207,7 @@ public class GroupModule extends Module implements Parent {
 
             if (module.getHeight() >= 0) {
                 if (mHeightMeasureMode != View.MeasureSpec.EXACTLY) {
-                    int tempHight = module.getBottom()
-                            + module.getLayoutParams().getMarginBottom()
-                            + getPaddingBottom();
+                    int tempHight = boundBottom + getPaddingTop() + getPaddingBottom();
                     mCurrentHeight = Math.max(mCurrentHeight, tempHight);
                     if (mHeightMeasureMode == View.MeasureSpec.AT_MOST)
                         mCurrentHeight = Math.min(mCurrentHeight, mHeightMeasureSize);
@@ -284,8 +280,7 @@ public class GroupModule extends Module implements Parent {
                 if (mTouchFocusModule != null) {
                     if (checkEventRegion(mTouchFocusModule, event)) {
                         handle = mTouchFocusModule.onTouchEvent(event);
-                    }
-                    else {
+                    } else {
                         MotionEvent e = MotionEvent.obtain(event);
                         e.setAction(MotionEvent.ACTION_CANCEL);
                         handle = mTouchFocusModule.onTouchEvent(e);

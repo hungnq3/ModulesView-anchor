@@ -27,14 +27,16 @@ public class ParentAnchor extends Anchor {
     public int getLeft() {
         if (mModule == null || mModule.getParent() == null)
             return BOUND_UNKNOWN;
-        return mModule.getParent().getPaddingLeft();
+//        return mModule.getParent().getPaddingLeft();
+        return 0;
     }
 
     @Override
     public int getTop() {
         if (mModule == null || mModule.getParent() == null)
             return BOUND_UNKNOWN;
-        return mModule.getParent().getPaddingTop();
+//        return mModule.getParent().getPaddingTop();
+        return 0;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class ParentAnchor extends Anchor {
             return BOUND_UNKNOWN;
         Parent parent = mModule.getParent();
 
-        return Math.max(parent.getCurrentWidth() - mModule.getParent().getPaddingRight(), 0);
+        return Math.max(parent.getCurrentWidth() - mModule.getParent().getPaddingLeft()- mModule.getParent().getPaddingRight(), 0);
     }
 
     @Override
@@ -52,6 +54,6 @@ public class ParentAnchor extends Anchor {
             return BOUND_UNKNOWN;
         Parent parent = mModule.getParent();
 
-        return Math.max(parent.getCurrentHeight() - mModule.getParent().getPaddingBottom(), 0);
+        return Math.max(parent.getCurrentHeight() - mModule.getParent().getPaddingTop() - mModule.getParent().getPaddingBottom(), 0);
     }
 }
