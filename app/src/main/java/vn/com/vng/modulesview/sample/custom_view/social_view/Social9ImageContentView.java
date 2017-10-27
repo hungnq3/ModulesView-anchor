@@ -61,46 +61,46 @@ public class Social9ImageContentView extends SocialImageContentView {
 
         img2.getLayoutParams()
                 .setDimensions(temp, temp)
-                .anchorLeftToRight(img1)
+                .setToRightOf(img1)
                 .setPadding(dp(1), 0, dp(1), dp(1));
 
         img3.getLayoutParams()
                 .setDimensions(temp, temp)
-                .anchorLeftToRight(img2)
+                .setToRightOf(img2)
                 .setPadding(dp(1), 0, 0, dp(1));
 
         img4.getLayoutParams()
                 .setDimensions(temp, temp)
-                .anchorTopToBottom(img1)
+                .setBellowOf(img1)
                 .setPadding(0, dp(1), dp(1), dp(1));
 
         img5.getLayoutParams()
                 .setDimensions(temp,temp)
-                .anchorTopToBottom(img2)
-                .anchorLeftToRight(img4)
+                .setBellowOf(img2)
+                .setToRightOf(img4)
                 .setPadding(dp(1));
 
         img6.getLayoutParams()
                 .setDimensions(temp,temp)
-                .anchorLeftToRight(img5)
-                .anchorTopToBottom(img3)
+                .setToRightOf(img5)
+                .setBellowOf(img3)
                 .setPadding(dp(1),dp(1),0,dp(1));
 
         img7.getLayoutParams()
                 .setDimensions(temp,temp)
-                .anchorTopToBottom(img4)
+                .setBellowOf(img4)
                 .setPadding(0,dp(1),dp(1), 0);
 
         img8.getLayoutParams()
                 .setDimensions(temp,temp)
-                .anchorTopToTop(img7)
-                .anchorLeftToRight(img7)
+                .setAlignTop(img7)
+                .setToRightOf(img7)
                 .setPadding(dp(1),dp(1),dp(1), 0);
 
         img9.getLayoutParams()
                 .setDimensions(temp,temp)
-                .anchorTopToBottom(img6)
-                .anchorLeftToRight(img8)
+                .setBellowOf(img6)
+                .setToRightOf(img8)
                 .setPadding(dp(1),dp(1),0, 0);
         
     }

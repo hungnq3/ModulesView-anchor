@@ -84,8 +84,8 @@ public class GroupChatHeaderView extends ModulesView {
         mCircularNewCountText.getLayoutParams()
                 .setGravity(GravityCompat.CENTER)
                 .setDimensions(mCircularIndexSize, mCircularIndexSize)
-                .anchorRightToRight(mGroupHeaderImages)
-                .anchorTopToTop(mGroupHeaderImages);
+                .setAlignRight(mGroupHeaderImages)
+                .setAlignTop(mGroupHeaderImages);
 
         mTitleText = new TextModule(getContext());
         mTitleText.setTextColor(mTitleTextColor);
@@ -94,9 +94,9 @@ public class GroupChatHeaderView extends ModulesView {
         mTitleText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setMargin(dp(12), dp(4), dp(4), dp(4))
-                .anchorLeftToRight(mGroupHeaderImages)
-                .anchorRightToLeft(mTimeText)
-                .anchorTopToTop(mGroupHeaderImages);
+                .setToRightOf(mGroupHeaderImages)
+                .setToLeftOf(mTimeText)
+                .setAlignTop(mGroupHeaderImages);
 
 
         mTimeText = new TextModule(getContext());
@@ -104,16 +104,16 @@ public class GroupChatHeaderView extends ModulesView {
         mTimeText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setMargin(0, 0, dp(12), 0)
-                .anchorTopToTop(mTitleText)
-                .anchorRightToParent(true);
+                .setAlignTop(mTitleText)
+                .setAlignParentRight(true);
 
 
         mNotificationOff = new ImageModule(getContext());
         mNotificationOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_notifications_off));
         mNotificationOff.getLayoutParams()
                 .setDimensions(dp(18), dp(18))
-                .anchorRightToRight(mTimeText)
-                .anchorTopToBottom(mTimeText)
+                .setAlignRight(mTimeText)
+                .setBellowOf(mTimeText)
                 .setMarginTop(dp(4));
 
         mMessageText = new TextModule(getContext());
@@ -122,17 +122,17 @@ public class GroupChatHeaderView extends ModulesView {
         mMessageText.setEllipsize(TextUtils.TruncateAt.END);
         mMessageText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                .anchorLeftToLeft(mTitleText)
-                .anchorRightToLeft(mNotificationOff)
-                .anchorTopToBottom(mTitleText);
+                .setAlignLeft(mTitleText)
+                .setToLeftOf(mNotificationOff)
+                .setBellowOf(mTitleText);
 //                .setMarginRight(dp(4));
 
         mBottomLine = new Module(getContext());
         mBottomLine.setBackgroundColor(0xffcccccc);
         mBottomLine.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, 1)
-                .anchorLeftToLeft(mTitleText)
-                .anchorBottomToParent(true);
+                .setAlignLeft(mTitleText)
+                .setAlignParentBottom(true);
 
         addModule(mGroupHeaderImages);
         addModule(mCircularNewCountText);
@@ -171,8 +171,8 @@ public class GroupChatHeaderView extends ModulesView {
                 mHeaderImage4.setRoundCorner(ImageModule.ROUND_CIRCLE);
                 mHeaderImage4.getLayoutParams()
                         .setDimensions(imageSize, imageSize)
-                        .anchorRightToParent(true)
-                        .anchorBottomToParent(true);
+                        .setAlignParentRight(true)
+                        .setAlignParentBottom(true);
             }
         } else if (membersCount > 4) {
             if (mMoreMembersText == null) {
@@ -183,8 +183,8 @@ public class GroupChatHeaderView extends ModulesView {
                 mMoreMembersText.getLayoutParams()
                         .setGravity(GravityCompat.CENTER)
                         .setDimensions(imageSize, imageSize)
-                        .anchorRightToParent(true)
-                        .anchorBottomToParent(true);
+                        .setAlignParentRight(true)
+                        .setAlignParentBottom(true);
             }
         }
 
@@ -197,42 +197,42 @@ public class GroupChatHeaderView extends ModulesView {
             mGroupHeaderImages.getLayoutParams().setPaddingBottom(dp(2));
             mHeaderImage1.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorRightToLeft((Module) null)
-                    .anchorLeftToRight((Module) null)
-                    .anchorTopToParent(true)
+                    .setToLeftOf((Module) null)
+                    .setToRightOf((Module) null)
+                    .setAlignParentTop(true)
                     .setCenterInHorizontal(true);
             mHeaderImage2.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorLeftToParent(true)
-                    .anchorRightToLeft((Module) null)
-                    .anchorTopToParent(false)
-                    .anchorBottomToParent(true);
+                    .setAlignParentLeft(true)
+                    .setToLeftOf((Module) null)
+                    .setAlignParentTop(false)
+                    .setAlignParentBottom(true);
             mHeaderImage3.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorLeftToRight((Module) null)
-                    .anchorRightToParent(true)
-                    .anchorBottomToParent(true);
+                    .setToRightOf((Module) null)
+                    .setAlignParentRight(true)
+                    .setAlignParentBottom(true);
             mGroupHeaderImages.addModule(mHeaderImage1);
             mGroupHeaderImages.addModule(mHeaderImage2);
             mGroupHeaderImages.addModule(mHeaderImage3);
         } else if (membersCount == 4) {
             mHeaderImage1.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorLeftToParent(true)
-                    .anchorRightToLeft((Module) null)
-                    .anchorTopToParent(true)
+                    .setAlignParentLeft(true)
+                    .setToLeftOf((Module) null)
+                    .setAlignParentTop(true)
                     .setCenterInHorizontal(false);
             mHeaderImage2.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorLeftToRight((Module) null)
-                    .anchorRightToParent(true)
-                    .anchorTopToParent(true)
-                    .anchorBottomToParent(false);
+                    .setToRightOf((Module) null)
+                    .setAlignParentRight(true)
+                    .setAlignParentTop(true)
+                    .setAlignParentBottom(false);
             mHeaderImage3.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorLeftToParent(true)
-                    .anchorRightToLeft((Module) null)
-                    .anchorBottomToParent(true);
+                    .setAlignParentLeft(true)
+                    .setToLeftOf((Module) null)
+                    .setAlignParentBottom(true);
 
 
             mGroupHeaderImages.addModule(mHeaderImage1);
@@ -242,21 +242,21 @@ public class GroupChatHeaderView extends ModulesView {
         } else {
             mHeaderImage1.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorLeftToParent(true)
-                    .anchorRightToLeft((Module) null)
-                    .anchorTopToParent(true)
+                    .setAlignParentLeft(true)
+                    .setToLeftOf((Module) null)
+                    .setAlignParentTop(true)
                     .setCenterInHorizontal(false);
             mHeaderImage2.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorLeftToRight((Module) null)
-                    .anchorRightToParent(true)
-                    .anchorTopToParent(true)
-                    .anchorBottomToParent(false);
+                    .setToRightOf((Module) null)
+                    .setAlignParentRight(true)
+                    .setAlignParentTop(true)
+                    .setAlignParentBottom(false);
             mHeaderImage3.getLayoutParams()
                     .setDimensions(imageSize, imageSize)
-                    .anchorLeftToParent(true)
-                    .anchorRightToLeft((Module) null)
-                    .anchorBottomToParent(true);
+                    .setAlignParentLeft(true)
+                    .setToLeftOf((Module) null)
+                    .setAlignParentBottom(true);
 
             mGroupHeaderImages.addModule(mHeaderImage1);
             mGroupHeaderImages.addModule(mHeaderImage2);

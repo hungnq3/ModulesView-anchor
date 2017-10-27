@@ -55,15 +55,15 @@ public class Social3ImageContentView extends SocialImageContentView {
                 .setPaddingRight(dp(1));
         img2.getLayoutParams()
                 .setHeightDimension(temp2)
-                .anchorLeftToRight(img1)
-                .anchorRightToParent(true)
+                .setToRightOf(img1)
+                .setAlignParentRight(true)
                 .setPadding(dp(1), 0, 0, dp(1));
 
         img3.getLayoutParams()
                 .setHeightDimension(temp2)
-                .anchorLeftToRight(img1)
-                .anchorRightToParent(true)
-                .anchorTopToBottom(img2)
+                .setToRightOf(img1)
+                .setAlignParentRight(true)
+                .setBellowOf(img2)
                 .setPadding(dp(1),dp(1),0,0);
 
     }

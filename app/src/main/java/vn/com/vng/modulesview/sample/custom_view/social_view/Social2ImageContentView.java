@@ -52,8 +52,8 @@ public class Social2ImageContentView extends SocialImageContentView {
 
         img2.getLayoutParams()
                 .setHeightDimension(widthSize)
-                .anchorLeftToRight(img1)
-                .anchorRightToParent(true)
+                .setToRightOf(img1)
+                .setAlignParentRight(true)
                 .setPaddingLeft(dp(1));
 
     }

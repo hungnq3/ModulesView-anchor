@@ -1,7 +1,7 @@
 package vn.com.vng.modulesview.sample.custom_view.test_view;
 
 import android.content.Context;
-import android.view.ViewGroup;
+import android.text.Layout;
 import android.widget.Toast;
 
 import vn.com.vng.modulesview.modules_view.Fence;
@@ -41,10 +41,9 @@ public class TestView extends ModulesView {
     private void init() {
 //        setSize(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         setSize(dp(400), dp(400));
-//        setGravity(GravityCompat.RIGHT);
-        setPadding(dp(16),dp(16),dp(8),dp(8));
+//        setPadding(dp(16),dp(16),dp(8),dp(8));
         setBackgroundColor(0xffdddddd);
-        setGravity(GravityCompat.LEFT | GravityCompat.TOP);
+//        setGravity(GravityCompat.CENTER_HORIZONTAL | GravityCompat.TOP);
 
 
         mGroup1 = new GroupModule(getContext());
@@ -75,7 +74,7 @@ public class TestView extends ModulesView {
         mText2.setOnClickListener(mOnClickListener);
         mText2.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                .anchorTopToBottom(mText1);
+                .setBellowOf(mText1);
 
         mGroup1.addModule(mText1);
         mGroup1.addModule(mText2);
@@ -83,11 +82,11 @@ public class TestView extends ModulesView {
         mGroup2 = new GroupModule(getContext());
         mGroup2.setBackgroundColor(0xff556677);
         mGroup2.getLayoutParams()
-                .setGravity(GravityCompat.TOP)
+                .setGravity(GravityCompat.CENTER)
                 .setDimensions(LayoutParams.WRAP_CONTENT, dp(100))
                 .setMargin(dp(4))
-                .anchorLeftToRight(mGroup1)
-                .anchorTopToBottom(mGroup1);
+                .setToRightOf(mGroup1)
+                .setBellowOf(mGroup1);
 
         mText3 = new TextModule(getContext());
         mText3.setText("TEXT 3");
@@ -97,11 +96,11 @@ public class TestView extends ModulesView {
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         mText4 = new TextModule(getContext());
-        mText4.setText("TEXT 4 123 123 123");
+        mText4.setText("TEXT 4 123 123 123                        123 123213213123 2 123 123 123 1233 123 123");
         mText4.setOnClickListener(mOnClickListener);
         mText4.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                .anchorTopToBottom(mText3);
+                .setBellowOf(mText3);
 
 
         mGroup2.addModule(mText3);
@@ -116,9 +115,9 @@ public class TestView extends ModulesView {
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setMarginTop(dp(8))
                 .setPadding(dp(4))
-                .anchorLeftToParent(true)
-                .anchorRightToGuideLine(new Guideline(mText5).setXPercent(1 / 3f))
-                .anchorTopToBottom(new Fence(mGroup1, mGroup2));
+                .setAlignParentLeft(true)
+                .setToLeftOf(new Guideline(mText5).setXPercent(1 / 3f))
+                .setBellowOf(new Fence(mGroup1, mGroup2));
 
 
         addModule(mGroup1);

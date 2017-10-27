@@ -159,7 +159,13 @@ public class TextModule extends Module {
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
 //        super.onMeasureContent(width, widthMode, height, heightMode);
         int maxWidth = width <= 0 ? Integer.MAX_VALUE : width;
-        int textWidth = widthMode == Module.DIMENSION_MODE_EXACTLY ? width : 0;
+
+        int textWidth;
+        if (widthMode == Module.DIMENSION_MODE_EXACTLY && mTextLayoutBuilder.getAlignment() != null && mTextLayoutBuilder.getAlignment() != Layout.Alignment.ALIGN_NORMAL)
+            textWidth = width;
+        else
+            textWidth = 0;
+
         mTextLayout = buildTextLayout(textWidth, maxWidth);
         textWidth = mTextLayout.getWidth();
         int textHeight = mTextLayout.getHeight();

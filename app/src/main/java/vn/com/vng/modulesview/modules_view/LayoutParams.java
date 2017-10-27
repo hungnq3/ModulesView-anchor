@@ -168,40 +168,40 @@ public class LayoutParams {
     }
 
     //------------anchor region------------------------------------
-    public LayoutParams anchorLeftToLeft(Module module) {
+    public LayoutParams setAlignLeft(Module module) {
         if (module == null) {
             mAnchorLeft = null;
             return this;
         }
 
         if (mAnchorLeft instanceof ModuleAnchor) {
-            ((ModuleAnchor) mAnchorLeft).setModule(module);
+            ((ModuleAnchor) mAnchorLeft).setModule(module, true);
             mAnchorLeft.setAnchorType(Anchor.ANCHOR_LEFT);
         } else {
-            mAnchorLeft = new ModuleAnchor(module, Anchor.ANCHOR_LEFT);
+            mAnchorLeft = new ModuleAnchor(module, Anchor.ANCHOR_LEFT, true);
         }
 
         return this;
     }
 
-    public LayoutParams anchorLeftToRight(Module module) {
+    public LayoutParams setToRightOf(Module module) {
         if (module == null) {
             mAnchorLeft = null;
             return this;
         }
 
         if (mAnchorLeft instanceof ModuleAnchor) {
-            ((ModuleAnchor) mAnchorLeft).setModule(module);
+            ((ModuleAnchor) mAnchorLeft).setModule(module, false);
             mAnchorLeft.setAnchorType(Anchor.ANCHOR_RIGHT);
         } else {
-            mAnchorLeft = new ModuleAnchor(module, Anchor.ANCHOR_RIGHT);
+            mAnchorLeft = new ModuleAnchor(module, Anchor.ANCHOR_RIGHT, false);
         }
 
         return this;
 
     }
 
-    public LayoutParams anchorLeftToLeft(Fence fence) {
+    public LayoutParams setAlignLeft(Fence fence) {
         if (fence == null) {
             mAnchorLeft = null;
             return this;
@@ -217,7 +217,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorLeftToRight(Fence fence) {
+    public LayoutParams setToRightOf(Fence fence) {
         if (fence == null) {
             mAnchorLeft = null;
             return this;
@@ -233,7 +233,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorLeftToParent(Boolean anchorParent) {
+    public LayoutParams setAlignParentLeft(Boolean anchorParent) {
         if (anchorParent) {
             if (mModule == null) {
                 mAnchorLeft = null;
@@ -250,7 +250,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorLeftToGuideLine(Guideline guideline) {
+    public LayoutParams setToRightOf(Guideline guideline) {
         if (guideline == null) {
             mAnchorLeft = null;
             return this;
@@ -266,38 +266,38 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams anchorTopToTop(Module module) {
+    public LayoutParams setAlignTop(Module module) {
         if (module == null) {
             mAnchorTop = null;
             return this;
         }
 
         if (mAnchorTop instanceof ModuleAnchor) {
-            ((ModuleAnchor) mAnchorTop).setModule(module);
+            ((ModuleAnchor) mAnchorTop).setModule(module, true);
             mAnchorTop.setAnchorType(Anchor.ANCHOR_TOP);
         } else {
-            mAnchorTop = new ModuleAnchor(module, Anchor.ANCHOR_TOP);
+            mAnchorTop = new ModuleAnchor(module, Anchor.ANCHOR_TOP, true);
         }
         return this;
     }
 
-    public LayoutParams anchorTopToBottom(Module module) {
+    public LayoutParams setBellowOf(Module module) {
         if (module == null) {
             mAnchorTop = null;
             return this;
         }
 
         if (mAnchorTop instanceof ModuleAnchor) {
-            ((ModuleAnchor) mAnchorTop).setModule(module);
+            ((ModuleAnchor) mAnchorTop).setModule(module, false);
             mAnchorTop.setAnchorType(Anchor.ANCHOR_BOTTOM);
         } else {
-            mAnchorTop = new ModuleAnchor(module, Anchor.ANCHOR_BOTTOM);
+            mAnchorTop = new ModuleAnchor(module, Anchor.ANCHOR_BOTTOM, false);
         }
 
         return this;
     }
 
-    public LayoutParams anchorTopToTop(Fence fence) {
+    public LayoutParams setAlignTop(Fence fence) {
         if (fence == null) {
             mAnchorTop = null;
             return this;
@@ -312,7 +312,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorTopToBottom(Fence fence) {
+    public LayoutParams setBellowOf(Fence fence) {
         if (fence == null) {
             mAnchorTop = null;
             return this;
@@ -329,7 +329,7 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams anchorTopToParent(Boolean anchorParent) {
+    public LayoutParams setAlignParentTop(Boolean anchorParent) {
         if (anchorParent) {
             if (mModule == null) {
                 mAnchorTop = null;
@@ -348,7 +348,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorTopToGuideLine(Guideline guideline) {
+    public LayoutParams setBellowOf(Guideline guideline) {
         if (guideline == null) {
             mAnchorTop = null;
             return this;
@@ -363,39 +363,39 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorRightToRight(Module module) {
+    public LayoutParams setAlignRight(Module module) {
         if (module == null) {
             mAnchorRight = null;
             return this;
         }
 
         if (mAnchorRight instanceof ModuleAnchor) {
-            ((ModuleAnchor) mAnchorRight).setModule(module);
+            ((ModuleAnchor) mAnchorRight).setModule(module, true);
             mAnchorRight.setAnchorType(Anchor.ANCHOR_RIGHT);
         } else {
-            mAnchorRight = new ModuleAnchor(module, Anchor.ANCHOR_RIGHT);
+            mAnchorRight = new ModuleAnchor(module, Anchor.ANCHOR_RIGHT, true);
         }
 
         return this;
     }
 
-    public LayoutParams anchorRightToLeft(Module module) {
+    public LayoutParams setToLeftOf(Module module) {
         if (module == null) {
             mAnchorRight = null;
             return this;
         }
 
         if (mAnchorRight instanceof ModuleAnchor) {
-            ((ModuleAnchor) mAnchorRight).setModule(module);
+            ((ModuleAnchor) mAnchorRight).setModule(module, false);
             mAnchorRight.setAnchorType(Anchor.ANCHOR_LEFT);
         } else {
-            mAnchorRight = new ModuleAnchor(module, Anchor.ANCHOR_LEFT);
+            mAnchorRight = new ModuleAnchor(module, Anchor.ANCHOR_LEFT, false);
         }
 
         return this;
     }
 
-    public LayoutParams anchorRightToRight(Fence fence) {
+    public LayoutParams setAlignRight(Fence fence) {
         if (fence == null) {
             mAnchorRight = null;
             return this;
@@ -411,7 +411,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorRightToLeft(Fence fence) {
+    public LayoutParams setToLeftOf(Fence fence) {
         if (fence == null) {
             mAnchorRight = null;
             return this;
@@ -428,7 +428,7 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams anchorRightToParent(Boolean anchorParent) {
+    public LayoutParams setAlignParentRight(Boolean anchorParent) {
         if (anchorParent) {
             if (mModule == null) {
                 mAnchorRight = null;
@@ -446,7 +446,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorRightToGuideLine(Guideline guideline) {
+    public LayoutParams setToLeftOf(Guideline guideline) {
         if (guideline == null) {
             mAnchorRight = null;
             return this;
@@ -461,7 +461,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorBottomToBottom(Module module) {
+    public LayoutParams setAlignBottom(Module module) {
         if (module == null) {
             mAnchorBottom = null;
             return this;
@@ -469,33 +469,33 @@ public class LayoutParams {
 
 
         if (mAnchorBottom instanceof ModuleAnchor) {
-            ((ModuleAnchor) mAnchorBottom).setModule(module);
+            ((ModuleAnchor) mAnchorBottom).setModule(module, true);
             mAnchorBottom.setAnchorType(Anchor.ANCHOR_BOTTOM);
         } else {
-            mAnchorBottom = new ModuleAnchor(module, Anchor.ANCHOR_BOTTOM);
+            mAnchorBottom = new ModuleAnchor(module, Anchor.ANCHOR_BOTTOM, true);
         }
 
         return this;
     }
 
 
-    public LayoutParams anchorBottomToTop(Module module) {
+    public LayoutParams setAboveOf(Module module) {
         if (module == null) {
             mAnchorBottom = null;
             return this;
         }
 
         if (mAnchorBottom instanceof ModuleAnchor) {
-            ((ModuleAnchor) mAnchorBottom).setModule(module);
+            ((ModuleAnchor) mAnchorBottom).setModule(module, false);
             mAnchorBottom.setAnchorType(Anchor.ANCHOR_TOP);
         } else {
-            mAnchorBottom = new ModuleAnchor(module, Anchor.ANCHOR_TOP);
+            mAnchorBottom = new ModuleAnchor(module, Anchor.ANCHOR_TOP, false);
         }
 
         return this;
     }
 
-    public LayoutParams anchorBottomToBottom(Fence fence) {
+    public LayoutParams setAlignBottom(Fence fence) {
         if (fence == null) {
             mAnchorBottom = null;
             return this;
@@ -513,7 +513,7 @@ public class LayoutParams {
     }
 
 
-    public LayoutParams anchorBottomToTop(Fence fence) {
+    public LayoutParams setAboveOf(Fence fence) {
         if (fence == null) {
             mAnchorBottom = null;
             return this;
@@ -529,7 +529,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorBottomToParent(Boolean anchorParent) {
+    public LayoutParams setAlignParentBottom(Boolean anchorParent) {
         if (anchorParent) {
             if (mModule == null) {
                 mAnchorBottom = null;
@@ -547,17 +547,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams anchorBottomToGuideLine(GuideLineAnchor anchor) {
-        if (mModule == null) {
-            mAnchorBottom = null;
-            return this;
-        }
-        mAnchorBottom = anchor;
-        return this;
-    }
-
-
-    public LayoutParams anchorBottomToGuideLine(Guideline guideline) {
+    public LayoutParams setAboveOf(Guideline guideline) {
         if (guideline == null) {
             mAnchorBottom = null;
             return this;

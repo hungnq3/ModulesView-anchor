@@ -94,8 +94,8 @@ public class ChatHeaderView extends ModulesView {
         mCircularNewCountText.getLayoutParams()
                 .setGravity(GravityCompat.CENTER)
                 .setDimensions(mCircularIndexSize, mCircularIndexSize)
-                .anchorRightToRight(mHeaderImage)
-                .anchorTopToTop(mHeaderImage);
+                .setAlignRight(mHeaderImage)
+                .setAlignTop(mHeaderImage);
 
         mTitleText = new TextModule(getContext());
         mTitleText.setTextColor(mTitleTextColor);
@@ -104,9 +104,9 @@ public class ChatHeaderView extends ModulesView {
         mTitleText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setMargin(dp(12),dp(4),dp(4),dp(4))
-                .anchorLeftToRight(mHeaderImage)
-                .anchorRightToLeft(mTimeText)
-                .anchorTopToTop(mHeaderImage);
+                .setToRightOf(mHeaderImage)
+                .setToLeftOf(mTimeText)
+                .setAlignTop(mHeaderImage);
 
 
 
@@ -115,16 +115,16 @@ public class ChatHeaderView extends ModulesView {
         mTimeText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setMargin(0, 0, dp(12),0)
-                .anchorTopToTop(mTitleText)
-                .anchorRightToParent(true);
+                .setAlignTop(mTitleText)
+                .setAlignParentRight(true);
 
 
         mNotificationOff = new ImageModule(getContext());
         mNotificationOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_notifications_off));
         mNotificationOff.getLayoutParams()
                 .setDimensions(dp(18), dp(18))
-                .anchorRightToRight(mTimeText)
-                .anchorTopToBottom(mTimeText)
+                .setAlignRight(mTimeText)
+                .setBellowOf(mTimeText)
                 .setMarginTop(dp(4));
 
         mMessageText = new TextModule(getContext());
@@ -133,17 +133,17 @@ public class ChatHeaderView extends ModulesView {
         mMessageText.setEllipsize(TextUtils.TruncateAt.END);
         mMessageText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                .anchorLeftToLeft(mTitleText)
-                .anchorRightToLeft(mNotificationOff)
-                .anchorTopToBottom(mTitleText);
+                .setAlignLeft(mTitleText)
+                .setToLeftOf(mNotificationOff)
+                .setBellowOf(mTitleText);
 //                .setMarginRight(dp(4));
 
         mBottomLine = new Module(getContext());
         mBottomLine.setBackgroundColor(0xffcccccc);
         mBottomLine.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, 1)
-                .anchorLeftToLeft(mTitleText)
-                .anchorBottomToParent(true);
+                .setAlignLeft(mTitleText)
+                .setAlignParentBottom(true);
 
         addModule(mHeaderImage);
         addModule(mCircularNewCountText);

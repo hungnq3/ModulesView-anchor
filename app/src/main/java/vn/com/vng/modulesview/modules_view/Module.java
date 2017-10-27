@@ -263,15 +263,13 @@ public class Module {
     private int getRemainWidth(int parentWidth) {
         int right, left;
         if (mRight == BOUND_UNSPECIFIED) {
-            right = parentWidth - mParams.getMarginRight();
-            right -= mParent != null ? mParent.getPaddingRight() : 0;
+            right = parentWidth - mParams.getMarginRight() - (mParent.getPaddingLeft() + mParent.getPaddingRight());
         } else {
             right = mRight;
         }
 
         if (mLeft == BOUND_UNSPECIFIED) {
             left = mParams.getMarginLeft();
-            left += mParent != null ? mParent.getPaddingLeft() : 0;
         } else {
             left = mLeft;
         }
@@ -451,10 +449,15 @@ public class Module {
         if (getWidth() <= 0 || getHeight() <= 0)
             return;
         drawBackground(canvas);
-//        int saveToRestore = canvas.save();
+        int saveToRestore = canvas.save();
+        int left = getCoordinateX() + getLayoutParams().getPaddingLeft();
+        int top = getCoordinateY() + getLayoutParams().getPaddingTop();
+        int right = left + mWidth - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight();
+        int bottom = top + mHeight - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom();
+        canvas.clipRect(left, top, right, bottom);
 //        canvas.translate(mDeltaContentCoordinateX + getLayoutParams().getPaddingLeft(), mDeltaContentCoordinateY + getLayoutParams().getPaddingTop());
         onDraw(canvas);
-//        canvas.restoreToCount(saveToRestore);
+        canvas.restoreToCount(saveToRestore);
     }
 
 

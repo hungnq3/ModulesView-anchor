@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import vn.com.vng.modulesview.R;
-import vn.com.vng.modulesview.modules_view.Fence;
 import vn.com.vng.modulesview.modules_view.GravityCompat;
 import vn.com.vng.modulesview.modules_view.GroupModule;
 import vn.com.vng.modulesview.modules_view.LayoutParams;
@@ -68,8 +67,8 @@ public class FriendView extends ModulesView {
         mOnlinePoint.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.online_point_drawable));
         mOnlinePoint.getLayoutParams()
                 .setDimensions(mOnlinePointSize, mOnlinePointSize)
-                .anchorRightToRight(mAvatar)
-                .anchorBottomToBottom(mAvatar);
+                .setAlignRight(mAvatar)
+                .setAlignBottom(mAvatar);
 
 
         mVideoCallImg = new ImageModule(getContext());
@@ -83,9 +82,9 @@ public class FriendView extends ModulesView {
         });
         mVideoCallImg.getLayoutParams()
                 .setDimensions(mCallButtonWidth, LayoutParams.MATCH_PARENT)
-                .anchorRightToParent(true)
-                .anchorTopToParent(true)
-                .anchorBottomToParent(true)
+                .setAlignParentRight(true)
+                .setAlignParentTop(true)
+                .setAlignParentBottom(true)
                 .setPadding(mVideoCallImgPadding);
 
         mVoiceCallImg = new ImageModule(getContext());
@@ -99,9 +98,9 @@ public class FriendView extends ModulesView {
         });
         mVoiceCallImg.getLayoutParams()
                 .setDimensions(mCallButtonWidth, LayoutParams.MATCH_PARENT)
-                .anchorRightToLeft(mVideoCallImg)
-                .anchorTopToParent(true)
-                .anchorBottomToParent(true)
+                .setToLeftOf(mVideoCallImg)
+                .setAlignParentTop(true)
+                .setAlignParentBottom(true)
                 .setPadding(mVoiceCallImgPadding);
 
 
@@ -110,10 +109,10 @@ public class FriendView extends ModulesView {
         mContentGroup.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                 .setGravity(GravityCompat.CENTER_VERTICAL)
-                .anchorLeftToRight(mAvatar)
-                .anchorRightToLeft(mVoiceCallImg)
+                .setToRightOf(mAvatar)
+                .setToLeftOf(mVoiceCallImg)
                 .setCenterInVertical(true)
-                .setPadding(dp(16), 0, dp(8), 0);
+                .setPadding(dp(8), 0, dp(8), 0);
 
         mNameText = new TextModule(getContext());
         mNameText.setTextColor(mNameTextColor);
@@ -129,8 +128,8 @@ public class FriendView extends ModulesView {
         mStatusText.setEllipsize(TextUtils.TruncateAt.END);
         mStatusText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-                .anchorLeftToLeft(mNameText)
-                .anchorTopToBottom(mNameText);
+                .setAlignLeft(mNameText)
+                .setBellowOf(mNameText);
 
         mContentGroup.addModule(mNameText);
         mContentGroup.addModule(mStatusText);
