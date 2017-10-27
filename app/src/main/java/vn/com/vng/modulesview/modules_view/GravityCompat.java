@@ -6,18 +6,18 @@ package vn.com.vng.modulesview.modules_view;
 
 public class GravityCompat {
     public static final int GRAVITY_NONE = 0;
-    public static final int LEFT = 0x00000001;
-    public static final int RIGHT = 0x00000010;
-    public static final int CENTER_HORIZONTAL = 0x00000011; // = LEFT | RIGHT
+    public static final int LEFT = 0b00000001;
+    public static final int RIGHT = 0b00000010;
+    public static final int CENTER_HORIZONTAL = 0b00000011; // = LEFT | RIGHT
 
-    public static final int TOP = 0x00000100;
-    public static final int BOTTOM = 0x00001000;
-    public static final int CENTER_VERTICAL = 0x00001100; // = TOP | BOTTOM
+    public static final int TOP = 0b00000100;
+    public static final int BOTTOM = 0b00001000;
+    public static final int CENTER_VERTICAL = 0b00001100; // = TOP | BOTTOM
 
     public static final int CENTER = CENTER_VERTICAL | CENTER_HORIZONTAL;
 
-    public static final int HORIZONTAL_MASK = 0x00000011;
-    public static final int VERTICAL_MASK = 0x00001100;
+    public static final int HORIZONTAL_MASK = 0b00000011;
+    public static final int VERTICAL_MASK = 0b00001100;
 
 
     public static boolean isHorizontalCenter(int gravity){

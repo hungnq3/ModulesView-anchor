@@ -121,9 +121,10 @@ public class Module {
     }
 
 
-    public void setBackgroundResId(int id){
+    public void setBackgroundResId(int id) {
         mBackgroundDrawable = ContextCompat.getDrawable(getContext(), id);
     }
+
     public Drawable getBackgroundDrawable() {
         return mBackgroundDrawable;
     }
@@ -134,9 +135,10 @@ public class Module {
     }
 
 
-    public boolean applyStateListBackground(){
+    public boolean applyStateListBackground() {
         return mBackgroundDrawable instanceof StateListDrawable && (clickable() || longClickable());
     }
+
     //-----------------listener-------------------------------------
     public void setOnClickListener(OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
@@ -381,7 +383,6 @@ public class Module {
         onLayout(changed, mLeft, mTop, mRight, mBottom);
 
 
-
         configModule();
     }
 
@@ -419,22 +420,27 @@ public class Module {
         mDeltaContentCoordinateY = 0;
 
         int gravity = mParams.getGravity();
-        if (GravityCompat.isNone(gravity) || (GravityCompat.isHorizontalLeft(gravity) && GravityCompat.isVerticalTop(gravity)))
-            return;
 
-        int dWidth = mWidth - (mContentWidth + getLayoutParams().getPaddingLeft() + getLayoutParams().getPaddingRight());
-        int dHeight = mHeight - (mContentHeight + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom());
-        if (dWidth != 0) {
-            if (GravityCompat.isHorizontalRight(gravity)) {
+        if (!GravityCompat.isHorizontalNone(gravity)) {
+            if (GravityCompat.isHorizontalLeft(gravity)) {
+                mDeltaContentCoordinateX = -mContentLeft;
+            } else if (GravityCompat.isHorizontalRight(gravity)) {
+                int dWidth = mWidth - (mContentWidth + getLayoutParams().getPaddingLeft() + getLayoutParams().getPaddingRight());
                 mDeltaContentCoordinateX = dWidth - mContentLeft;
             } else if (GravityCompat.isHorizontalCenter(gravity)) {
+                int dWidth = mWidth - (mContentWidth + getLayoutParams().getPaddingLeft() + getLayoutParams().getPaddingRight());
                 mDeltaContentCoordinateX = dWidth / 2 - mContentLeft;
             }
         }
-        if (dHeight != 0) {
-            if (GravityCompat.isVerticalBottom(gravity)) {
+
+        if (!GravityCompat.isVerticalNone(gravity)) {
+            if (GravityCompat.isVerticalTop(gravity)) {
+                mDeltaContentCoordinateY = -mContentTop;
+            } else if (GravityCompat.isVerticalBottom(gravity)) {
+                int dHeight = mHeight - (mContentHeight + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom());
                 mDeltaContentCoordinateY = dHeight - mContentTop;
             } else if (GravityCompat.isVerticalCenter(gravity)) {
+                int dHeight = mHeight - (mContentHeight + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom());
                 mDeltaContentCoordinateY = dHeight / 2 - mContentTop;
             }
         }
@@ -484,7 +490,7 @@ public class Module {
         boolean handled = false;
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-                if(applyStateListBackground())
+                if (applyStateListBackground())
                     updateBackgroundState(android.R.attr.state_pressed);
 
                 handled = clickable() || longClickable();
@@ -494,7 +500,7 @@ public class Module {
             }
 
             case MotionEvent.ACTION_UP: {
-                if(applyStateListBackground())
+                if (applyStateListBackground())
                     updateBackgroundState();
 
                 cancelLongClickWaiting();
@@ -504,7 +510,7 @@ public class Module {
                 break;
             }
             case MotionEvent.ACTION_CANCEL: {
-                if(applyStateListBackground())
+                if (applyStateListBackground())
                     updateBackgroundState();
 
                 cancelLongClickWaiting();
@@ -515,7 +521,7 @@ public class Module {
     }
 
     private void updateBackgroundState(int... states) {
-        if(mBackgroundDrawable instanceof StateListDrawable) {
+        if (mBackgroundDrawable instanceof StateListDrawable) {
             mBackgroundDrawable.setState(states);
             invalidate();
         }

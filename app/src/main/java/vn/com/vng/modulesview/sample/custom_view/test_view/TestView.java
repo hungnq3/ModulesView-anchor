@@ -39,10 +39,12 @@ public class TestView extends ModulesView {
     };
 
     private void init() {
-        setSize(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//        setSize(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        setSize(dp(400), dp(400));
 //        setGravity(GravityCompat.RIGHT);
         setPadding(dp(16),dp(16),dp(8),dp(8));
         setBackgroundColor(0xffdddddd);
+        setGravity(GravityCompat.LEFT | GravityCompat.TOP);
 
 
         mGroup1 = new GroupModule(getContext());
@@ -57,7 +59,7 @@ public class TestView extends ModulesView {
                 .setPadding(dp(8))
                 .setMargin(dp(8),dp(8),dp(16),dp(16))
                 .setCenterInParent(true)
-                .setGravity(GravityCompat.RIGHT | GravityCompat.BOTTOM)
+                .setGravity(GravityCompat.LEFT | GravityCompat.BOTTOM)
                 .setDimensions(dp(100), dp(100));
 
         mText1 = new TextModule(getContext());
@@ -81,6 +83,7 @@ public class TestView extends ModulesView {
         mGroup2 = new GroupModule(getContext());
         mGroup2.setBackgroundColor(0xff556677);
         mGroup2.getLayoutParams()
+                .setGravity(GravityCompat.TOP)
                 .setDimensions(LayoutParams.WRAP_CONTENT, dp(100))
                 .setMargin(dp(4))
                 .anchorLeftToRight(mGroup1)

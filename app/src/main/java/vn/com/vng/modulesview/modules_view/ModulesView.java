@@ -210,7 +210,6 @@ public class ModulesView extends View implements Parent {
     }
 
 
-
     protected final void setContentBounds(int left, int top, int right, int bottom) {
         mContentLeft = left;
         mContentTop = top;
@@ -246,22 +245,27 @@ public class ModulesView extends View implements Parent {
         dX = 0;
         dY = 0;
         int gravity = getGravity();
-        if (GravityCompat.isNone(gravity) || (GravityCompat.isHorizontalLeft(gravity) && GravityCompat.isVerticalTop(gravity)))
-            return;
 
-        int dWidth = getWidth() - (mContentWidth + getPaddingLeft() + getPaddingRight());
-        int dHeight = getHeight() - (mContentHeight + getPaddingTop() + getPaddingBottom());
-        if (dWidth != 0) {
-            if (GravityCompat.isHorizontalRight(gravity)) {
+        if (!GravityCompat.isHorizontalNone(gravity)) {
+            if (GravityCompat.isHorizontalLeft(gravity)) {
+                dX = -mContentLeft;
+            } else if (GravityCompat.isHorizontalRight(gravity)) {
+                int dWidth = getWidth() - (mContentWidth + getPaddingLeft() + getPaddingRight());
                 dX = dWidth - mContentLeft;
             } else if (GravityCompat.isHorizontalCenter(gravity)) {
+                int dWidth = getWidth() - (mContentWidth + getPaddingLeft() + getPaddingRight());
                 dX = dWidth / 2 - mContentLeft;
             }
         }
-        if (dHeight != 0) {
-            if (GravityCompat.isVerticalBottom(gravity)) {
+
+        if (!GravityCompat.isVerticalNone(gravity)) {
+            if (GravityCompat.isVerticalTop(gravity)) {
+                dY = -mContentTop;
+            } else if (GravityCompat.isVerticalBottom(gravity)) {
+                int dHeight = getHeight() - (mContentHeight + getPaddingTop() + getPaddingBottom());
                 dY = dHeight - mContentTop;
             } else if (GravityCompat.isVerticalCenter(gravity)) {
+                int dHeight = getHeight() - (mContentHeight + getPaddingTop() + getPaddingBottom());
                 dY = dHeight / 2 - mContentTop;
             }
         }
@@ -270,7 +274,7 @@ public class ModulesView extends View implements Parent {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(getWidth()<=0 || getHeight() <=0  || mContentWidth <= 0 || mContentHeight <= 0)
+        if (getWidth() <= 0 || getHeight() <= 0 || mContentWidth <= 0 || mContentHeight <= 0)
             return;
 //        int countToRestore = canvas.save();
 //        canvas.translate(mDeltaContentCoordinateX + getPaddingLeft(), mDeltaContentCoordinateY + getPaddingTop());
@@ -314,8 +318,7 @@ public class ModulesView extends View implements Parent {
                 if (mTouchFocusModule != null) {
                     if (checkEventRegion(mTouchFocusModule, event)) {
                         handle = mTouchFocusModule.onTouchEvent(event);
-                    }
-                    else {
+                    } else {
                         MotionEvent e = MotionEvent.obtain(event);
                         e.setAction(MotionEvent.ACTION_CANCEL);
                         handle = mTouchFocusModule.onTouchEvent(e);
@@ -375,7 +378,7 @@ public class ModulesView extends View implements Parent {
 
     @Override
     public int getChildCoordinateX() {
-        return  getPaddingLeft() + dX;
+        return getPaddingLeft() + dX;
     }
 
     @Override
