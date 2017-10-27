@@ -6,7 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -118,6 +120,10 @@ public class Module {
         mBackgroundDrawable = new BitmapDrawable(null, backgroundBitmap);
     }
 
+
+    public void setBackgroundResId(int id){
+        mBackgroundDrawable = ContextCompat.getDrawable(getContext(), id);
+    }
     public Drawable getBackgroundDrawable() {
         return mBackgroundDrawable;
     }
@@ -128,6 +134,9 @@ public class Module {
     }
 
 
+    public boolean applyStateListBackground(){
+        return mBackgroundDrawable instanceof StateListDrawable && (clickable() || longClickable());
+    }
     //-----------------listener-------------------------------------
     public void setOnClickListener(OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
@@ -475,14 +484,19 @@ public class Module {
         boolean handled = false;
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-                handled = clickable() || longClickable();
+                if(applyStateListBackground())
+                    updateBackgroundState(android.R.attr.state_pressed);
 
+                handled = clickable() || longClickable();
                 if (longClickable())
                     startWaitingLongClick();
                 break;
             }
 
             case MotionEvent.ACTION_UP: {
+                if(applyStateListBackground())
+                    updateBackgroundState();
+
                 cancelLongClickWaiting();
                 handled = clickable();
                 if (clickable())
@@ -490,11 +504,21 @@ public class Module {
                 break;
             }
             case MotionEvent.ACTION_CANCEL: {
+                if(applyStateListBackground())
+                    updateBackgroundState();
+
                 cancelLongClickWaiting();
                 break;
             }
         }
         return handleTouchEvent(e) || handled;
+    }
+
+    private void updateBackgroundState(int... states) {
+        if(mBackgroundDrawable instanceof StateListDrawable) {
+            mBackgroundDrawable.setState(states);
+            invalidate();
+        }
     }
 
 

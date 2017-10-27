@@ -9,6 +9,35 @@
     android:orientation="vertical"
     tools:context="vn.com.vng.modulesview.MainActivity">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+    </LinearLayout>
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"

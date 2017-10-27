@@ -4,7 +4,7 @@ import android.widget.Toast;
 
 import vn.com.vng.modulesview.modules_view.Module;
 import vn.com.vng.modulesview.sample.adapter.view_item.SocialFooterViewItem;
-import vn.com.vng.modulesview.sample.social_view.SocialFooterView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.SocialFooterView;
 
 /**
  * Created by HungNQ on 15/09/2017.

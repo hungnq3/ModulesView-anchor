@@ -1,4 +1,4 @@
-package vn.com.vng.modulesview.sample.test_view;
+package vn.com.vng.modulesview.sample.custom_view.test_view;
 
 import android.content.Context;
 import android.view.ViewGroup;

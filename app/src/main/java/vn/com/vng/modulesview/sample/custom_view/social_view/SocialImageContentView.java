@@ -1,4 +1,4 @@
-package vn.com.vng.modulesview.sample.social_view;
+package vn.com.vng.modulesview.sample.custom_view.social_view;
 
 import android.app.Activity;
 import android.content.Context;

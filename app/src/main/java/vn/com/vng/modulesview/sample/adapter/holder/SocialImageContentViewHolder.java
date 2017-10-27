@@ -1,7 +1,7 @@
 package vn.com.vng.modulesview.sample.adapter.holder;
 
 import vn.com.vng.modulesview.sample.adapter.view_item.SocialImageContentViewItem;
-import vn.com.vng.modulesview.sample.social_view.SocialImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.SocialImageContentView;
 
 /**
  * Created by HungNQ on 15/09/2017.

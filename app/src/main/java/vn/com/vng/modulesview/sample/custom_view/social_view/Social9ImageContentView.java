@@ -1,4 +1,4 @@
-package vn.com.vng.modulesview.sample.social_view;
+package vn.com.vng.modulesview.sample.custom_view.social_view;
 
 import android.content.Context;
 import android.os.Build;
@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 
 import java.util.List;
 
-import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 
 /**

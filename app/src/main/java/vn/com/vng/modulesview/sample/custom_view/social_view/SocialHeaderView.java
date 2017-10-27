@@ -1,11 +1,10 @@
-package vn.com.vng.modulesview.sample.social_view;
+package vn.com.vng.modulesview.sample.custom_view.social_view;
 
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.view.View;
 
 import vn.com.vng.modulesview.R;
 import vn.com.vng.modulesview.modules_view.widget.ImageModule;

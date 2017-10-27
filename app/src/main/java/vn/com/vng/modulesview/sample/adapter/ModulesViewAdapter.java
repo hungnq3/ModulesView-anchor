@@ -7,6 +7,7 @@ import java.util.List;
 
 import vn.com.vng.modulesview.sample.adapter.holder.BaseViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.ChatHeaderViewHolder;
+import vn.com.vng.modulesview.sample.adapter.holder.FriendViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.GroupChatHeaderViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialFooterViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.SocialHeaderViewHolder;
@@ -14,22 +15,23 @@ import vn.com.vng.modulesview.sample.adapter.holder.SocialImageContentViewHolder
 import vn.com.vng.modulesview.sample.adapter.holder.SocialTextContentViewHolder;
 import vn.com.vng.modulesview.sample.adapter.holder.TestViewHolder;
 import vn.com.vng.modulesview.sample.adapter.view_item.BaseViewItem;
-import vn.com.vng.modulesview.sample.chat_view.ChatHeaderView;
-import vn.com.vng.modulesview.sample.chat_view.GroupChatHeaderView;
-import vn.com.vng.modulesview.sample.social_view.Social1ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.Social2ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.Social3ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.Social4ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.Social5ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.Social6ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.Social7ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.Social8ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.Social9ImageContentView;
-import vn.com.vng.modulesview.sample.social_view.SocialContentTextView;
-import vn.com.vng.modulesview.sample.social_view.SocialFooterView;
-import vn.com.vng.modulesview.sample.social_view.SocialHeaderView;
-import vn.com.vng.modulesview.sample.social_view.SocialImageContentView;
-import vn.com.vng.modulesview.sample.test_view.TestView;
+import vn.com.vng.modulesview.sample.custom_view.chat_view.ChatHeaderView;
+import vn.com.vng.modulesview.sample.custom_view.chat_view.GroupChatHeaderView;
+import vn.com.vng.modulesview.sample.custom_view.friend_list.FriendView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social1ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social2ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social3ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social4ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social5ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social6ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social7ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social8ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.Social9ImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.SocialContentTextView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.SocialFooterView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.SocialHeaderView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.SocialImageContentView;
+import vn.com.vng.modulesview.sample.custom_view.test_view.TestView;
 
 /**
  * Created by HungNQ on 15/09/2017.
@@ -109,6 +111,10 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
             case ViewType.GROUP_CHAT_HEADER:{
                 holder = new GroupChatHeaderViewHolder(new GroupChatHeaderView(parent.getContext()));
+                break;
+            }
+            case ViewType.FRIEND_ITEM:{
+                holder = new FriendViewHolder(new FriendView(parent.getContext()));
                 break;
             }
         }

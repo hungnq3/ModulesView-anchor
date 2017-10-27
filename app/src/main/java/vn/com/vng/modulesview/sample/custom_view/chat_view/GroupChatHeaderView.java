@@ -1,13 +1,10 @@
-package vn.com.vng.modulesview.sample.chat_view;
+package vn.com.vng.modulesview.sample.custom_view.chat_view;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.TextUtils;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.ViewGroup;
 
 import vn.com.vng.modulesview.R;

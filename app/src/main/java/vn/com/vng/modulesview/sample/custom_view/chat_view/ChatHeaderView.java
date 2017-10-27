@@ -1,4 +1,4 @@
-package vn.com.vng.modulesview.sample.chat_view;
+package vn.com.vng.modulesview.sample.custom_view.chat_view;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -6,7 +6,6 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;

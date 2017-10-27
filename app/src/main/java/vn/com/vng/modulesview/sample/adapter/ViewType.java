@@ -25,5 +25,6 @@ public class ViewType {
 
     public static final int CHAT_HEADER = 1014;
     public static final int GROUP_CHAT_HEADER = 1015;
+    public static final int FRIEND_ITEM = 1016;
 
 }

@@ -1,9 +1,7 @@
 package vn.com.vng.modulesview.sample.adapter.holder;
 
-import android.view.View;
-
 import vn.com.vng.modulesview.sample.adapter.view_item.ChatHeaderViewItem;
-import vn.com.vng.modulesview.sample.chat_view.ChatHeaderView;
+import vn.com.vng.modulesview.sample.custom_view.chat_view.ChatHeaderView;
 
 /**
  * Created by HungNQ on 23/10/2017.

@@ -4,7 +4,7 @@ import android.widget.Toast;
 
 import vn.com.vng.modulesview.modules_view.Module;
 import vn.com.vng.modulesview.sample.adapter.view_item.SocialHeaderViewItem;
-import vn.com.vng.modulesview.sample.social_view.SocialHeaderView;
+import vn.com.vng.modulesview.sample.custom_view.social_view.SocialHeaderView;
 
 /**
  * Created by HungNQ on 15/09/2017.

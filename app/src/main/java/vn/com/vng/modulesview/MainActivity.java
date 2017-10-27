@@ -12,10 +12,11 @@ import java.util.List;
 import java.util.Random;
 
 import vn.com.vng.modulesview.sample.adapter.view_item.ChatHeaderViewItem;
+import vn.com.vng.modulesview.sample.adapter.view_item.FriendViewItem;
 import vn.com.vng.modulesview.sample.adapter.view_item.GroupChatHeaderViewItem;
 import vn.com.vng.modulesview.sample.adapter.view_item.TestViewItem;
-import vn.com.vng.modulesview.sample.chat_view.GroupChatHeaderView;
 import vn.com.vng.modulesview.sample.model.ChatHeaderModel;
+import vn.com.vng.modulesview.sample.model.FriendModel;
 import vn.com.vng.modulesview.sample.model.GroupChatHeaderModel;
 import vn.com.vng.modulesview.sample.model.SocialModel;
 import vn.com.vng.modulesview.sample.adapter.ModulesViewAdapter;
@@ -136,7 +137,16 @@ public class MainActivity extends AppCompatActivity {
 
         List<BaseViewItem> items = new ArrayList<>(40);
 
-//        items.add(new TestViewItem());\
+        items.add(new TestViewItem());
+
+        items.add(mockFriendViewItem(getRandomImg(), getRandomName(), null, true));
+        items.add(mockFriendViewItem(getRandomImg(), getRandomName(), getRandomMsg(), true));
+        items.add(mockFriendViewItem(getRandomImg(), getRandomName(), getRandomMsg(), true));
+        items.add(mockFriendViewItem(getRandomImg(), getRandomName(), "", true));
+        items.add(mockFriendViewItem(getRandomImg(), getRandomName(), null, false));
+        items.add(mockFriendViewItem(getRandomImg(), getRandomName(), null, false));
+        items.add(mockFriendViewItem(getRandomImg(), getRandomName(), null, false));
+        items.add(mockFriendViewItem(getRandomImg(), getRandomName(), null, false));
 
         items.add(mockGroupChatHeaderModel(getRandomImgs(3), getRandomName(), getRandomMsg(), getRandomChatTime(), 3, true));
         items.add(mockGroupChatHeaderModel(getRandomImgs(4), getRandomName(), getRandomMsg(), getRandomChatTime(), 4, false));
@@ -200,6 +210,15 @@ public class MainActivity extends AppCompatActivity {
         ChatHeaderModel model = new ChatHeaderModel(avatar, name, message, time, newCount, notificationOff);
         return new ChatHeaderViewItem(model);
     }
+
+
+
+    private FriendViewItem mockFriendViewItem(String avatar, String name, String status, boolean online) {
+        FriendModel model = new FriendModel(avatar, name, status, online);
+        return new FriendViewItem(model);
+    }
+
+
 
 
 }
