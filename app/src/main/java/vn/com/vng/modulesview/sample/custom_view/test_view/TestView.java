@@ -122,7 +122,7 @@ public class TestView extends ModulesView {
                 .setMarginTop(dp(8))
                 .setPadding(dp(4))
                 .setAlignParentLeft(true)
-                .setToLeftOf(new Guideline(mText5).setXPercent(1 / 3f))
+                .setToLeftOf(new Guideline().setXPercent(1 / 3f))
                 .setBellowOf(new Fence(mGroup1, mGroup2));
 
 
