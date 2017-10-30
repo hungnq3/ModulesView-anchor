@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="vn.com.vng.modulesview.MainActivity">
+    tools:context="vn.com.vng.modulesview_sample.MainActivity">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -40,7 +40,6 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
-        android:paddingTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
