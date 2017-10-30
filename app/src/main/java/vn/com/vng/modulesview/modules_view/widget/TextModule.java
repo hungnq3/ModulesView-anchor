@@ -226,8 +226,10 @@ public class TextModule extends Module {
         canvas.save();
 
         //clip drawing region
-        int left = getCoordinateX() + getLayoutParams().getPaddingLeft() + mDeltaContentCoordinateX;
-        int top = getCoordinateY() + getLayoutParams().getPaddingTop() + mDeltaContentCoordinateY;
+//        int left = getCoordinateX() + getLayoutParams().getPaddingLeft() + dX;
+//        int top = getCoordinateY() + getLayoutParams().getPaddingTop() + dY;
+        int left = getLeft() + getLayoutParams().getPaddingLeft() + dX;
+        int top = getTop() + getLayoutParams().getPaddingTop() + dY;
         canvas.translate(left, top);
 
         canvas.clipRect(0, 0, getWidth() - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight(), getHeight() - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom());

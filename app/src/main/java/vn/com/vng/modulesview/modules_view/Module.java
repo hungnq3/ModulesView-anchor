@@ -37,8 +37,9 @@ public class Module {
     private int mLeft, mTop, mRight, mBottom;
     private int mContentWidth, mContentHeight;
     protected int mContentLeft, mContentTop, mContentRight, mContentBottom;
+    protected int dX, dY;
+
     private int mCoordinateX, mCoordinateY;
-    protected int mDeltaContentCoordinateX, mDeltaContentCoordinateY;
 
     private Drawable mBackgroundDrawable;
 
@@ -414,32 +415,32 @@ public class Module {
         if (mWidth <= 0 || mHeight <= 0 || mContentWidth <= 0 || mContentHeight <= 0)
             return;
 
-        mDeltaContentCoordinateX = 0;
-        mDeltaContentCoordinateY = 0;
+        dX = 0;
+        dY = 0;
 
         int gravity = mParams.getGravity();
 
         if (!GravityCompat.isHorizontalNone(gravity)) {
             if (GravityCompat.isHorizontalLeft(gravity)) {
-                mDeltaContentCoordinateX = -mContentLeft;
+                dX = -mContentLeft;
             } else if (GravityCompat.isHorizontalRight(gravity)) {
                 int dWidth = mWidth - (mContentWidth + getLayoutParams().getPaddingLeft() + getLayoutParams().getPaddingRight());
-                mDeltaContentCoordinateX = dWidth - mContentLeft;
+                dX = dWidth - mContentLeft;
             } else if (GravityCompat.isHorizontalCenter(gravity)) {
                 int dWidth = mWidth - (mContentWidth + getLayoutParams().getPaddingLeft() + getLayoutParams().getPaddingRight());
-                mDeltaContentCoordinateX = dWidth / 2 - mContentLeft;
+                dX = dWidth / 2 - mContentLeft;
             }
         }
 
         if (!GravityCompat.isVerticalNone(gravity)) {
             if (GravityCompat.isVerticalTop(gravity)) {
-                mDeltaContentCoordinateY = -mContentTop;
+                dY = -mContentTop;
             } else if (GravityCompat.isVerticalBottom(gravity)) {
                 int dHeight = mHeight - (mContentHeight + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom());
-                mDeltaContentCoordinateY = dHeight - mContentTop;
+                dY = dHeight - mContentTop;
             } else if (GravityCompat.isVerticalCenter(gravity)) {
                 int dHeight = mHeight - (mContentHeight + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom());
-                mDeltaContentCoordinateY = dHeight / 2 - mContentTop;
+                dY = dHeight / 2 - mContentTop;
             }
         }
     }
@@ -449,26 +450,31 @@ public class Module {
         if (getWidth() <= 0 || getHeight() <= 0)
             return;
         drawBackground(canvas);
-        int saveToRestore = canvas.save();
-        int left = getCoordinateX() + getLayoutParams().getPaddingLeft();
-        int top = getCoordinateY() + getLayoutParams().getPaddingTop();
-        int right = left + mWidth - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight();
-        int bottom = top + mHeight - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom();
-        canvas.clipRect(left, top, right, bottom);
-//        canvas.translate(mDeltaContentCoordinateX + getLayoutParams().getPaddingLeft(), mDeltaContentCoordinateY + getLayoutParams().getPaddingTop());
+
+//        int saveToRestore = canvas.save();
+//        int left = getCoordinateX() + getLayoutParams().getPaddingLeft();
+//        int top = getCoordinateY() + getLayoutParams().getPaddingTop();
+//        int right = left + mWidth - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight();
+//        int bottom = top + mHeight - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom();
+//        canvas.clipRect(left, top, right, bottom);
+
         onDraw(canvas);
-        canvas.restoreToCount(saveToRestore);
+        dispatchDraw(canvas);
+
+//        canvas.restoreToCount(saveToRestore);
     }
+
 
 
     void drawBackground(Canvas canvas) {
         if (canvas != null && mBackgroundDrawable != null) {
             if (mWidth > 0 && mHeight > 0) {
-                int left = getCoordinateX();
-                int top = getCoordinateY();
-                int right = left + mWidth;
-                int bottom = top + mHeight;
-                mBackgroundDrawable.setBounds(left, top, right, bottom);
+//                int left = getCoordinateX();
+//                int top = getCoordinateY();
+//                int right = left + mWidth;
+//                int bottom = top + mHeight;
+//                mBackgroundDrawable.setBounds(left, top, right, bottom);
+                mBackgroundDrawable.setBounds(mLeft, mTop, mRight, mBottom);
                 mBackgroundDrawable.draw(canvas);
             }
         }
@@ -476,6 +482,10 @@ public class Module {
 
 
     protected void onDraw(Canvas canvas) {
+
+    }
+
+    protected void dispatchDraw(Canvas canvas) {
 
     }
 

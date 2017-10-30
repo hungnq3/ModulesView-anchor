@@ -43,12 +43,12 @@ public class GroupModule extends Module implements Parent {
 
     @Override
     public int getChildCoordinateX() {
-        return getCoordinateX() + mDeltaContentCoordinateX + getPaddingLeft();
+        return getCoordinateX() + dX + getPaddingLeft();
     }
 
     @Override
     public int getChildCoordinateY() {
-        return getCoordinateY() + mDeltaContentCoordinateY + getPaddingTop();
+        return getCoordinateY() + dY + getPaddingTop();
     }
 
     @Override
@@ -236,16 +236,25 @@ public class GroupModule extends Module implements Parent {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
 
-//        int countToRestore = canvas.save();
-//        canvas.translate(getLeft(), getTop());
+        int saveToRestore = canvas.save();
+//        int left = getCoordinateX() + getLayoutParams().getPaddingLeft();
+//        int top = getCoordinateY() + getLayoutParams().getPaddingTop();
+        int left = getLeft() + getLayoutParams().getPaddingLeft();
+        int top = getTop() + getLayoutParams().getPaddingTop();
+        int right = left + getWidth() - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight();
+        int bottom = top + getHeight() - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom();
+        canvas.clipRect(left, top, right, bottom);
+        canvas.translate(left + dX, top + dY);
+
         for (Module module : mModules) {
             if (module.getLayoutParams().getVisibility() == LayoutParams.VISIBLE)
                 module.draw(canvas);
         }
-//        canvas.restoreToCount(countToRestore);
+
+        canvas.restoreToCount(saveToRestore);
     }
 
     @Override
@@ -310,7 +319,6 @@ public class GroupModule extends Module implements Parent {
      */
 
     private boolean checkEventRegion(Module module, MotionEvent event) {
-
         int x = (int) (event.getX() - getChildCoordinateX());
         int y = (int) (event.getY() - getChildCoordinateY());
         return x < module.getRight() && x > module.getLeft()

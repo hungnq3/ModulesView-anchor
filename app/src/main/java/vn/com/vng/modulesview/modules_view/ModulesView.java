@@ -276,13 +276,21 @@ public class ModulesView extends View implements Parent {
         super.onDraw(canvas);
         if (getWidth() <= 0 || getHeight() <= 0 || mContentWidth <= 0 || mContentHeight <= 0)
             return;
-//        int countToRestore = canvas.save();
-//        canvas.translate(mDeltaContentCoordinateX + getPaddingLeft(), mDeltaContentCoordinateY + getPaddingTop());
+        int countToRestore = canvas.save();
+
+        int left = getPaddingLeft();
+        int top = getPaddingTop();
+        int right = left + getWidth() - getPaddingLeft() - getPaddingRight();
+        int bottom = top + getHeight() - getPaddingTop() - getPaddingBottom();
+        canvas.clipRect(left, top, right, bottom);
+        canvas.translate(dX + getPaddingLeft(), dY + getPaddingTop());
+
         for (Module module : mModules) {
             if (module.getLayoutParams().getVisibility() == LayoutParams.VISIBLE)
                 module.draw(canvas);
         }
-//        canvas.restoreToCount(countToRestore);
+
+        canvas.restoreToCount(countToRestore);
     }
 
     @Override

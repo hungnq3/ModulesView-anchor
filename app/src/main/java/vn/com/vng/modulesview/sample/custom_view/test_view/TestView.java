@@ -1,9 +1,12 @@
 package vn.com.vng.modulesview.sample.custom_view.test_view;
 
 import android.content.Context;
+import android.media.Image;
+import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.widget.Toast;
 
+import vn.com.vng.modulesview.R;
 import vn.com.vng.modulesview.modules_view.Fence;
 import vn.com.vng.modulesview.modules_view.GravityCompat;
 import vn.com.vng.modulesview.modules_view.GroupModule;
@@ -11,6 +14,7 @@ import vn.com.vng.modulesview.modules_view.Guideline;
 import vn.com.vng.modulesview.modules_view.LayoutParams;
 import vn.com.vng.modulesview.modules_view.Module;
 import vn.com.vng.modulesview.modules_view.ModulesView;
+import vn.com.vng.modulesview.modules_view.widget.ImageModule;
 import vn.com.vng.modulesview.modules_view.widget.TextModule;
 
 /**
@@ -30,6 +34,7 @@ public class TestView extends ModulesView {
     TextModule mText3;
     TextModule mText4;
     TextModule mText5;
+    ImageModule mImageModule;
 
     Module.OnClickListener mOnClickListener = new Module.OnClickListener() {
         @Override
@@ -41,7 +46,7 @@ public class TestView extends ModulesView {
     private void init() {
 //        setSize(ViewGroup.LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         setSize(dp(400), dp(400));
-//        setPadding(dp(16),dp(16),dp(8),dp(8));
+        setPadding(dp(16),dp(16),dp(8),dp(8));
         setBackgroundColor(0xffdddddd);
 //        setGravity(GravityCompat.CENTER_HORIZONTAL | GravityCompat.TOP);
 
@@ -55,10 +60,10 @@ public class TestView extends ModulesView {
             }
         });
         mGroup1.getLayoutParams()
-                .setPadding(dp(8))
+                .setPadding(dp(8), dp(8),dp(8),dp(16))
                 .setMargin(dp(8),dp(8),dp(16),dp(16))
                 .setCenterInParent(true)
-                .setGravity(GravityCompat.LEFT | GravityCompat.BOTTOM)
+                .setGravity(GravityCompat.RIGHT | GravityCompat.BOTTOM)
                 .setDimensions(dp(100), dp(100));
 
         mText1 = new TextModule(getContext());
@@ -83,8 +88,9 @@ public class TestView extends ModulesView {
         mGroup2.setBackgroundColor(0xff556677);
         mGroup2.getLayoutParams()
                 .setGravity(GravityCompat.CENTER)
-                .setDimensions(LayoutParams.WRAP_CONTENT, dp(100))
+                .setDimensions(dp(200), dp(100))
                 .setMargin(dp(4))
+                .setPadding(dp(4))
                 .setToRightOf(mGroup1)
                 .setBellowOf(mGroup1);
 
@@ -96,7 +102,7 @@ public class TestView extends ModulesView {
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         mText4 = new TextModule(getContext());
-        mText4.setText("TEXT 4 123 123 123                        123 123213213123 2 123 123 123 1233 123 123");
+        mText4.setText("TEXT 4 123 123 12112312312312312323 123");
         mText4.setOnClickListener(mOnClickListener);
         mText4.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
@@ -120,9 +126,16 @@ public class TestView extends ModulesView {
                 .setBellowOf(new Fence(mGroup1, mGroup2));
 
 
+        mImageModule = new ImageModule(getContext());
+        mImageModule.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_heart));
+        mImageModule.setScaleType(ImageModule.FIT_CENTER);
+        mImageModule.getLayoutParams()
+                .setDimensions(dp(100),dp(100));
         addModule(mGroup1);
         addModule(mGroup2);
 //        addModule(mText5);
+
+        addModule(mImageModule);
 
     }
 }
