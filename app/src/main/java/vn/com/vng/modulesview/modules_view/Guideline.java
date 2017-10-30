@@ -9,19 +9,13 @@ public class Guideline {
     private float mXPercent;
     private float mYPercent;
 
-    private Module mModule;
 
-    public Guideline(Module module) {
-        mModule = module;
+    public Guideline() {
     }
 
-    public Module getModule() {
-        return mModule;
-    }
-
-    public Guideline setModule(Module module) {
-        mModule = module;
-        return this;
+    public Guideline(float XPercent, float YPercent) {
+        mXPercent = XPercent;
+        mYPercent = YPercent;
     }
 
     public int getdX() {
@@ -68,24 +62,6 @@ public class Guideline {
         else
             mYPercent = bias;
         return this;
-    }
-
-    public int getXValue() {
-        int value = dX;
-        if (mModule != null && mModule.getParent() != null) {
-            Parent parent = mModule.getParent();
-            value += parent.getCurrentWidth() * mXPercent;
-        }
-        return value;
-    }
-
-    public int getYValue() {
-        int value = dY;
-        if (mModule != null && mModule.getParent() != null) {
-            Parent parent = mModule.getParent();
-            value += parent.getCurrentHeight() * mYPercent;
-        }
-        return value;
     }
 
 }

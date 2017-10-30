@@ -6,10 +6,21 @@ package vn.com.vng.modulesview.modules_view;
 
 class GuideLineAnchor extends Anchor {
 
+    private Module mModule;
     private Guideline mGuideline;
-    public GuideLineAnchor(Guideline guideline, @AnchorType int anchorType) {
+
+    public GuideLineAnchor(Module module, Guideline guideline, @AnchorType int anchorType) {
         super(anchorType);
+        mModule = module;
         mGuideline = guideline;
+    }
+
+    public Module getModule() {
+        return mModule;
+    }
+
+    public void setModule(Module module) {
+        mModule = module;
     }
 
     public Guideline getGuideline() {
@@ -20,23 +31,48 @@ class GuideLineAnchor extends Anchor {
         mGuideline = guideline;
     }
 
+
+
+    public int getXValue() {
+        if(mGuideline == null || mModule == null || mModule.getParent() == null)
+            return  0;
+        int value = mGuideline.getdX();
+        if (mModule != null && mModule.getParent() != null) {
+            Parent parent = mModule.getParent();
+            value += parent.getCurrentWidth() * mGuideline.getXPercent();
+        }
+        return value;
+    }
+
+    public int getYValue() {
+        if(mGuideline == null || mModule == null || mModule.getParent() == null)
+            return  0;
+        int value = mGuideline.getdY();
+        if (mModule != null && mModule.getParent() != null) {
+            Parent parent = mModule.getParent();
+            value += parent.getCurrentHeight() * mGuideline.getYPercent();
+        }
+        return value;
+    }
+
+
     @Override
     public int getLeft() {
-        return mGuideline != null ? mGuideline.getXValue() : 0;
+        return getXValue();
     }
 
     @Override
     public int getTop() {
-        return mGuideline != null ? mGuideline.getYValue() : 0;
+        return getYValue();
     }
 
     @Override
     public int getRight() {
-        return mGuideline != null ? mGuideline.getXValue() : 0;
+        return getXValue();
     }
 
     @Override
     public int getBottom() {
-        return mGuideline != null ? mGuideline.getYValue() : 0;
+        return getYValue();
     }
 }

@@ -260,7 +260,7 @@ public class LayoutParams {
             ((GuideLineAnchor) mAnchorLeft).setGuideline(guideline);
             mAnchorLeft.setAnchorType(Anchor.ANCHOR_LEFT);
         } else {
-            mAnchorLeft = new GuideLineAnchor(guideline, Anchor.ANCHOR_LEFT);
+            mAnchorLeft = new GuideLineAnchor(mModule, guideline, Anchor.ANCHOR_LEFT);
         }
         return this;
     }
@@ -358,7 +358,7 @@ public class LayoutParams {
             ((GuideLineAnchor) mAnchorTop).setGuideline(guideline);
             mAnchorTop.setAnchorType(Anchor.ANCHOR_TOP);
         } else {
-            mAnchorTop = new GuideLineAnchor(guideline, Anchor.ANCHOR_TOP);
+            mAnchorTop = new GuideLineAnchor(mModule, guideline, Anchor.ANCHOR_TOP);
         }
         return this;
     }
@@ -456,7 +456,7 @@ public class LayoutParams {
             ((GuideLineAnchor) mAnchorRight).setGuideline(guideline);
             mAnchorRight.setAnchorType(Anchor.ANCHOR_RIGHT);
         } else {
-            mAnchorRight = new GuideLineAnchor(guideline, Anchor.ANCHOR_RIGHT);
+            mAnchorRight = new GuideLineAnchor(mModule, guideline, Anchor.ANCHOR_RIGHT);
         }
         return this;
     }
@@ -557,7 +557,7 @@ public class LayoutParams {
             ((GuideLineAnchor) mAnchorBottom).setGuideline(guideline);
             mAnchorBottom.setAnchorType(Anchor.ANCHOR_BOTTOM);
         } else {
-            mAnchorBottom = new GuideLineAnchor(guideline, Anchor.ANCHOR_BOTTOM);
+            mAnchorBottom = new GuideLineAnchor(mModule, guideline, Anchor.ANCHOR_BOTTOM);
         }
         return this;
     }

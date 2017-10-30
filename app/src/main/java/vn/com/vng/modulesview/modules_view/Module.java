@@ -136,7 +136,7 @@ public class Module {
     }
 
 
-    public boolean applyStateListBackground() {
+    protected boolean applyStateListBackground() {
         return mBackgroundDrawable instanceof StateListDrawable && (clickable() || longClickable());
     }
 
@@ -147,6 +147,14 @@ public class Module {
 
     public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
         mOnLongClickListener = onLongClickListener;
+    }
+
+    public OnTouchListener getOnTouchListener() {
+        return mOnTouchListener;
+    }
+
+    public void setOnTouchListener(OnTouchListener onTouchListener) {
+        mOnTouchListener = onTouchListener;
     }
 
 
@@ -608,14 +616,6 @@ public class Module {
 
     public interface OnTouchListener {
         boolean onTouch(Module module, MotionEvent event);
-    }
-
-    public OnTouchListener getOnTouchListener() {
-        return mOnTouchListener;
-    }
-
-    public void setOnTouchListener(OnTouchListener onTouchListener) {
-        mOnTouchListener = onTouchListener;
     }
 
     //--------------endregion--------------------------
