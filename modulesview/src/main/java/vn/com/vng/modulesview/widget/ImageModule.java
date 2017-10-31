@@ -188,13 +188,10 @@ public class ImageModule extends Module {
             return;
 
         if (mDrawable != null)
-            switch (mScaleType) {
-                case CENTER_CROP:
-                    setBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), false));
-                    break;
-                default:
-                    setBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), true));
-            }
+            if (mScaleType == CENTER_CROP)
+                setBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), false));
+            else
+                setBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), true));
 
         configureImageBounds();
         configureDrawRegionPath();
