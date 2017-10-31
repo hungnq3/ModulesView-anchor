@@ -135,8 +135,6 @@ public class ImageModule extends Module {
                 int contentHeight = heightMode == DIMENSION_MODE_AT_MOST ? Math.min(height, imageHeight) : imageHeight;
 
                 setContentDimensions(contentWidth, contentHeight);
-
-
             } else if (widthMode == DIMENSION_MODE_EXACTLY && heightMode != DIMENSION_MODE_EXACTLY) {
                 int imageWidth = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicWidth();
                 int imageHeight = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicHeight();
@@ -146,7 +144,7 @@ public class ImageModule extends Module {
 
                 if (mScaleType == CENTER) //  Image bitmap no scale for this type
                     contentHeight = imageHeight;
-                else if (mScaleType == CENTER_INSIDE && imageWidth < width)
+                else if (mScaleType == CENTER_INSIDE && imageWidth < width) //  Image bitmap no scale when bitmap size < view size
                     contentHeight = imageHeight;
                 else
                     contentHeight = imageWidth == 0 ? 0 : (int) ((imageHeight / (float) imageWidth) * contentWidth);
