@@ -5,13 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.text.TextUtils;
 
-import com.facebook.fbui.textlayoutbuilder.TextLayoutBuilder;
 
 import vn.com.vng.modulesview.Module;
+import vn.com.vng.modulesview.widget.text_layout_builder.TextLayoutBuilder;
 
 
 /**
@@ -38,7 +36,6 @@ public class TextModule extends Module {
     private TextUtils.TruncateAt mEllipsize;
     private Typeface mTypeFace;
 
-    private boolean mNeedToRebuildTextLayout;
 
     public TextModule(Context context) {
         super(context);
@@ -52,7 +49,6 @@ public class TextModule extends Module {
 
         //build LayoutBuilder with default properties
         mTextLayoutBuilder = new TextLayoutBuilder()
-                .setShouldCacheLayout(false)
                 .setText(mText)
                 .setTextColor(mTextColor)
                 .setAlignment(mAlignment)
@@ -168,6 +164,7 @@ public class TextModule extends Module {
             textWidth = 0;
 
         mTextLayout = buildTextLayout(textWidth, maxWidth);
+
         textWidth = mTextLayout.getWidth();
         int textHeight = mTextLayout.getHeight();
         setContentDimensions(textWidth, textHeight);
@@ -202,12 +199,12 @@ public class TextModule extends Module {
 
         Layout layout = mTextLayoutBuilder.build();
 
-        //fix layout null when text empty
-        if (layout == null) {
-            TextPaint textPaint = new TextPaint();
-            textPaint.setTextSize(mTextSize);
-            layout = new StaticLayout("", textPaint, 0, mAlignment, mTextLayoutBuilder.getTextSpacingMultiplier(), mTextLayoutBuilder.getTextSpacingExtra(), false);
-        }
+//        //fix layout null when text empty
+//        if (layout == null) {
+//            TextPaint textPaint = new TextPaint();
+//            textPaint.setTextSize(mTextSize);
+//            layout = new StaticLayout("", textPaint, 0, mAlignment, mTextLayoutBuilder.getTextSpacingMultiplier(), mTextLayoutBuilder.getTextSpacingExtra(), false);
+//        }
         return layout;
     }
 
