@@ -61,7 +61,7 @@ public class TextLayoutBuilder {
     private TextUtils.TruncateAt mEllipsize;
     private boolean mSingleLine = false;
     private int mMaxLines = DEFAULT_MAX_LINES;
-    private Layout.Alignment mAlignment = Layout.Alignment.ALIGN_NORMAL;
+    private Layout.Alignment mAlignment;
 
 
     //Text Paint
@@ -469,15 +469,15 @@ public class TextLayoutBuilder {
             width = Math.min(width, mMaxWidth);
         }
 
-
         if (mMinWidthMode == EMS) {
             width = Math.max(width, mMinWidth * lineHeight);
         } else {
             width = Math.max(width, mMinWidth);
         }
 
-        return StaticLayoutCreator.createStaticLayout(mText, 0, mText.length(),  mTextPaint, width, mAlignment, mSpacingMult, mSpacingAdd,mIncludePadding, mEllipsize, width, numLines);
-    }
+        Layout.Alignment alignment = mAlignment != null ? mAlignment : Layout.Alignment.ALIGN_NORMAL;
 
+        return StaticLayoutCreator.createStaticLayout(mText, 0, mText.length(),  mTextPaint, width, alignment, mSpacingMult, mSpacingAdd,mIncludePadding, mEllipsize, width, numLines);
+    }
 
 }

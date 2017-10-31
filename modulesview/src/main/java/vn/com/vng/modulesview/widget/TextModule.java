@@ -64,7 +64,7 @@ public class TextModule extends Module {
         mTextColor = DEFAULT_TEXT_COLOR;
         mMaxLines = Integer.MAX_VALUE;
         mSingleLine = false;
-        mAlignment = Layout.Alignment.ALIGN_NORMAL;
+        mAlignment = null;
         mEllipsize = null;
     }
 
@@ -158,7 +158,7 @@ public class TextModule extends Module {
         int maxWidth = width <= 0 ? Integer.MAX_VALUE : width;
 
         int textWidth;
-        if (widthMode == Module.DIMENSION_MODE_EXACTLY && mTextLayoutBuilder.getAlignment() != null && mTextLayoutBuilder.getAlignment() != Layout.Alignment.ALIGN_NORMAL)
+        if (widthMode == Module.DIMENSION_MODE_EXACTLY && mTextLayoutBuilder.getAlignment() != null)
             textWidth = width;
         else
             textWidth = 0;
@@ -224,13 +224,13 @@ public class TextModule extends Module {
         canvas.save();
 
         //clip drawing region
-//        int left = getCoordinateX() + getLayoutParams().getPaddingLeft() + dX;
-//        int top = getCoordinateY() + getLayoutParams().getPaddingTop() + dY;
-        int left = getLeft() + getLayoutParams().getPaddingLeft() + dX;
-        int top = getTop() + getLayoutParams().getPaddingTop() + dY;
+        canvas.clipRect(getLeft() + getLayoutParams().getPaddingLeft(), getTop() + getLayoutParams().getPaddingTop(), getRight() - getLayoutParams().getPaddingRight(), getBottom() - getLayoutParams().getPaddingBottom());
+
+        int left = getLeft() + getLayoutParams().getPaddingLeft() + mContentLeft + dX;
+        int top = getTop() + getLayoutParams().getPaddingTop() + mContentTop + dY;
         canvas.translate(left, top);
 
-        canvas.clipRect(0, 0, getWidth() - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight(), getHeight() - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom());
+//        canvas.clipRect(0, 0, getWidth() - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight(), getHeight() - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom());
 
         if (mTextLayout != null)
             mTextLayout.draw(canvas);

@@ -293,8 +293,8 @@ public class ImageModule extends Module {
 //        translate if needed
 //        int translateLeft = getCoordinateX() + getLayoutParams().getPaddingLeft() + dX + mDrawTranslateX;
 //        int translateTop = getCoordinateY() + getLayoutParams().getPaddingTop() + dY + mDrawTranslateY;
-        int translateLeft = getLeft() + getLayoutParams().getPaddingLeft() + dX + mDrawTranslateX;
-        int translateTop = getTop() + getLayoutParams().getPaddingTop() + dY + mDrawTranslateY;
+        int translateLeft = getLeft() + getLayoutParams().getPaddingLeft() + mContentLeft + dX + mDrawTranslateX;
+        int translateTop = getTop() + getLayoutParams().getPaddingTop() + mContentTop + dY + mDrawTranslateY;
         canvas.translate(translateLeft, translateTop);
 
         if (!mClipPath.isEmpty())

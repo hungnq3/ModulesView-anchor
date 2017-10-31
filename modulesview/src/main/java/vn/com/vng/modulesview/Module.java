@@ -311,7 +311,7 @@ public class Module {
     }
 
     protected void setContentDimensions(int contentWidth, int contentHeigh) {
-        setContentBounds(getLayoutParams().getPaddingLeft(), getLayoutParams().getPaddingTop(), contentWidth + getLayoutParams().getPaddingLeft(), contentHeigh + getLayoutParams().getPaddingTop());
+        setContentBounds(0, 0, contentWidth, contentHeigh);
     }
 
 
