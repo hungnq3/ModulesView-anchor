@@ -30,7 +30,7 @@ import vn.com.vng.modulesview.Module;
 
 public class ImageModule extends Module {
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
-    private static final int COLORDRAWABLE_DIMENSION = 1;
+    private static final int COLORDRAWABLE_DIMENSION = 2;
 
     public static final int ROUND_CIRCLE = -1;
     public static final int ROUND_NONE = 0;
@@ -66,9 +66,11 @@ public class ImageModule extends Module {
 
     //properties
     private Bitmap mBitmap;
+    private Drawable mDrawable;
     @ScaleType
     private int mScaleType;
     private float mRoundCorner;
+    private boolean mAdjustViewBound;
 
 
     //-------------getter & setter----------------------
@@ -96,10 +98,13 @@ public class ImageModule extends Module {
     }
 
     public void setImageDrawable(Drawable drawable) {
-        setBitmap(getBitmapFromDrawable(drawable));
+        mDrawable = drawable;
+        mBitmap = null;
+//        setBitmap(getBitmapFromDrawable(drawable));
     }
 
     public void setBitmap(Bitmap bitmap) {
+        mDrawable = null;
         mBitmap = bitmap;
         if (mBitmap != null) {
             mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
@@ -110,13 +115,88 @@ public class ImageModule extends Module {
         }
     }
 
+    public boolean isAdjustViewBound() {
+        return mAdjustViewBound;
+    }
+
+    public void setAdjustViewBound(boolean adjustViewBound) {
+        mAdjustViewBound = adjustViewBound;
+    }
+
     //-------------endregion------------------
+
+    @Override
+    public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
+        if (isAdjustViewBound() && (mBitmap != null || mDrawable != null)) {
+            if (widthMode != DIMENSION_MODE_EXACTLY && heightMode != DIMENSION_MODE_EXACTLY) {
+                int imageWidth = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicWidth();
+                int imageHeight = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicHeight();
+                int contentWidth = widthMode == DIMENSION_MODE_AT_MOST ? Math.min(width, imageWidth) : imageWidth;
+                int contentHeight = heightMode == DIMENSION_MODE_AT_MOST ? Math.min(height, imageHeight) : imageHeight;
+
+                setContentDimensions(contentWidth, contentHeight);
+
+
+            } else if (widthMode == DIMENSION_MODE_EXACTLY && heightMode != DIMENSION_MODE_EXACTLY) {
+                int imageWidth = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicWidth();
+                int imageHeight = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicHeight();
+
+                int contentWidth = width;
+                int contentHeight;
+
+                if (mScaleType == CENTER) //  Image bitmap no scale for this type
+                    contentHeight = imageHeight;
+                else if (mScaleType == CENTER_INSIDE && imageWidth < width)
+                    contentHeight = imageHeight;
+                else
+                    contentHeight = imageWidth == 0 ? 0 : (int) ((imageHeight / (float) imageWidth) * contentWidth);
+
+                if (heightMode == DIMENSION_MODE_AT_MOST)
+                    contentHeight = Math.min(height, contentHeight);
+
+                setContentDimensions(contentWidth, contentHeight);
+
+
+            } else if (widthMode != DIMENSION_MODE_EXACTLY && heightMode == DIMENSION_MODE_EXACTLY) {
+                int imageWidth = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicWidth();
+                int imageHeight = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicHeight();
+
+                int contentWidth;
+                int contentHeight = height;
+
+                if (mScaleType == CENTER) //  Image bitmap no scale for this type
+                    contentWidth = imageWidth;
+                else if (mScaleType == CENTER_INSIDE && imageHeight < height)
+                    contentWidth = imageWidth;
+                else {
+                    contentWidth = imageHeight == 0 ? 0 : (int) ((imageWidth / (float) imageHeight) * contentHeight);
+                }
+
+                if (widthMode == DIMENSION_MODE_AT_MOST)
+                    contentWidth = Math.min(contentWidth, width);
+                setContentDimensions(contentWidth, contentHeight);
+            } else
+                super.onMeasureContent(width, widthMode, height, heightMode);
+        } else
+            super.onMeasureContent(width, widthMode, height, heightMode);
+
+    }
+
 
     @Override
     public void configModule() {
         super.configModule();
         if (getWidth() <= 0 || getHeight() <= 0)
             return;
+
+        if (mDrawable != null)
+            switch (mScaleType) {
+                case CENTER_CROP:
+                    setBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), false));
+                    break;
+                default:
+                    setBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), true));
+            }
 
         configureImageBounds();
         configureDrawRegionPath();
@@ -171,12 +251,16 @@ public class ImageModule extends Module {
             } else if (mScaleType == CENTER) {
                 // Center bitmap in view, no scaling.
                 mDrawMatrix = mMatrix;
-                mDrawMatrix.setTranslate(Math.round((vWidth - iWidth) * 0.5f),
-                        Math.round((vHeight - iHeight) * 0.5f));
+//                mDrawMatrix.setTranslate(Math.round((vWidth - iWidth) * 0.5f),
+//                        Math.round((vHeight - iHeight) * 0.5f));
 
                 //determine draw region
-                mDrawWidth = vWidth;
-                mDrawHeight = vHeight;
+                mDrawWidth = Math.min(vWidth, iWidth);
+                mDrawHeight = Math.min(vHeight, iHeight);
+
+                mDrawTranslateX = (int) ((vWidth - mDrawWidth) * 0.5f);
+                mDrawTranslateY = (int) ((vHeight - mDrawHeight) * 0.5f);
+
             } else if (mScaleType == CENTER_CROP) {
                 mDrawMatrix = mMatrix;
 
@@ -326,6 +410,46 @@ public class ImageModule extends Module {
                 bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
             } else {
                 bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
+            }
+
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private Bitmap getBitmapFromDrawable(Drawable drawable, int width, int height, boolean getInside) {
+        if (drawable == null) {
+            return null;
+        }
+
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        try {
+            Bitmap bitmap;
+            if (drawable instanceof ColorDrawable || drawable.getIntrinsicHeight() == 0 || drawable.getIntrinsicWidth() == 0) {
+                bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
+            } else {
+                int bWidth, bHeight;
+
+                int dWidth = drawable.getIntrinsicWidth();
+                int dHeight = drawable.getIntrinsicHeight();
+
+                boolean k = dWidth / (float) dHeight >= width / (float) height;
+                if ((getInside && k) || (!getInside && !k)) {
+                    bWidth = width;
+                    bHeight = (int) (bWidth * dHeight / (float) dWidth);
+                } else {
+                    bHeight = height;
+                    bWidth = (int) (bHeight * dWidth / (float) dHeight);
+                }
+                bitmap = Bitmap.createBitmap(bWidth, bHeight, BITMAP_CONFIG);
             }
 
             Canvas canvas = new Canvas(bitmap);
