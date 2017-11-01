@@ -24,7 +24,6 @@ public class TextModule extends Module {
     //stuff
     private TextLayoutBuilder mTextLayoutBuilder;
     private Layout mTextLayout;
-    private RectF mClipRect = new RectF();
 
     //properties
     private CharSequence mText;

@@ -13,6 +13,8 @@ import android.text.TextDirectionHeuristic;
 import android.text.TextDirectionHeuristics;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
+import android.util.Log;
 
 import java.lang.annotation.Retention;
 import java.lang.reflect.Constructor;
@@ -34,7 +36,9 @@ public class TextLayoutBuilder {
      */
     @Retention(SOURCE)
     @IntDef({MEASURE_MODE_UNSPECIFIED, MEASURE_MODE_EXACTLY, MEASURE_MODE_AT_MOST})
-    public @interface MeasureMode {}
+    public @interface MeasureMode {
+    }
+
     public static final int MEASURE_MODE_UNSPECIFIED = 0;
     public static final int MEASURE_MODE_EXACTLY = 1;
     public static final int MEASURE_MODE_AT_MOST = 2;
@@ -63,11 +67,30 @@ public class TextLayoutBuilder {
     private int mMaxLines = DEFAULT_MAX_LINES;
     private Layout.Alignment mAlignment;
 
+    private float mShadowRadius, mShadowDx, mShadowDy;
+    private int mShadowColor;
+
+
+    private boolean mShouldSavedInstance = true;
+    private Layout mSavedInstance;
+
 
     //Text Paint
     private TextPaint mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
 
-    private boolean mNeedToRebuildTextLayout;
+
+    /**
+     * Sets whether the text layout instance should be saved or not.
+     *
+     * @param shouldSavedInstance True to cache the text layout, false otherwise
+     * @return This {@link TextLayoutBuilder} instance
+     */
+    public TextLayoutBuilder setShouldSavedInstance(boolean shouldSavedInstance) {
+        mShouldSavedInstance = shouldSavedInstance;
+        if (!mShouldSavedInstance)
+            mSavedInstance = null;
+        return this;
+    }
 
     /**
      * Sets the intended width of the text layout.
@@ -86,19 +109,19 @@ public class TextLayoutBuilder {
     /**
      * Sets the intended width of the text layout while respecting the measure mode.
      *
-     * @param width The width of the text layout
+     * @param width       The width of the text layout
      * @param measureMode The mode with which to treat the given width
      * @return This {@link TextLayoutBuilder} instance
      * @see #setWidth(int)
      */
-    public TextLayoutBuilder setWidth(@Px int width,@MeasureMode int measureMode) {
+    public TextLayoutBuilder setWidth(@Px int width, @MeasureMode int measureMode) {
         if (mWidth != width || mMeasureMode != measureMode) {
             mWidth = width;
             mMeasureMode = measureMode;
+            mSavedInstance = null;
         }
         return this;
     }
-
 
 
     /**
@@ -113,6 +136,7 @@ public class TextLayoutBuilder {
             return this;
         }
         mText = text;
+        mSavedInstance = null;
         return this;
     }
 
@@ -126,6 +150,7 @@ public class TextLayoutBuilder {
         if (mTextPaint.getTextSize() != size) {
 //            createNewPaintIfNeeded();
             mTextPaint.setTextSize(size);
+            mSavedInstance = null;
         }
         return this;
     }
@@ -138,11 +163,12 @@ public class TextLayoutBuilder {
      */
     public TextLayoutBuilder setTextColor(@ColorInt int color) {
 //        createNewPaintIfNeeded();
-//        mParams.color = null;
-        mTextPaint.setColor(color);
+        if (getTextColor() != color) {
+            mTextPaint.setColor(color);
+            mSavedInstance = null;
+        }
         return this;
     }
-
 
 
     /**
@@ -154,6 +180,7 @@ public class TextLayoutBuilder {
     public TextLayoutBuilder setTextSpacingExtra(float spacingExtra) {
         if (mSpacingAdd != spacingExtra) {
             mSpacingAdd = spacingExtra;
+            mSavedInstance = null;
         }
         return this;
     }
@@ -168,6 +195,7 @@ public class TextLayoutBuilder {
     public TextLayoutBuilder setTextSpacingMultiplier(float spacingMultiplier) {
         if (mSpacingMult != spacingMultiplier) {
             mSpacingMult = spacingMultiplier;
+            mSavedInstance = null;
         }
         return this;
     }
@@ -185,6 +213,7 @@ public class TextLayoutBuilder {
     public TextLayoutBuilder setIncludeFontPadding(boolean shouldInclude) {
         if (mIncludePadding != shouldInclude) {
             mIncludePadding = shouldInclude;
+            mSavedInstance = null;
         }
         return this;
     }
@@ -199,6 +228,7 @@ public class TextLayoutBuilder {
     public TextLayoutBuilder setAlignment(Layout.Alignment alignment) {
         if (mAlignment != alignment) {
             mAlignment = alignment;
+            mSavedInstance = null;
         }
         return this;
     }
@@ -208,14 +238,21 @@ public class TextLayoutBuilder {
      * Sets the shadow layer for the layout.
      *
      * @param radius The radius of the blur for shadow
-     * @param dx The horizontal translation of the origin
-     * @param dy The vertical translation of the origin
-     * @param color The shadow color
+     * @param dx     The horizontal translation of the origin
+     * @param dy     The vertical translation of the origin
+     * @param color  The shadow color
      * @return This {@link TextLayoutBuilder} instance
      */
     public TextLayoutBuilder setShadowLayer(float radius, float dx, float dy, @ColorInt int color) {
 //        createNewPaintIfNeeded();
-        mTextPaint.setShadowLayer(radius, dx, dy, color);
+        if (radius != mShadowRadius || dx != mShadowDx || dy != mShadowDy || color != mShadowColor) {
+            mShadowRadius = radius;
+            mShadowDx = dx;
+            mShadowDy = dy;
+            mShadowColor = color;
+            mTextPaint.setShadowLayer(radius, dx, dy, color);
+            mSavedInstance = null;
+        }
         return this;
     }
 
@@ -240,10 +277,10 @@ public class TextLayoutBuilder {
         if (mTextPaint.getTypeface() != typeface) {
 //            createNewPaintIfNeeded();
             mTextPaint.setTypeface(typeface);
+            mSavedInstance = null;
         }
         return this;
     }
-
 
 
     /**
@@ -255,10 +292,11 @@ public class TextLayoutBuilder {
     public TextLayoutBuilder setEllipsize(TextUtils.TruncateAt ellipsize) {
         if (mEllipsize != ellipsize) {
             mEllipsize = ellipsize;
+            mSavedInstance = null;
         }
         return this;
     }
-    
+
     /**
      * Sets whether the text should be in a single line or not.
      *
@@ -269,10 +307,10 @@ public class TextLayoutBuilder {
     public TextLayoutBuilder setSingleLine(boolean singleLine) {
         if (mSingleLine != singleLine) {
             mSingleLine = singleLine;
+            mSavedInstance = null;
         }
         return this;
     }
-
 
 
     /**
@@ -288,10 +326,10 @@ public class TextLayoutBuilder {
     public TextLayoutBuilder setMaxLines(int maxLines) {
         if (mMaxLines != maxLines) {
             mMaxLines = maxLines;
+            mSavedInstance = null;
         }
         return this;
     }
-
 
 
     /**
@@ -303,11 +341,13 @@ public class TextLayoutBuilder {
      * @see #setMinWidth(int)
      */
     public TextLayoutBuilder setMinEms(int minEms) {
-        mMinWidth = minEms;
-        mMinWidthMode = EMS;
+        if (mMaxWidth != minEms || mMinWidthMode != EMS) {
+            mMinWidth = minEms;
+            mMinWidthMode = EMS;
+            mSavedInstance = null;
+        }
         return this;
     }
-
 
 
     /**
@@ -319,8 +359,11 @@ public class TextLayoutBuilder {
      * @see #setMinEms(int)
      */
     public TextLayoutBuilder setMinWidth(@Px int minWidth) {
-        mMinWidth = minWidth;
-        mMinWidthMode = PIXELS;
+        if (mMinWidth != minWidth || mMinWidthMode != PIXELS) {
+            mMinWidth = minWidth;
+            mMinWidthMode = PIXELS;
+            mSavedInstance = null;
+        }
         return this;
     }
 
@@ -334,8 +377,11 @@ public class TextLayoutBuilder {
      * @see #setMinEms(int)
      */
     public TextLayoutBuilder setMaxEms(int maxEms) {
-        mMaxWidth = maxEms;
-        mMaxWidthMode = EMS;
+        if (mMaxWidth != maxEms || mMinWidthMode != EMS) {
+            mMaxWidth = maxEms;
+            mMaxWidthMode = EMS;
+            mSavedInstance = null;
+        }
         return this;
     }
 
@@ -349,8 +395,11 @@ public class TextLayoutBuilder {
      * @see #setMinWidth(int)
      */
     public TextLayoutBuilder setMaxWidth(@Px int maxWidth) {
-        mMaxWidth = maxWidth;
-        mMaxWidthMode = PIXELS;
+        if (mMaxWidth != maxWidth || mMinWidthMode != PIXELS) {
+            mMaxWidth = maxWidth;
+            mMaxWidthMode = PIXELS;
+            mSavedInstance = null;
+        }
         return this;
     }
 
@@ -429,8 +478,6 @@ public class TextLayoutBuilder {
 //--------------------------getter--------------------------------------------
 
 
-
-
     //-----------------------------------------------------------------------
 
     int getLineHeight() {
@@ -438,8 +485,12 @@ public class TextLayoutBuilder {
     }
 
 
+    public Layout build() {
 
-    public Layout build(){
+        if (mShouldSavedInstance && mSavedInstance != null) {
+            Log.w("qqq", "return saved instance successfully");
+            return mSavedInstance;
+        }
 
         if (mText == null) {
             mText = "";
@@ -456,8 +507,8 @@ public class TextLayoutBuilder {
                 break;
             case MEASURE_MODE_AT_MOST:
                 width = Math.min(
-                                (int) Math.ceil(Layout.getDesiredWidth(mText, mTextPaint)),
-                                mWidth);
+                        (int) Math.ceil(Layout.getDesiredWidth(mText, mTextPaint)),
+                        mWidth);
                 break;
         }
 
@@ -477,7 +528,11 @@ public class TextLayoutBuilder {
 
         Layout.Alignment alignment = mAlignment != null ? mAlignment : Layout.Alignment.ALIGN_NORMAL;
 
-        return StaticLayoutCreator.createStaticLayout(mText, 0, mText.length(),  mTextPaint, width, alignment, mSpacingMult, mSpacingAdd,mIncludePadding, mEllipsize, width, numLines);
+        Layout layout = StaticLayoutCreator.createStaticLayout(mText, 0, mText.length(), mTextPaint, width, alignment, mSpacingMult, mSpacingAdd, mIncludePadding, mEllipsize, width, numLines);
+
+        if (mShouldSavedInstance)
+            mSavedInstance = layout;
+        return layout;
     }
 
 }

@@ -81,10 +81,6 @@ public class TestView extends ModulesView {
                 .setToRightOf(guideline2)
                 .setAlignParentRight(true);
 
-        addModule(mText1);
-        addModule(mText2);
-        addModule(mText3);
-
         mImageModule = new ImageModule(getContext());
         mImageModule.setScaleType(ImageModule.CENTER_CROP);
         mImageModule.loadImage("https://i.sharefa.st/1295569823374302192636.jpg");
@@ -93,6 +89,9 @@ public class TestView extends ModulesView {
                 .setAlignRight(mText2)
                 .setBellowOf(new Fence(mText1, mText2, mText3));
 
+        addModule(mText1);
+        addModule(mText2);
+        addModule(mText3);
         addModule(mImageModule);
     }
 
