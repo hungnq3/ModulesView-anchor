@@ -4,9 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.support.annotation.IntDef;
 import android.text.Layout;
 import android.text.TextUtils;
 
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import vn.com.vng.modulesview.Module;
 import vn.com.vng.modulesview.widget.text_layout_builder.TextLayoutBuilder;
@@ -18,8 +22,19 @@ import vn.com.vng.modulesview.widget.text_layout_builder.TextLayoutBuilder;
 
 public class TextModule extends Module {
 
-    public static final int DEFAULT_TEXT_COLOR = 0x8a000000;
-    public static final int DEFAULT_TEXT_SIZE_IN_SP = 14;
+    private static final int DEFAULT_TEXT_COLOR = 0x8a000000;
+    private static final int DEFAULT_TEXT_SIZE_IN_SP = 14;
+
+    public static final int TEXT_STYLE_NORMAL = Typeface.NORMAL;
+    public static final int TEXT_STYLE_BOLD = Typeface.BOLD;
+    public static final int TEXT_STYLE_ITALIC = Typeface.ITALIC;
+    public static final int TEXT_STYLE_BOLD_ITALIC = Typeface.BOLD_ITALIC;
+
+
+    @IntDef({TEXT_STYLE_NORMAL, TEXT_STYLE_BOLD, TEXT_STYLE_ITALIC, TEXT_STYLE_BOLD_ITALIC})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface TextStyle {
+    }
 
     //stuff
     private TextLayoutBuilder mTextLayoutBuilder;
@@ -34,6 +49,8 @@ public class TextModule extends Module {
     private boolean mSingleLine;
     private TextUtils.TruncateAt mEllipsize;
     private Typeface mTypeFace;
+    private int mTextStyle;
+    private boolean mUnderLine;
 
 
     public TextModule(Context context) {
@@ -55,7 +72,8 @@ public class TextModule extends Module {
                 .setMaxLines(mMaxLines)
                 .setSingleLine(mSingleLine)
                 .setTextSize(mTextSize)
-                .setTypeface(mTypeFace);
+                .setTypeface(mTypeFace)
+                .setTextStyle(mTextStyle);
     }
 
     private void buildDefaultProperties() {
@@ -65,6 +83,8 @@ public class TextModule extends Module {
         mSingleLine = false;
         mAlignment = null;
         mEllipsize = null;
+        mTypeFace = null;
+        mTextStyle = TEXT_STYLE_NORMAL;
     }
 
     //----------------------Properties' getter & setter region---------------
@@ -75,6 +95,10 @@ public class TextModule extends Module {
     public void setText(CharSequence text) {
         mText = makeSureTextValid(text);
         mTextLayoutBuilder.setText(mText);
+    }
+
+    public void setText(int resId) {
+        setText(getContext().getText(resId));
     }
 
     private CharSequence makeSureTextValid(CharSequence text) {
@@ -146,6 +170,27 @@ public class TextModule extends Module {
 
     public Layout getTextLayout() {
         return mTextLayout;
+    }
+
+
+    @TextStyle
+    public int getTextStyle() {
+        return mTextStyle;
+    }
+
+    public void setTextStyle(@TextStyle int textStyle) {
+        mTextStyle = textStyle;
+        mTextLayoutBuilder.setTextStyle(mTextStyle);
+    }
+
+
+    public boolean isUnderLine() {
+        return mUnderLine;
+    }
+
+    public void setUnderLine(boolean underLine) {
+        mUnderLine = underLine;
+        mTextLayoutBuilder.setUnderLine(mUnderLine);
     }
 
     //-----------------endregion--------------------------------------------

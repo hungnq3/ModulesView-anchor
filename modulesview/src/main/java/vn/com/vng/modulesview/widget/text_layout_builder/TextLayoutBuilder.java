@@ -18,6 +18,7 @@ import android.util.Log;
 
 import java.lang.annotation.Retention;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Type;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
@@ -26,6 +27,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  */
 
 public class TextLayoutBuilder {
+
 
     /**
      * Measure mode constants similar to {@link android.view.View.MeasureSpec}
@@ -66,6 +68,9 @@ public class TextLayoutBuilder {
     private boolean mSingleLine = false;
     private int mMaxLines = DEFAULT_MAX_LINES;
     private Layout.Alignment mAlignment;
+    private Typeface mTypeface;
+    private int mTextStyle;
+    private boolean mUnderLine;
 
     private float mShadowRadius, mShadowDx, mShadowDy;
     private int mShadowColor;
@@ -154,6 +159,22 @@ public class TextLayoutBuilder {
         }
         return this;
     }
+
+    /**
+     * Sets whether the text layout should be in an underline or not.
+     *
+     * @param underLine whether the text layout should be in an underline or no
+     * @return This {@link TextLayoutBuilder} instance
+     */
+
+    public TextLayoutBuilder setUnderLine(boolean underLine) {
+        if (mUnderLine != underLine) {
+            mUnderLine = underLine;
+            mSavedInstance = null;
+        }
+        return this;
+    }
+
 
     /**
      * Sets the text color for the layout.
@@ -264,7 +285,13 @@ public class TextLayoutBuilder {
      * @return This {@link TextLayoutBuilder} instance
      */
     public TextLayoutBuilder setTextStyle(int style) {
-        return setTypeface(Typeface.defaultFromStyle(style));
+        if (mTextStyle != style) {
+            mTextStyle = style;
+//            createNewPaintIfNeeded();
+//            mTextPaint.setTypeface(typeface);
+            mSavedInstance = null;
+        }
+        return this;
     }
 
     /**
@@ -274,9 +301,10 @@ public class TextLayoutBuilder {
      * @return This {@link TextLayoutBuilder} instance
      */
     public TextLayoutBuilder setTypeface(Typeface typeface) {
-        if (mTextPaint.getTypeface() != typeface) {
+        if (mTypeface != typeface) {
+            mTypeface = typeface;
 //            createNewPaintIfNeeded();
-            mTextPaint.setTypeface(typeface);
+//            mTextPaint.setTypeface(typeface);
             mSavedInstance = null;
         }
         return this;
@@ -472,8 +500,17 @@ public class TextLayoutBuilder {
     }
 
     public Typeface getTypeFace() {
-        return mTextPaint.getTypeface();
+        return mTypeface;
     }
+
+    public int getTextStyle() {
+        return mTextStyle;
+    }
+
+    public boolean isUnderLine() {
+        return mUnderLine;
+    }
+
 
 //--------------------------getter--------------------------------------------
 
@@ -487,16 +524,33 @@ public class TextLayoutBuilder {
 
     public Layout build() {
 
+        //return saved layout if still available
         if (mShouldSavedInstance && mSavedInstance != null) {
-            Log.w("qqq", "return saved instance successfully");
             return mSavedInstance;
         }
 
-        if (mText == null) {
-            mText = "";
-        }
+        //make sure text valid
+        CharSequence text = mText != null ? mText : "";
+
+
+        //config attributes
+
+
+        if (mTypeface != null && mTextStyle != Typeface.NORMAL) {
+            mTextPaint.setTypeface(Typeface.create(mTypeface, mTextStyle));
+        } else if (mTextStyle != Typeface.NORMAL) {
+            mTextPaint.setTypeface(Typeface.defaultFromStyle(mTextStyle));
+        } else
+            mTextPaint.setTypeface(mTypeface);
+
+        if (mUnderLine)
+            mTextPaint.setFlags(mTextPaint.getFlags() | TextPaint.UNDERLINE_TEXT_FLAG);
+        else
+            mTextPaint.setFlags(mTextPaint.getFlags() & (~TextPaint.UNDERLINE_TEXT_FLAG));
+
 
         int numLines = mSingleLine ? 1 : mMaxLines;
+
         int width = 0;
         switch (mMeasureMode) {
             case MEASURE_MODE_UNSPECIFIED:
@@ -528,7 +582,8 @@ public class TextLayoutBuilder {
 
         Layout.Alignment alignment = mAlignment != null ? mAlignment : Layout.Alignment.ALIGN_NORMAL;
 
-        Layout layout = StaticLayoutCreator.createStaticLayout(mText, 0, mText.length(), mTextPaint, width, alignment, mSpacingMult, mSpacingAdd, mIncludePadding, mEllipsize, width, numLines);
+
+        Layout layout = StaticLayoutCreator.createStaticLayout(text, 0, text.length(), mTextPaint, width, alignment, mSpacingMult, mSpacingAdd, mIncludePadding, mEllipsize, width, numLines);
 
         if (mShouldSavedInstance)
             mSavedInstance = layout;

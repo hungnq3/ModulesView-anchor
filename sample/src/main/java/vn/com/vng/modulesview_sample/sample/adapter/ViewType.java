@@ -6,7 +6,29 @@ package vn.com.vng.modulesview_sample.sample.adapter;
 
 public class ViewType {
 
-    public static final int TEST = 101;
+    public static final int TEST = 1;
+    public static final int DEMO_TITLE_VIEW = 99;
+    public static final int DEMO_HEADER_VIEW = 100;
+
+    public static final int DEMO_TEXT_NORMAL = 101;
+    public static final int DEMO_TEXT_ALIGNMENT = 102;
+    public static final int DEMO_TEXT_SIZE = 103;
+    public static final int DEMO_TEXT_STYLE = 104;
+    public static final int DEMO_TEXT_TYPEFACE = 105;
+    public static final int DEMO_TEXT_ELLIPSIZE = 106;
+    public static final int DEMO_TEXT_COLOR = 107;
+
+    public static final int DEMO_IMAGE_NORMAL = 111;
+    public static final int DEMO_IMAGE_SCALE_TYPE = 112;
+    public static final int DEMO_IMAGE_ROUND_CORNERS = 113;
+    public static final int DEMO_IMAGE_ADJUST_VIEW_BOUND = 114;
+
+    public static final int DEMO_LAYOUT_NORMAL = 120;
+    public static final int DEMO_LAYOUT_ALIGN_PARENT = 121;
+    public static final int DEMO_LAYOUT_ALIGN = 122;
+    public static final int DEMO_LAYOUT_SIDE_OF = 123;
+    public static final int DEMO_LAYOUT_GUIDELINE = 124;
+    public static final int DEMO_LAYOUT_FENCE = 125;
 
     public static final int SOCIAL_HEADER = 1001;
     public static final int SOCIAL_TEXT_CONTENT = 1002;

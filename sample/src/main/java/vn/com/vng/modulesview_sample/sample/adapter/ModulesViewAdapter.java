@@ -6,17 +6,38 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import vn.com.vng.modulesview_sample.sample.adapter.holder.BaseViewHolder;
-import vn.com.vng.modulesview_sample.sample.adapter.holder.ChatHeaderViewHolder;
-import vn.com.vng.modulesview_sample.sample.adapter.holder.FriendViewHolder;
-import vn.com.vng.modulesview_sample.sample.adapter.holder.GroupChatHeaderViewHolder;
-import vn.com.vng.modulesview_sample.sample.adapter.holder.SocialFooterViewHolder;
-import vn.com.vng.modulesview_sample.sample.adapter.holder.SocialHeaderViewHolder;
-import vn.com.vng.modulesview_sample.sample.adapter.holder.SocialImageContentViewHolder;
-import vn.com.vng.modulesview_sample.sample.adapter.holder.SocialTextContentViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.chat_list.ChatHeaderViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.demo.DemoHeaderViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.demo.DemoTitleViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.friend_list.FriendViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.chat_list.GroupChatHeaderViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.social_list.SocialFooterViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.social_list.SocialHeaderViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.social_list.SocialImageContentViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.social_list.SocialTextContentViewHolder;
 import vn.com.vng.modulesview_sample.sample.adapter.holder.TestViewHolder;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.BaseViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoImageDefaultViewItem;
 import vn.com.vng.modulesview_sample.sample.custom_view.chat_view.ChatHeaderView;
 import vn.com.vng.modulesview_sample.sample.custom_view.chat_view.GroupChatHeaderView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoHeaderView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoImageNormalView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoImageRoundedView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoImageScaleTypeView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutAlignParentView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutAlignView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutFenceView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutGuidelineView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutNormalView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutSideOfView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoTextAlignmentView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoTextColorView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoTextEllipselView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoTextNormalView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoTextSizeView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoTextStyleView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoTextTypefaceView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoTitleView;
 import vn.com.vng.modulesview_sample.sample.custom_view.friend_list.FriendView;
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.Social1ImageContentView;
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.Social2ImageContentView;
@@ -53,6 +74,87 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 holder = new TestViewHolder(new TestView(parent.getContext()));
                 break;
             }
+            case ViewType.DEMO_TITLE_VIEW:{
+                holder = new DemoTitleViewHolder(new DemoTitleView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_HEADER_VIEW:{
+                holder = new DemoHeaderViewHolder(new DemoHeaderView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_TEXT_NORMAL:{
+                holder = new BaseViewHolder(new DemoTextNormalView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.DEMO_TEXT_ALIGNMENT:{
+                holder = new BaseViewHolder(new DemoTextAlignmentView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_TEXT_SIZE:{
+                holder = new BaseViewHolder(new DemoTextSizeView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_TEXT_ELLIPSIZE:{
+                holder = new BaseViewHolder(new DemoTextEllipselView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_TEXT_STYLE:{
+                holder = new BaseViewHolder(new DemoTextStyleView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_TEXT_TYPEFACE:{
+                holder = new BaseViewHolder(new DemoTextTypefaceView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.DEMO_TEXT_COLOR:{
+                holder = new BaseViewHolder(new DemoTextColorView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.DEMO_IMAGE_NORMAL:{
+                holder = new BaseViewHolder(new DemoImageNormalView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_IMAGE_SCALE_TYPE:{
+                holder = new BaseViewHolder(new DemoImageScaleTypeView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_IMAGE_ROUND_CORNERS:{
+                holder = new BaseViewHolder(new DemoImageRoundedView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.DEMO_LAYOUT_NORMAL:{
+                holder = new BaseViewHolder(new DemoLayoutNormalView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_LAYOUT_ALIGN_PARENT:{
+                holder = new BaseViewHolder(new DemoLayoutAlignParentView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.DEMO_LAYOUT_ALIGN:{
+                holder = new BaseViewHolder(new DemoLayoutAlignView(parent.getContext()));
+                break;
+            }
+            case ViewType.DEMO_LAYOUT_SIDE_OF:{
+                holder = new BaseViewHolder(new DemoLayoutSideOfView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.DEMO_LAYOUT_GUIDELINE:{
+                holder = new BaseViewHolder(new DemoLayoutGuidelineView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.DEMO_LAYOUT_FENCE:{
+                holder = new BaseViewHolder(new DemoLayoutFenceView(parent.getContext()));
+                break;
+            }
+
+
             case ViewType.SOCIAL_HEADER:{
                 holder = new SocialHeaderViewHolder(new SocialHeaderView(parent.getContext()));
                 break;

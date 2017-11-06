@@ -7,24 +7,44 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.ChatHeaderViewItem;
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.FriendViewItem;
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.GroupChatHeaderViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.chat_list.ChatHeaderViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoHeaderViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoImageDefaultViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoImageRoundCornersViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoImageScaleTypeViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutAlignParentViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutAlignViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutFenceViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutGuildelineViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutNormalViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutSideOfViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextAlignmentViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextColorViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextEllipseViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextNormalViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextSizeViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextStyleViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextTypefaceViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTitleViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.friend_list.FriendViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.chat_list.GroupChatHeaderViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.TestViewItem;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutNormalView;
 import vn.com.vng.modulesview_sample.sample.model.ChatHeaderModel;
 import vn.com.vng.modulesview_sample.sample.model.FriendModel;
 import vn.com.vng.modulesview_sample.sample.model.GroupChatHeaderModel;
 import vn.com.vng.modulesview_sample.sample.model.SocialModel;
 import vn.com.vng.modulesview_sample.sample.adapter.ModulesViewAdapter;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.BaseViewItem;
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.SocialFooterViewItem;
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.SocialHeaderViewItem;
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.SocialImageContentViewItem;
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.SocialTextContentViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list.SocialFooterViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list.SocialHeaderViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list.SocialImageContentViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list.SocialTextContentViewItem;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -135,9 +155,15 @@ public class MainActivity extends AppCompatActivity {
 
     private List<BaseViewItem> buildItems() {
 
-        List<BaseViewItem> items = new ArrayList<>(40);
+        List<BaseViewItem> items = new ArrayList<>(60);
 
-        items.add(new TestViewItem());
+//        items.add(new TestViewItem());
+
+
+        items.addAll(buildDemoItems());
+
+
+        items.add(new DemoTitleViewItem("Some zalo views demo"));
 
         items.add(mockFriendViewItem(getRandomImg(), getRandomName(), null, true));
         items.add(mockFriendViewItem(getRandomImg(), getRandomName(), getRandomMsg(), true));
@@ -176,6 +202,59 @@ public class MainActivity extends AppCompatActivity {
         items.addAll(mockSocialModel(getRandomImg(), getRandomName(), "06:07 Hôm qua", getRandomMsg(), 13, 5, getRandomImgs()));
         items.addAll(mockSocialModel(getRandomImg(), getRandomName(), "06:07 Hôm qua", getRandomMsg(), 21, 0, getRandomImgs()));
         items.addAll(mockSocialModel(getRandomImg(), getRandomName(), "06:07 Hôm qua", getRandomMsg(), 22, 2, getRandomImgs()));
+
+        return items;
+    }
+
+    private List<BaseViewItem> buildDemoItems() {
+        List<BaseViewItem> items = new LinkedList<>();
+
+        items.add(new DemoTitleViewItem("TextModule"));
+
+
+        items.add(new DemoHeaderViewItem("Default:"));
+        items.add(new DemoTextNormalViewItem());
+        items.add(new DemoHeaderViewItem("Alignment:"));
+        items.add(new DemoTextAlignmentViewItem());
+        items.add(new DemoHeaderViewItem("Size:"));
+        items.add(new DemoTextSizeViewItem());
+        items.add(new DemoHeaderViewItem("Color:"));
+        items.add(new DemoTextColorViewItem());
+        items.add(new DemoHeaderViewItem("Ellipse:"));
+        items.add(new DemoTextEllipseViewItem());
+        items.add(new DemoHeaderViewItem("Text style:"));
+        items.add(new DemoTextStyleViewItem());
+        items.add(new DemoHeaderViewItem("Typeface:"));
+        items.add(new DemoTextTypefaceViewItem());
+
+
+        items.add(new DemoTitleViewItem("ImageModule"));
+        items.add(new DemoHeaderViewItem("Normal:"));
+        items.add(new DemoImageDefaultViewItem());
+        items.add(new DemoHeaderViewItem("ScaleType:"));
+        items.add(new DemoImageScaleTypeViewItem());
+        items.add(new DemoHeaderViewItem("Rounded corners:"));
+        items.add(new DemoImageRoundCornersViewItem());
+
+        items.add(new DemoTitleViewItem("Layout"));
+        items.add(new DemoHeaderViewItem("Normal:"));
+        items.add(new DemoLayoutNormalViewItem());
+        items.add(new DemoHeaderViewItem("Align parent:"));
+        items.add(new DemoLayoutAlignParentViewItem());
+
+        items.add(new DemoHeaderViewItem("Align:"));
+        items.add(new DemoLayoutAlignViewItem());
+
+        items.add(new DemoHeaderViewItem("Side Of:"));
+        items.add(new DemoLayoutSideOfViewItem());
+
+        items.add(new DemoHeaderViewItem("Guidleline:"));
+        items.add(new DemoLayoutGuildelineViewItem());
+
+        items.add(new DemoHeaderViewItem("Fence:"));
+        items.add(new DemoLayoutFenceViewItem());
+
+
 
         return items;
     }

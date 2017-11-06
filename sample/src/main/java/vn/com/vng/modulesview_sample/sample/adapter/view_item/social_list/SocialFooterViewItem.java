@@ -1,24 +1,25 @@
-package vn.com.vng.modulesview_sample.sample.adapter.view_item;
+package vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list;
 
-import vn.com.vng.modulesview_sample.sample.adapter.ViewType;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.BaseViewItem;
 import vn.com.vng.modulesview_sample.sample.model.SocialModel;
+import vn.com.vng.modulesview_sample.sample.adapter.ViewType;
 
 /**
  * Created by HungNQ on 15/09/2017.
  */
 
-public class SocialHeaderViewItem extends BaseViewItem {
+public class SocialFooterViewItem extends BaseViewItem {
 
     private SocialModel mSocialModel;
 
-    public SocialHeaderViewItem(SocialModel socialModel) {
+    public SocialFooterViewItem(SocialModel socialModel) {
         mSocialModel = socialModel;
     }
 
 
     @Override
     public int getViewType() {
-        return ViewType.SOCIAL_HEADER;
+        return ViewType.SOCIAL_FOOTER;
     }
 
     public SocialModel getSocialModel() {

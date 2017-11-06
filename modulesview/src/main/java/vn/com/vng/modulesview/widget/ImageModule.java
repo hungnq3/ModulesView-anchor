@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
+import android.support.v4.content.ContextCompat;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -100,10 +101,14 @@ public class ImageModule extends Module {
     public void setImageDrawable(Drawable drawable) {
         mDrawable = drawable;
         mBitmap = null;
-//        setBitmap(getBitmapFromDrawable(drawable));
+//        setImageBitmap(getBitmapFromDrawable(drawable));
     }
 
-    public void setBitmap(Bitmap bitmap) {
+    public void setImageResource(int id) {
+        setImageDrawable(ContextCompat.getDrawable(getContext(), id));
+    }
+
+    public void setImageBitmap(Bitmap bitmap) {
         mDrawable = null;
         mBitmap = bitmap;
         if (mBitmap != null) {
@@ -114,6 +119,8 @@ public class ImageModule extends Module {
             mBitmapPaint.setShader(null);
         }
     }
+
+
 
     public boolean isAdjustViewBound() {
         return mAdjustViewBound;
@@ -189,9 +196,9 @@ public class ImageModule extends Module {
 
         if (mDrawable != null)
             if (mScaleType == CENTER_CROP)
-                setBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), false));
+                setImageBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), false));
             else
-                setBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), true));
+                setImageBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), true));
 
         configureImageBounds();
         configureDrawRegionPath();
@@ -504,7 +511,7 @@ public class ImageModule extends Module {
             mLoaderTarget = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    setBitmap(bitmap);
+                    setImageBitmap(bitmap);
                     configModule();
                     invalidate();
                 }

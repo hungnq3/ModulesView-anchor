@@ -41,7 +41,8 @@ public class LayoutParams {
     private Module mModule;
 
     private int mX, mY;
-    private int mWidthDimension, mHeightDimension;
+    private int mWidthDimension;
+    private int mHeightDimension;
     private Anchor mAnchorLeft, mAnchorTop, mAnchorRight, mAnchorBottom;
     private boolean mCenterInHorizontal, mCenterInVertical;
 
@@ -50,11 +51,13 @@ public class LayoutParams {
 
 
     private int mGravity;
-    private  int mVisibility;
+    private int mVisibility;
 
 
     public LayoutParams(@NonNull Module module) {
         mModule = module;
+        mWidthDimension = WRAP_CONTENT;
+        mHeightDimension = WRAP_CONTENT;
     }
 
     //-----------builder---------------------------------------
@@ -245,7 +248,7 @@ public class LayoutParams {
             } else {
                 mAnchorLeft = new ParentAnchor(mModule, Anchor.ANCHOR_LEFT);
             }
-        }else if (mAnchorLeft instanceof ParentAnchor)
+        } else if (mAnchorLeft instanceof ParentAnchor)
             mAnchorLeft = null;
         return this;
     }
@@ -342,7 +345,7 @@ public class LayoutParams {
             } else {
                 mAnchorTop = new ParentAnchor(mModule, Anchor.ANCHOR_TOP);
             }
-        }else if (mAnchorTop instanceof ParentAnchor)
+        } else if (mAnchorTop instanceof ParentAnchor)
             mAnchorTop = null;
 
         return this;
@@ -441,7 +444,7 @@ public class LayoutParams {
             } else {
                 mAnchorRight = new ParentAnchor(mModule, Anchor.ANCHOR_RIGHT);
             }
-        }else if (mAnchorRight instanceof ParentAnchor)
+        } else if (mAnchorRight instanceof ParentAnchor)
             mAnchorRight = null;
         return this;
     }
@@ -542,7 +545,7 @@ public class LayoutParams {
             } else {
                 mAnchorBottom = new ParentAnchor(mModule, Anchor.ANCHOR_BOTTOM);
             }
-        }else if (mAnchorBottom instanceof ParentAnchor)
+        } else if (mAnchorBottom instanceof ParentAnchor)
             mAnchorBottom = null;
         return this;
     }
@@ -572,7 +575,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams setCenterInParent(boolean center){
+    public LayoutParams setCenterInParent(boolean center) {
         mCenterInHorizontal = mCenterInVertical = center;
         return this;
     }
@@ -710,7 +713,7 @@ public class LayoutParams {
                 if (parent.getWidthMeasureMode() == View.MeasureSpec.UNSPECIFIED)
                     right = Module.BOUND_UNSPECIFIED;
                 else
-                    right = Math.max(parent.getWidthMeasureSize() -mModule.getParent().getPaddingLeft() - mModule.getParent().getPaddingRight(), 0) - mMarginRight;
+                    right = Math.max(parent.getWidthMeasureSize() - mModule.getParent().getPaddingLeft() - mModule.getParent().getPaddingRight(), 0) - mMarginRight;
             }
         }
         return right;
@@ -748,7 +751,7 @@ public class LayoutParams {
                 if (parent.getHeightMeasureMode() == View.MeasureSpec.UNSPECIFIED)
                     bottom = Module.BOUND_UNSPECIFIED;
                 else
-                    bottom = Math.max(parent.getHeightMeasureSize() -mModule.getParent().getPaddingTop() - mModule.getParent().getPaddingBottom(), 0) - mMarginBottom;
+                    bottom = Math.max(parent.getHeightMeasureSize() - mModule.getParent().getPaddingTop() - mModule.getParent().getPaddingBottom(), 0) - mMarginBottom;
             }
         }
         return bottom;

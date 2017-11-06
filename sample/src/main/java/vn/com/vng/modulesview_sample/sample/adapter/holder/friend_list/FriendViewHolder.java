@@ -1,6 +1,7 @@
-package vn.com.vng.modulesview_sample.sample.adapter.holder;
+package vn.com.vng.modulesview_sample.sample.adapter.holder.friend_list;
 
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.FriendViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.BaseViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.friend_list.FriendViewItem;
 import vn.com.vng.modulesview_sample.sample.custom_view.friend_list.FriendView;
 
 /**

@@ -1,6 +1,7 @@
-package vn.com.vng.modulesview_sample.sample.adapter.holder;
+package vn.com.vng.modulesview_sample.sample.adapter.holder.chat_list;
 
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.ChatHeaderViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.BaseViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.chat_list.ChatHeaderViewItem;
 import vn.com.vng.modulesview_sample.sample.custom_view.chat_view.ChatHeaderView;
 
 /**

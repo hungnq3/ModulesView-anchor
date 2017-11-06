@@ -180,7 +180,7 @@ public class SocialHeaderView extends ModulesView {
             mNameTextModule.setText(model.getName());
             mTimeTextModule.setText(model.getTime());
         } else {
-            mAvaImgModule.setBitmap(null);
+            mAvaImgModule.setImageBitmap(null);
             mNameTextModule.setText(null);
             mTimeTextModule.setText(null);
         }

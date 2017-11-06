@@ -1,5 +1,6 @@
-package vn.com.vng.modulesview_sample.sample.adapter.view_item;
+package vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list;
 
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.BaseViewItem;
 import vn.com.vng.modulesview_sample.sample.model.SocialModel;
 import vn.com.vng.modulesview_sample.sample.adapter.ViewType;
 

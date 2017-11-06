@@ -22,23 +22,28 @@ public class ModulesView extends View implements Parent {
 
     public ModulesView(Context context) {
         this(context, null);
+        mContext = context;
     }
 
     public ModulesView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
+        mContext = context;
     }
 
     public ModulesView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mContext = context;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public ModulesView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        mContext = context;
     }
 
 
     //stuff
+    protected Context mContext;
     private List<Module> mModules = new LinkedList<>();
     private Module mTouchFocusModule;
 

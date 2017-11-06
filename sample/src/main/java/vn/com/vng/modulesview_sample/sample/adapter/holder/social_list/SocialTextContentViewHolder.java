@@ -1,9 +1,10 @@
-package vn.com.vng.modulesview_sample.sample.adapter.holder;
+package vn.com.vng.modulesview_sample.sample.adapter.holder.social_list;
 
 import android.view.View;
 import android.widget.Toast;
 
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.SocialTextContentViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.holder.BaseViewHolder;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list.SocialTextContentViewItem;
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialContentTextView;
 
 /**

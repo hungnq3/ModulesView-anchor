@@ -1,6 +1,7 @@
-package vn.com.vng.modulesview_sample.sample.adapter.view_item;
+package vn.com.vng.modulesview_sample.sample.adapter.view_item.chat_list;
 
 import vn.com.vng.modulesview_sample.sample.adapter.ViewType;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.BaseViewItem;
 import vn.com.vng.modulesview_sample.sample.model.ChatHeaderModel;
 
 /**
