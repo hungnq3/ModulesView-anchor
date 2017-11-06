@@ -49,6 +49,5 @@ public class DemoTitleView extends ModulesView {
 
     public void setText(CharSequence text){
         mTextModule.setText(text);
-        mTextModule.invalidate();
     }
 }

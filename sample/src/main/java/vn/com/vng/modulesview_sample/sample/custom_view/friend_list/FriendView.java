@@ -156,7 +156,6 @@ public class FriendView extends ModulesView {
             mStatusText.setText(null);
             mStatusText.getLayoutParams().setVisibility(LayoutParams.GONE);
         }
-        invalidate();
     }
 
 }

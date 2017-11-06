@@ -147,6 +147,18 @@ public class ModulesView extends View implements Parent {
     }
 
 
+    public int getGravity() {
+        return mGravity;
+    }
+
+    public void setGravity(int gravity) {
+        if(mGravity != gravity) {
+            mGravity = gravity;
+            requestLayout();
+        }
+    }
+
+
     int mWidthMeasureSize;
     int mWidthMeasureMode;
     int mHeightMeasureSize;
@@ -424,11 +436,4 @@ public class ModulesView extends View implements Parent {
     }
 
 
-    public int getGravity() {
-        return mGravity;
-    }
-
-    public void setGravity(int gravity) {
-        mGravity = gravity;
-    }
 }

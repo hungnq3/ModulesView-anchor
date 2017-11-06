@@ -93,8 +93,13 @@ public class TextModule extends Module {
     }
 
     public void setText(CharSequence text) {
+        if (text == mText ||
+                (text != null && mText != null && text.equals(mText))) {
+            return;
+        }
         mText = makeSureTextValid(text);
         mTextLayoutBuilder.setText(mText);
+        invalidate();
     }
 
     public void setText(int resId) {
@@ -110,8 +115,11 @@ public class TextModule extends Module {
     }
 
     public void setTextSize(int textSize) {
-        mTextSize = textSize;
-        mTextLayoutBuilder.setTextSize(mTextSize);
+        if (textSize != mTextSize) {
+            mTextSize = textSize;
+            mTextLayoutBuilder.setTextSize(mTextSize);
+            invalidate();
+        }
     }
 
     public int getTextColor() {
@@ -119,8 +127,11 @@ public class TextModule extends Module {
     }
 
     public void setTextColor(int textColor) {
-        mTextColor = textColor;
-        mTextLayoutBuilder.setTextColor(mTextColor);
+        if (textColor != mTextColor) {
+            mTextColor = textColor;
+            mTextLayoutBuilder.setTextColor(mTextColor);
+            invalidate();
+        }
     }
 
     public int getMaxLines() {
@@ -128,8 +139,11 @@ public class TextModule extends Module {
     }
 
     public void setMaxLines(int maxLines) {
-        mMaxLines = maxLines;
-        mTextLayoutBuilder.setMaxLines(mMaxLines);
+        if (maxLines != mMaxLines) {
+            mMaxLines = maxLines;
+            mTextLayoutBuilder.setMaxLines(mMaxLines);
+            invalidate();
+        }
     }
 
     public boolean isSingleLine() {
@@ -137,17 +151,22 @@ public class TextModule extends Module {
     }
 
     public void setSingleLine(boolean singleLine) {
-        mSingleLine = singleLine;
-        mTextLayoutBuilder.setSingleLine(mSingleLine);
+        if (singleLine != mSingleLine) {
+            mSingleLine = singleLine;
+            mTextLayoutBuilder.setSingleLine(mSingleLine);
+            invalidate();
+        }
     }
-
     public Layout.Alignment getAlignment() {
         return mAlignment;
     }
 
     public void setAlignment(Layout.Alignment alignment) {
-        mAlignment = alignment;
-        mTextLayoutBuilder.setAlignment(mAlignment);
+        if(alignment != mAlignment) {
+            mAlignment = alignment;
+            mTextLayoutBuilder.setAlignment(mAlignment);
+            invalidate();
+        }
     }
 
     public TextUtils.TruncateAt getEllipsize() {
@@ -155,8 +174,11 @@ public class TextModule extends Module {
     }
 
     public void setEllipsize(TextUtils.TruncateAt ellipsize) {
-        mEllipsize = ellipsize;
-        mTextLayoutBuilder.setEllipsize(mEllipsize);
+        if(mEllipsize != ellipsize) {
+            mEllipsize = ellipsize;
+            mTextLayoutBuilder.setEllipsize(mEllipsize);
+            invalidate();
+        }
     }
 
     public Typeface getTypeFace() {
@@ -164,12 +186,11 @@ public class TextModule extends Module {
     }
 
     public void setTypeFace(Typeface typeFace) {
-        mTypeFace = typeFace;
-        mTextLayoutBuilder.setTypeface(mTypeFace);
-    }
-
-    public Layout getTextLayout() {
-        return mTextLayout;
+        if(mTypeFace != typeFace) {
+            mTypeFace = typeFace;
+            mTextLayoutBuilder.setTypeface(mTypeFace);
+            invalidate();
+        }
     }
 
 
@@ -179,8 +200,11 @@ public class TextModule extends Module {
     }
 
     public void setTextStyle(@TextStyle int textStyle) {
-        mTextStyle = textStyle;
-        mTextLayoutBuilder.setTextStyle(mTextStyle);
+        if(textStyle != mTextStyle) {
+            mTextStyle = textStyle;
+            mTextLayoutBuilder.setTextStyle(mTextStyle);
+            invalidate();
+        }
     }
 
 
@@ -189,9 +213,17 @@ public class TextModule extends Module {
     }
 
     public void setUnderLine(boolean underLine) {
-        mUnderLine = underLine;
-        mTextLayoutBuilder.setUnderLine(mUnderLine);
+        if(mUnderLine != underLine) {
+            mUnderLine = underLine;
+            mTextLayoutBuilder.setUnderLine(mUnderLine);
+            invalidate();
+        }
     }
+
+    public Layout getTextLayout() {
+        return mTextLayout;
+    }
+
 
     //-----------------endregion--------------------------------------------
 

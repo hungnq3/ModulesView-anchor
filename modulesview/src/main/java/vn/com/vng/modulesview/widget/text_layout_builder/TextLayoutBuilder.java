@@ -554,14 +554,14 @@ public class TextLayoutBuilder {
         int width = 0;
         switch (mMeasureMode) {
             case MEASURE_MODE_UNSPECIFIED:
-                width = (int) Math.ceil(Layout.getDesiredWidth(mText, mTextPaint));
+                width = (int) Math.ceil(Layout.getDesiredWidth(text, mTextPaint));
                 break;
             case MEASURE_MODE_EXACTLY:
                 width = mWidth;
                 break;
             case MEASURE_MODE_AT_MOST:
                 width = Math.min(
-                        (int) Math.ceil(Layout.getDesiredWidth(mText, mTextPaint)),
+                        (int) Math.ceil(Layout.getDesiredWidth(text, mTextPaint)),
                         mWidth);
                 break;
         }

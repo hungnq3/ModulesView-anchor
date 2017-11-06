@@ -22,6 +22,7 @@ import com.squareup.picasso.Target;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import vn.com.vng.modulesview.LayoutParams;
 import vn.com.vng.modulesview.Module;
 
 
@@ -85,6 +86,7 @@ public class ImageModule extends Module {
     public void setScaleType(@ScaleType int scaleType) {
         if (mScaleType != scaleType) {
             mScaleType = scaleType;
+            invalidate();
         }
     }
 
@@ -95,6 +97,7 @@ public class ImageModule extends Module {
     public void setRoundCorner(float roundCorner) {
         if (mRoundCorner != roundCorner) {
             mRoundCorner = roundCorner;
+            invalidate();
         }
     }
 
@@ -102,6 +105,7 @@ public class ImageModule extends Module {
         mDrawable = drawable;
         mBitmap = null;
 //        setImageBitmap(getBitmapFromDrawable(drawable));
+        invalidate();
     }
 
     public void setImageResource(int id) {
@@ -118,6 +122,7 @@ public class ImageModule extends Module {
             mBitmapShader = null;
             mBitmapPaint.setShader(null);
         }
+        invalidate();
     }
 
 
@@ -127,7 +132,11 @@ public class ImageModule extends Module {
     }
 
     public void setAdjustViewBound(boolean adjustViewBound) {
-        mAdjustViewBound = adjustViewBound;
+        if(adjustViewBound != mAdjustViewBound) {
+            mAdjustViewBound = adjustViewBound;
+            if(getLayoutParams().getWidthDimension() == LayoutParams.WRAP_CONTENT || getLayoutParams().getHeightDimension() == LayoutParams.WRAP_CONTENT)
+                invalidate();
+        }
     }
 
     //-------------endregion------------------

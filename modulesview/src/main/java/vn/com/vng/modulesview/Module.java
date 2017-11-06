@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -28,6 +29,7 @@ public class Module {
     public static final int BOUND_UNSPECIFIED = Integer.MIN_VALUE;
     public static final int BOUND_UNKNOWN = Integer.MIN_VALUE + 1;
 
+    private static final int[] STATE_PRESS_ARRAYS = {android.R.attr.state_pressed};
     //stuff
     protected Context mContext;
     private Parent mParent;
@@ -123,7 +125,7 @@ public class Module {
 
 
     public void setBackgroundResId(int id) {
-        mBackgroundDrawable = ContextCompat.getDrawable(getContext(), id);
+        setBackgroundDrawable(ContextCompat.getDrawable(getContext(), id));
     }
 
     public Drawable getBackgroundDrawable() {
@@ -133,10 +135,11 @@ public class Module {
 
     public void clearBackground() {
         mBackgroundDrawable = null;
+        invalidate();
     }
 
 
-    protected boolean applyStateListBackground() {
+    private boolean applyStateListBackground() {
         return mBackgroundDrawable instanceof StateListDrawable && (clickable() || longClickable());
     }
 
@@ -473,7 +476,6 @@ public class Module {
     }
 
 
-
     void drawBackground(Canvas canvas) {
         if (canvas != null && mBackgroundDrawable != null) {
             if (mWidth > 0 && mHeight > 0) {
@@ -512,7 +514,7 @@ public class Module {
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 if (applyStateListBackground())
-                    updateBackgroundState(android.R.attr.state_pressed);
+                    updateBackgroundState(STATE_PRESS_ARRAYS);
 
                 handled = clickable() || longClickable();
                 if (longClickable())
@@ -542,10 +544,8 @@ public class Module {
     }
 
     private void updateBackgroundState(int... states) {
-        if (mBackgroundDrawable instanceof StateListDrawable) {
-            mBackgroundDrawable.setState(states);
-            invalidate();
-        }
+        mBackgroundDrawable.setState(states);
+        invalidate();
     }
 
 
