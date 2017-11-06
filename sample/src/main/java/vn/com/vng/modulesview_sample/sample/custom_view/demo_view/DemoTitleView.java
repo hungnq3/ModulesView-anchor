@@ -42,9 +42,9 @@ public class DemoTitleView extends ModulesView {
                 .setDimensions(LayoutParams.MATCH_PARENT, 2)
                 .setBellowOf(mTextModule);
 
-        addModule(mLineModule);
 
         addModule(mTextModule);
+        addModule(mLineModule);
     }
 
     public void setText(CharSequence text){

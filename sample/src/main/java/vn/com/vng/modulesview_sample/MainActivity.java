@@ -20,6 +20,7 @@ import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoImageScal
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutAlignParentViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutAlignViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutFenceViewItem;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutGravityViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutGuildelineViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutNormalViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoLayoutSideOfViewItem;
@@ -253,6 +254,9 @@ public class MainActivity extends AppCompatActivity {
 
         items.add(new DemoHeaderViewItem("Fence:"));
         items.add(new DemoLayoutFenceViewItem());
+
+        items.add(new DemoHeaderViewItem("Gravity:"));
+        items.add(new DemoLayoutGravityViewItem());
 
 
 

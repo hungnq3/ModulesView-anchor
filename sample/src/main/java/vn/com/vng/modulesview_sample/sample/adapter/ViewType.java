@@ -29,6 +29,7 @@ public class ViewType {
     public static final int DEMO_LAYOUT_SIDE_OF = 123;
     public static final int DEMO_LAYOUT_GUIDELINE = 124;
     public static final int DEMO_LAYOUT_FENCE = 125;
+    public static final int DEMO_LAYOUT_GRAVITY = 126;
 
     public static final int SOCIAL_HEADER = 1001;
     public static final int SOCIAL_TEXT_CONTENT = 1002;

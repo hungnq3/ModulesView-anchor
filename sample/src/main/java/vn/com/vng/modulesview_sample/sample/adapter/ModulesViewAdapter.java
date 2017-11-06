@@ -27,6 +27,7 @@ import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoImageScale
 import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutAlignParentView;
 import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutAlignView;
 import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutFenceView;
+import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutGravityView;
 import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutGuidelineView;
 import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutNormalView;
 import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutSideOfView;
@@ -151,6 +152,11 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             case ViewType.DEMO_LAYOUT_FENCE:{
                 holder = new BaseViewHolder(new DemoLayoutFenceView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.DEMO_LAYOUT_GRAVITY:{
+                holder = new BaseViewHolder(new DemoLayoutGravityView(parent.getContext()));
                 break;
             }
 
