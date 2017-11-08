@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="Primary text"
+        android:textColor="#050505"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv2"
+        app:layout_constraintLeft_toRightOf="@id/iv"
+        app:layout_constraintTop_toTopOf="@id/iv"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+
+    <TextView
+        android:id="@id/tv2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Secondary text"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv"
+
+        app:layout_constraintLeft_toLeftOf="@id/tv1"
+        app:layout_constraintTop_toBottomOf="@id/tv1"/>
+
+
+</android.support.constraint.ConstraintLayout>

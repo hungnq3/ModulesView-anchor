@@ -106,15 +106,7 @@ public class SocialImageContentView extends ModulesView {
         if (position < 0 || position >= getImagesContentCount())
             return;
         final ImageModule imageModule = mImageModules.get(position);
-        if (imageModule.getWidth() > 0 || imageModule.getHeight() > 0)
-            imageModule.loadImage(url, R.drawable.img_place_holder, R.drawable.img_error);
-        else
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    imageModule.loadImage(url, R.drawable.img_place_holder, R.drawable.img_error);
-                }
-            });
+        imageModule.loadImage(url, R.drawable.img_place_holder, R.drawable.img_error, mScreenWidth, mScreenWidth);
     }
 
     //-----------------listener------------

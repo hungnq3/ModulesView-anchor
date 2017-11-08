@@ -144,7 +144,7 @@ public class FriendView extends ModulesView {
 
     public void bindData(FriendModel model) {
         if (model != null) {
-            mAvatar.loadImage(model.getAvatar());
+            mAvatar.loadImage(model.getAvatar(), mAvatarSize, mAvatarSize);
             mOnlinePoint.getLayoutParams().setVisibility(model.isOnline() ? LayoutParams.VISIBLE : LayoutParams.GONE);
             mNameText.setText(model.getName());
             mStatusText.setText(model.getStatus());

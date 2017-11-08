@@ -271,11 +271,11 @@ public class GroupChatHeaderView extends ModulesView {
         if (model != null) {
             initImageHeaders(model.getMembersCount());
             if (model.getMembersCount() > 2) {
-                mHeaderImage1.loadImage(model.getAvatars() != null && model.getAvatars().size() > 0 ? model.getAvatars().get(0) : null);
-                mHeaderImage2.loadImage(model.getAvatars() != null && model.getAvatars().size() > 1 ? model.getAvatars().get(1) : null);
-                mHeaderImage3.loadImage(model.getAvatars() != null && model.getAvatars().size() > 2 ? model.getAvatars().get(2) : null);
+                mHeaderImage1.loadImage(model.getAvatars() != null && model.getAvatars().size() > 0 ? model.getAvatars().get(0) : null, mImageHeaderSize, mImageHeaderSize);
+                mHeaderImage2.loadImage(model.getAvatars() != null && model.getAvatars().size() > 1 ? model.getAvatars().get(1) : null,  mImageHeaderSize, mImageHeaderSize);
+                mHeaderImage3.loadImage(model.getAvatars() != null && model.getAvatars().size() > 2 ? model.getAvatars().get(2) : null,  mImageHeaderSize, mImageHeaderSize);
                 if (model.getMembersCount() == 4)
-                    mHeaderImage4.loadImage(model.getAvatars() != null && model.getAvatars().size() > 3 ? model.getAvatars().get(3) : null);
+                    mHeaderImage4.loadImage(model.getAvatars() != null && model.getAvatars().size() > 3 ? model.getAvatars().get(3) : null,  mImageHeaderSize, mImageHeaderSize);
                 else if (model.getMembersCount() > 4)
                     mMoreMembersText.setText(String.valueOf(model.getMembersCount() - 3));
             }

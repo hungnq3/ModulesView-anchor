@@ -28,6 +28,7 @@ public class TestView extends ModulesView {
         init();
     }
 
+
     GroupModule mGroup1;
     GroupModule mGroup2;
     TextModule mText1;
@@ -83,7 +84,7 @@ public class TestView extends ModulesView {
 
         mImageModule = new ImageModule(getContext());
         mImageModule.setScaleType(ImageModule.CENTER_CROP);
-        mImageModule.loadImage("https://i.sharefa.st/1295569823374302192636.jpg");
+        mImageModule.loadImage("https://i.sharefa.st/1295569823374302192636.jpg", dp(100), dp(100));
         mImageModule.getLayoutParams()
                 .setDimensions(dp(100),dp(100))
                 .setAlignRight(mText2)

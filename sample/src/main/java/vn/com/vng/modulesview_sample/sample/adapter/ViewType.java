@@ -7,6 +7,10 @@ package vn.com.vng.modulesview_sample.sample.adapter;
 public class ViewType {
 
     public static final int TEST = 1;
+    public static final int MODULESVIEW_SAMPLE = 10;
+    public static final int NORMALVIEW_SAMPLE = 11;
+    public static final int CONSTRAINTLAYOUT_SAMPLE = 12;
+
     public static final int DEMO_TITLE_VIEW = 99;
     public static final int DEMO_HEADER_VIEW = 100;
 

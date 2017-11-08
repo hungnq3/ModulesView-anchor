@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import vn.com.vng.modulesview_sample.sample.adapter.ViewType;
+import vn.com.vng.modulesview_sample.sample.adapter.view_item.FlexViewTypeItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.chat_list.ChatHeaderViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoHeaderViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoImageDefaultViewItem;
@@ -34,8 +37,6 @@ import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextTypef
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTitleViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.friend_list.FriendViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.chat_list.GroupChatHeaderViewItem;
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.TestViewItem;
-import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoLayoutNormalView;
 import vn.com.vng.modulesview_sample.sample.model.ChatHeaderModel;
 import vn.com.vng.modulesview_sample.sample.model.FriendModel;
 import vn.com.vng.modulesview_sample.sample.model.GroupChatHeaderModel;
@@ -47,7 +48,63 @@ import vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list.Social
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list.SocialImageContentViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.social_list.SocialTextContentViewItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    RecyclerView recyclerView;
+    ModulesViewAdapter mAdapter;
+
+    Button btnNormal, btnModulesView, btnConstraint;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_compare);
+
+
+        btnNormal = findViewById(R.id.btn_normal);
+        btnConstraint = findViewById(R.id.btn_constraint);
+        btnModulesView = findViewById(R.id.btn_modulesview);
+
+        recyclerView = findViewById(R.id.recycler);
+        if (recyclerView != null)
+            setupRecycler();
+    }
+
+    private void setupRecycler() {
+//        mAdapter = new ModulesViewAdapter(buildItems());
+
+        mAdapter = new ModulesViewAdapter(buildListModulesViewItemsSample());
+//        mAdapter = new ModulesViewAdapter(buildListConstraintItemsSample());
+//        mAdapter = new ModulesViewAdapter(buildListNormalItemsSample());
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    private List<BaseViewItem> buildListNormalItemsSample() {
+        List<BaseViewItem> items = new LinkedList<>();
+        for (int i = 0; i < 400; i++) {
+            items.add(new FlexViewTypeItem(ViewType.NORMALVIEW_SAMPLE));
+        }
+        return items;
+    }
+
+    private List<BaseViewItem> buildListConstraintItemsSample() {
+        List<BaseViewItem> items = new LinkedList<>();
+        for (int i = 0; i < 400; i++) {
+            items.add(new FlexViewTypeItem(ViewType.CONSTRAINTLAYOUT_SAMPLE));
+        }
+        return items;
+    }
+
+    private List<BaseViewItem> buildListModulesViewItemsSample() {
+        List<BaseViewItem> items = new LinkedList<>();
+        for (int i = 0; i < 400; i++) {
+            items.add(new FlexViewTypeItem(ViewType.MODULESVIEW_SAMPLE));
+        }
+        return items;
+    }
+
 
     static final String[] IMGS = new String[]{
             "https://www.w3schools.com/css/img_fjords.jpg",
@@ -101,22 +158,21 @@ public class MainActivity extends AppCompatActivity {
         return NAMES[new Random().nextInt(NAMES.length)];
     }
 
-    static  private String getRandomMsg() {
+    static private String getRandomMsg() {
         return MESSAGES[new Random().nextInt(MESSAGES.length)];
     }
 
 
-    static  private String getRandomChatTime() {
+    static private String getRandomChatTime() {
         return CHAT_TIMES[new Random().nextInt(CHAT_TIMES.length)];
     }
 
 
-
-    static  private String getRandomImg() {
+    static private String getRandomImg() {
         return IMGS[new Random().nextInt(IMGS.length)];
     }
 
-    static  private List<String> getRandomImgs() {
+    static private List<String> getRandomImgs() {
         List<String> imgs = new LinkedList<>();
         int size = new Random().nextInt(IMGS.length);
         for (int i = 0; i < size; ++i)
@@ -124,35 +180,12 @@ public class MainActivity extends AppCompatActivity {
         return imgs;
     }
 
-    static  private List<String> getRandomImgs(int size) {
+    static private List<String> getRandomImgs(int size) {
         List<String> imgs = new LinkedList<>();
         for (int i = 0; i < size; ++i)
             imgs.add(getRandomImg());
         return imgs;
     }
-
-
-
-
-
-    RecyclerView recyclerView;
-    ModulesViewAdapter mAdapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler);
-        setupRecycler();
-    }
-
-    private void setupRecycler() {
-        mAdapter = new ModulesViewAdapter(buildItems());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mAdapter);
-    }
-
 
     private List<BaseViewItem> buildItems() {
 
@@ -259,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
         items.add(new DemoLayoutGravityViewItem());
 
 
-
         return items;
     }
 
@@ -285,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private GroupChatHeaderViewItem mockGroupChatHeaderModel(List<String> avatars, String name, String message, String time, int newCount, boolean notificationOff) {
-        GroupChatHeaderModel model = new GroupChatHeaderModel(avatars,avatars.size(), name, message, time, newCount, notificationOff);
+        GroupChatHeaderModel model = new GroupChatHeaderModel(avatars, avatars.size(), name, message, time, newCount, notificationOff);
         return new GroupChatHeaderViewItem(model);
     }
 
@@ -295,13 +327,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private FriendViewItem mockFriendViewItem(String avatar, String name, String status, boolean online) {
         FriendModel model = new FriendModel(avatar, name, status, online);
         return new FriendViewItem(model);
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_modulesview:
+                mAdapter.setItems(buildListModulesViewItemsSample());
+                mAdapter.notifyDataSetChanged();
 
+                btnModulesView.setTextColor(0xff1111dd);
+                btnConstraint.setTextColor(0xff050505);
+                btnNormal.setTextColor(0xff050505);
+                break;
+            case R.id.btn_constraint:
+                mAdapter.setItems(buildListConstraintItemsSample());
+                mAdapter.notifyDataSetChanged();
 
+                btnModulesView.setTextColor(0xff050505);
+                btnConstraint.setTextColor(0xff1111dd);
+                btnNormal.setTextColor(0xff050505);
+                break;
+            case R.id.btn_normal:
+                mAdapter.setItems(buildListNormalItemsSample());
+                mAdapter.notifyDataSetChanged();
+                btnModulesView.setTextColor(0xff050505);
+                btnConstraint.setTextColor(0xff050505);
+                btnNormal.setTextColor(0xff1111dd);
+                break;
+        }
+    }
 }

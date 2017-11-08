@@ -474,11 +474,16 @@ public class ImageModule extends Module {
     }
 
 
-    public void loadImage(final String url) {
-        loadImage(url, 0, 0);
+
+    public void loadImage(final String url, int defaultWidth, int defaultHeight) {
+        loadImage(url, 0, 0, defaultWidth, defaultHeight);
     }
 
-    public void loadImage(final String url, int placeHolderResId, int errorResId) {
+    public void loadImage(final String url) {
+        loadImage(url, 0, 0, 0 ,0);
+    }
+
+    public void loadImage(final String url, int placeHolderResId, int errorResId, int defaultWidth, int defaultHeight) {
         if (getContext() == null)
             return;
 
@@ -492,10 +497,12 @@ public class ImageModule extends Module {
         if (placeHolderResId != 0)
             request.placeholder(placeHolderResId);
 
-        if ((getWidth() > 0 && getHeight() > 0)) {
-            request.resize(getWidth(), getHeight())
-                    .onlyScaleDown();
+        int vWidth = getContentWidth() >0 ? getContentWidth() : defaultWidth;
+        int vHeight = getContentHeight() > 0 ? getContentHeight() : defaultHeight;
 
+        if(vWidth >0 && vHeight > 0) {
+            request.resize(vWidth, vHeight)
+                    .onlyScaleDown();
             switch (mScaleType) {
                 case CENTER_INSIDE:
                     request.centerInside();
@@ -522,21 +529,21 @@ public class ImageModule extends Module {
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                     setImageBitmap(bitmap);
                     configModule();
-                    invalidate();
+//                    invalidate();
                 }
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
                     setImageDrawable(errorDrawable);
                     configModule();
-                    invalidate();
+//                    invalidate();
                 }
 
                 @Override
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
                     setImageDrawable(placeHolderDrawable);
                     configModule();
-                    invalidate();
+//                    invalidate();
                 }
             };
         return mLoaderTarget;

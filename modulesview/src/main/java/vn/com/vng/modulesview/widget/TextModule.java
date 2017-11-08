@@ -273,15 +273,7 @@ public class TextModule extends Module {
             mTextLayoutBuilder.setTextSize(mTextSize);
         }
 
-        Layout layout = mTextLayoutBuilder.build();
-
-//        //fix layout null when text empty
-//        if (layout == null) {
-//            TextPaint textPaint = new TextPaint();
-//            textPaint.setTextSize(mTextSize);
-//            layout = new StaticLayout("", textPaint, 0, mAlignment, mTextLayoutBuilder.getTextSpacingMultiplier(), mTextLayoutBuilder.getTextSpacingExtra(), false);
-//        }
-        return layout;
+        return mTextLayoutBuilder.build();
     }
 
     @Override

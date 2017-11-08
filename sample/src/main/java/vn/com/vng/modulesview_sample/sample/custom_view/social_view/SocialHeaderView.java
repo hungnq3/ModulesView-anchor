@@ -168,14 +168,7 @@ public class SocialHeaderView extends ModulesView {
     public void bindHeader(final SocialModel model) {
         if (model != null) {
             if (mAvaImgModule.getWidth() > 0 || mAvaImgModule.getHeight() > 0)
-                mAvaImgModule.loadImage(model.getAvatar(), R.drawable.img_place_holder, R.drawable.img_error);
-            else
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAvaImgModule.loadImage(model.getAvatar(), R.drawable.img_place_holder, R.drawable.img_error);
-                    }
-                });
+                mAvaImgModule.loadImage(model.getAvatar(), R.drawable.img_place_holder, R.drawable.img_error, mAvaSize, mAvaSize);
 
             mNameTextModule.setText(model.getName());
             mTimeTextModule.setText(model.getTime());

@@ -1,10 +1,12 @@
 package vn.com.vng.modulesview_sample.sample.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.List;
 
+import vn.com.vng.modulesview_sample.R;
 import vn.com.vng.modulesview_sample.sample.adapter.holder.BaseViewHolder;
 import vn.com.vng.modulesview_sample.sample.adapter.holder.chat_list.ChatHeaderViewHolder;
 import vn.com.vng.modulesview_sample.sample.adapter.holder.demo.DemoHeaderViewHolder;
@@ -53,6 +55,7 @@ import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialConten
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialFooterView;
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialHeaderView;
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialImageContentView;
+import vn.com.vng.modulesview_sample.sample.custom_view.test_view.CompareView;
 import vn.com.vng.modulesview_sample.sample.custom_view.test_view.TestView;
 
 /**
@@ -75,6 +78,20 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 holder = new TestViewHolder(new TestView(parent.getContext()));
                 break;
             }
+
+            case ViewType.MODULESVIEW_SAMPLE:{
+                holder = new BaseViewHolder(new CompareView(parent.getContext()));
+                break;
+            }
+            case ViewType.CONSTRAINTLAYOUT_SAMPLE:{
+                holder = new BaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.compare_constraint_layout, parent, false));
+                break;
+            }
+            case ViewType.NORMALVIEW_SAMPLE:{
+                holder = new BaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.compare_normal_layout, parent, false));
+                break;
+            }
+
             case ViewType.DEMO_TITLE_VIEW:{
                 holder = new DemoTitleViewHolder(new DemoTitleView(parent.getContext()));
                 break;
@@ -244,5 +261,13 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemViewType(int position) {
         return mItems.get(position).getViewType();
+    }
+
+    public List<BaseViewItem> getItems() {
+        return mItems;
+    }
+
+    public void setItems(List<BaseViewItem> items) {
+        mItems = items;
     }
 }
