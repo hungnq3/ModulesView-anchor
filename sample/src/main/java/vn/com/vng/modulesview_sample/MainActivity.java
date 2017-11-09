@@ -1,11 +1,15 @@
 package vn.com.vng.modulesview_sample;
 
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import java.util.ArrayList;
@@ -37,6 +41,7 @@ import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTextTypef
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTitleViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.friend_list.FriendViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.chat_list.GroupChatHeaderViewItem;
+import vn.com.vng.modulesview_sample.sample.custom_view.test_view.CompareView;
 import vn.com.vng.modulesview_sample.sample.model.ChatHeaderModel;
 import vn.com.vng.modulesview_sample.sample.model.FriendModel;
 import vn.com.vng.modulesview_sample.sample.model.GroupChatHeaderModel;
@@ -53,17 +58,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView recyclerView;
     ModulesViewAdapter mAdapter;
 
-    Button btnNormal, btnModulesView, btnConstraint;
+    Button btnNormal, btnModulesView, btnConstraint, btnLitho;
+    ViewGroup mLayoutRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
 
+        mLayoutRoot = findViewById(R.id.root_layout);
 
         btnNormal = findViewById(R.id.btn_normal);
         btnConstraint = findViewById(R.id.btn_constraint);
         btnModulesView = findViewById(R.id.btn_modulesview);
+        btnLitho = findViewById(R.id.btn_litho);
 
         recyclerView = findViewById(R.id.recycler);
         if (recyclerView != null)
@@ -71,11 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupRecycler() {
-//        mAdapter = new ModulesViewAdapter(buildItems());
-
-        mAdapter = new ModulesViewAdapter(buildListModulesViewItemsSample());
-//        mAdapter = new ModulesViewAdapter(buildListConstraintItemsSample());
-//        mAdapter = new ModulesViewAdapter(buildListNormalItemsSample());
+        mAdapter = new ModulesViewAdapter(buildItems());
+//        mAdapter = new ModulesViewAdapter(buildListModulesViewItemsSample());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
@@ -103,6 +108,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             items.add(new FlexViewTypeItem(ViewType.MODULESVIEW_SAMPLE));
         }
         return items;
+    }
+
+    private List<BaseViewItem> buildListLithoViewItemsSample() {
+        List<BaseViewItem> items = new LinkedList<>();
+        for (int i = 0; i < 400; i++) {
+            items.add(new FlexViewTypeItem(ViewType.LITHO_SAMPLE));
+        }
+        return items;
+    }
+
+
+    private void testInflateTime() {
+        int count = 100;
+
+        long startTime = System.nanoTime();
+        for (int i = 0; i < count; i++) {
+            new CompareView(this);
+        }
+
+        long endTime = System.nanoTime();
+        Log.w("Inflate time", "ModulesView: " + String.valueOf((endTime - startTime) / 10000000000f) + " ms");
+
+        startTime = System.nanoTime();
+        for (int i = 0; i < count; i++) {
+            LayoutInflater.from(this).inflate(R.layout.compare_normal_layout, null);
+        }
+        endTime = System.nanoTime();
+        Log.i("Inflate time", "Native Inflater: " + String.valueOf((endTime - startTime) / 10000000000f) + " ms");
+
+
     }
 
 
@@ -351,14 +386,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 btnModulesView.setTextColor(0xff050505);
                 btnConstraint.setTextColor(0xff1111dd);
                 btnNormal.setTextColor(0xff050505);
+                btnLitho.setTextColor(0xff050505);
                 break;
             case R.id.btn_normal:
                 mAdapter.setItems(buildListNormalItemsSample());
                 mAdapter.notifyDataSetChanged();
                 btnModulesView.setTextColor(0xff050505);
                 btnConstraint.setTextColor(0xff050505);
+                btnLitho.setTextColor(0xff050505);
                 btnNormal.setTextColor(0xff1111dd);
                 break;
+            case R.id.btn_litho:
+                mAdapter.setItems(buildListLithoViewItemsSample());
+                mAdapter.notifyDataSetChanged();
+                btnModulesView.setTextColor(0xff050505);
+                btnConstraint.setTextColor(0xff050505);
+                btnNormal.setTextColor(0xff050505);
+                btnLitho.setTextColor(0xff1111dd);
+                break;
+            case R.id.btn_request_layout:
+                for (int i = 0, count = mLayoutRoot.getChildCount(); i < count; i++)
+                    mLayoutRoot.getChildAt(i).requestLayout();
+                break;
+            case R.id.btn_inflate:
+                testInflateTime();
+                break;
+
         }
     }
 }

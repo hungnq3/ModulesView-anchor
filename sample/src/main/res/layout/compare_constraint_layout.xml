@@ -44,4 +44,12 @@
         app:layout_constraintTop_toBottomOf="@id/tv1"/>
 
 
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_notifications_off"/>
+
 </android.support.constraint.ConstraintLayout>

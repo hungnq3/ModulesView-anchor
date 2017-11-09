@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<vn.com.vng.modulesview_sample.sample.custom_view.test_view.CustomRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -47,4 +47,11 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_notifications_off"/>
+
+</vn.com.vng.modulesview_sample.sample.custom_view.test_view.CustomRelativeLayout>

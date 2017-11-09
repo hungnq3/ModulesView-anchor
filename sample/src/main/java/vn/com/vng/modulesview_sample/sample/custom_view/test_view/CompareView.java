@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -20,6 +21,7 @@ import vn.com.vng.modulesview_sample.R;
  */
 
 public class CompareView extends ModulesView {
+
     public CompareView(Context context) {
         super(context);
         init();
@@ -45,6 +47,8 @@ public class CompareView extends ModulesView {
     GroupModule mGroupModule;
     TextModule mTextModule1;
     TextModule mTextModule2;
+    ImageModule mNotificationOff;
+
 
     private void init() {
         setSize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -79,11 +83,36 @@ public class CompareView extends ModulesView {
         mGroupModule.addModule(mTextModule1);
         mGroupModule.addModule(mTextModule2);
 
+
+        mNotificationOff = new ImageModule(getContext());
+        mNotificationOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_notifications_off));
+        mNotificationOff.getLayoutParams()
+                .setDimensions(dp(20), dp(20))
+                .setAlignParentRight(true)
+                .setCenterInVertical(true);
+
         addModule(mImageModule);
         addModule(mGroupModule);
+        addModule(mNotificationOff);
     }
 
 //    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        long t = System.nanoTime();
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        Log.w("Measure time","[ModulesView]: " + String.valueOf(System.nanoTime() - t));
+//    }
+//
+//    @Override
+//    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+//        long time = System.nanoTime();
+//        super.onLayout(changed, l, t, r, b);
+//        Log.w("Layout time","[ModulesView]: " + String.valueOf(System.nanoTime() - time));
+//
+//    }
+
+
+    //    @Override
 //    public void layout(int l, int t, int r, int b) {
 //        long time = System.nanoTime();
 //        super.layout(l, t, r, b);

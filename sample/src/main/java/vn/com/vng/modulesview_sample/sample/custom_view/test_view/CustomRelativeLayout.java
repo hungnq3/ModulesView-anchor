@@ -24,7 +24,23 @@ public class CustomRelativeLayout extends RelativeLayout {
     }
 
 
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        long t = System.nanoTime();
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        Log.i("Measure time","[Native View]: " + String.valueOf(System.nanoTime() - t));
+//    }
 //
+//    @Override
+//    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+//        long time = System.nanoTime();
+//        super.onLayout(changed, l, t, r, b);
+//        Log.i("Layout time","[Native View]: " + String.valueOf(System.nanoTime() - time));
+//
+//    }
+
+
+    //
 //
 //    @Override
 //    public void draw(Canvas canvas) {

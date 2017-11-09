@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:textColor="#1111dd"
-            android:text="ModulesView"/>
+            android:text="Modules"/>
 
         <Button
             android:id="@+id/btn_normal"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:text="NormalView"/>
+            android:text="Normal"/>
 
         <Button
             android:id="@+id/btn_constraint"
@@ -39,6 +39,15 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="Constraint"/>
+
+        <Button
+            android:id="@+id/btn_litho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:visibility="gone"
+            android:text="Litho"/>
     </LinearLayout>
 
 

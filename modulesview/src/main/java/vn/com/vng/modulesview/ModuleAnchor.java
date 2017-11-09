@@ -29,7 +29,7 @@ class ModuleAnchor extends Anchor {
         if (mModule == null)
             return BOUND_UNKNOWN;
         int left = mModule.getLeft();
-        return left == Module.BOUND_UNKNOWN || left == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : left - (mIgnoreMargin ? 0 : mModule.getLayoutParams().getMarginLeft());
+        return left == Module.BOUND_UNKNOWN || left == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : mIgnoreMargin ? left : left -  mModule.getLayoutParams().getMarginLeft();
     }
 
     @Override
@@ -37,7 +37,7 @@ class ModuleAnchor extends Anchor {
         if (mModule == null || mModule.getLayoutParams().getVisibility() == LayoutParams.GONE)
             return BOUND_UNKNOWN;
         int top = mModule.getTop();
-        return top == Module.BOUND_UNKNOWN || top == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : top - (mIgnoreMargin ? 0 : mModule.getLayoutParams().getMarginTop());
+        return top == Module.BOUND_UNKNOWN || top == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : mIgnoreMargin ? top : top - mModule.getLayoutParams().getMarginTop();
     }
 
     @Override
@@ -46,7 +46,7 @@ class ModuleAnchor extends Anchor {
             return BOUND_UNKNOWN;
         int right = mModule.getRight();
 
-        return right == Module.BOUND_UNKNOWN || right == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : right + (mIgnoreMargin ? 0 : mModule.getLayoutParams().getMarginRight());
+        return right == Module.BOUND_UNKNOWN || right == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : mIgnoreMargin ? right : right + mModule.getLayoutParams().getMarginRight();
     }
 
     @Override
@@ -54,6 +54,6 @@ class ModuleAnchor extends Anchor {
         if (mModule == null || mModule.getLayoutParams().getVisibility() == LayoutParams.GONE)
             return BOUND_UNKNOWN;
         int bottom = mModule.getBottom();
-        return bottom == Module.BOUND_UNKNOWN || bottom == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : bottom  + (mIgnoreMargin ? 0 : mModule.getLayoutParams().getMarginBottom());
+        return bottom == Module.BOUND_UNKNOWN || bottom == Module.BOUND_UNSPECIFIED ? BOUND_UNKNOWN : mIgnoreMargin  ? bottom : bottom + mModule.getLayoutParams().getMarginBottom();
     }
 }

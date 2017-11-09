@@ -19,7 +19,6 @@ import vn.com.vng.modulesview_sample.sample.adapter.holder.social_list.SocialIma
 import vn.com.vng.modulesview_sample.sample.adapter.holder.social_list.SocialTextContentViewHolder;
 import vn.com.vng.modulesview_sample.sample.adapter.holder.TestViewHolder;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.BaseViewItem;
-import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoImageDefaultViewItem;
 import vn.com.vng.modulesview_sample.sample.custom_view.chat_view.ChatHeaderView;
 import vn.com.vng.modulesview_sample.sample.custom_view.chat_view.GroupChatHeaderView;
 import vn.com.vng.modulesview_sample.sample.custom_view.demo_view.DemoHeaderView;
@@ -57,6 +56,7 @@ import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialHeader
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialImageContentView;
 import vn.com.vng.modulesview_sample.sample.custom_view.test_view.CompareView;
 import vn.com.vng.modulesview_sample.sample.custom_view.test_view.TestView;
+import vn.com.vng.modulesview_sample.sample.custom_view.test_view.litho.LithoFactory;
 
 /**
  * Created by HungNQ on 15/09/2017.
@@ -91,6 +91,13 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 holder = new BaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.compare_normal_layout, parent, false));
                 break;
             }
+
+            case ViewType.LITHO_SAMPLE:{
+                holder = new BaseViewHolder(LithoFactory.createLithoTestView(parent.getContext()));
+                break;
+            }
+
+
 
             case ViewType.DEMO_TITLE_VIEW:{
                 holder = new DemoTitleViewHolder(new DemoTitleView(parent.getContext()));

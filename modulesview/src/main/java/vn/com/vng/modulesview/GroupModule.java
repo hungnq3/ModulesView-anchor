@@ -182,52 +182,75 @@ public class GroupModule extends Module implements Parent {
             if (module == null)
                 continue;
             module.measure(width, widthMode, height, heightMode);
-            module.onPostMeasured();
 
             //resolve current dimensions
-            if (module.getLeft() != Module.BOUND_UNSPECIFIED && module.getLeft() != Module.BOUND_UNKNOWN)
-                boundLeft = Math.min(boundLeft, module.getLeft() - module.getLayoutParams().getMarginLeft());
-            if (module.getTop() != Module.BOUND_UNSPECIFIED && module.getTop() != Module.BOUND_UNKNOWN)
-                boundTop = Math.min(boundTop, module.getTop() - module.getLayoutParams().getMarginTop());
-            if (module.getRight() != Module.BOUND_UNSPECIFIED && module.getRight() != Module.BOUND_UNKNOWN)
-                boundRight = Math.max(boundRight, module.getRight()  +  module.getLayoutParams().getMarginRight());
-            if (module.getBottom() != Module.BOUND_UNSPECIFIED && module.getBottom() != Module.BOUND_UNKNOWN)
-                boundBottom = Math.max(boundBottom, module.getBottom() + module.getLayoutParams().getMarginBottom());
-
-            //resolve current dimensions
-            if (module.getWidth() >= 0) {
-                if (mWidthMeasureMode != View.MeasureSpec.EXACTLY) {
-                    int tempWidth = boundRight + getPaddingLeft() + getPaddingRight();
-                    mCurrentWidth = Math.max(mCurrentWidth, tempWidth);
-                    if (mWidthMeasureMode == View.MeasureSpec.AT_MOST) {
-                        mCurrentWidth = Math.min(mCurrentWidth, mWidthMeasureSize);
+            if (module.getLeft() != Module.BOUND_UNSPECIFIED && module.getLeft() != Module.BOUND_UNKNOWN) {
+                int temp = module.getLeft() - module.getLayoutParams().getMarginLeft();
+                if (temp < boundLeft)
+                    boundLeft = temp;
+            }
+            if (module.getTop() != Module.BOUND_UNSPECIFIED && module.getTop() != Module.BOUND_UNKNOWN) {
+                int temp = module.getTop() - module.getLayoutParams().getMarginTop();
+                if (temp < boundTop)
+                    boundTop = temp;
+            }
+            if (module.getRight() != Module.BOUND_UNSPECIFIED && module.getRight() != Module.BOUND_UNKNOWN) {
+                int temp = module.getRight() + module.getLayoutParams().getMarginRight();
+                if (temp > boundRight) {
+                    boundRight = temp;
+                    //resolve current dimensions
+                    if (mWidthMeasureMode != View.MeasureSpec.EXACTLY) {
+                        int tempWidth = boundRight + getPaddingLeft() + getPaddingRight();
+                        if (mWidthMeasureMode == View.MeasureSpec.AT_MOST && tempWidth > mWidthMeasureSize)
+                            mCurrentWidth = mWidthMeasureSize;
+                        else
+                            mCurrentWidth = tempWidth;
                     }
                 }
             }
+            if (module.getBottom() != Module.BOUND_UNSPECIFIED && module.getBottom() != Module.BOUND_UNKNOWN) {
+                int temp = module.getBottom() + module.getLayoutParams().getMarginBottom();
+                if (temp > boundBottom) {
+                    boundBottom = temp;
+                    //resolve current dimensions
+                    if (mHeightMeasureMode != View.MeasureSpec.EXACTLY) {
+                        int tempHeight = boundBottom + getPaddingTop() + getPaddingBottom();
+                        if (mHeightMeasureMode == View.MeasureSpec.AT_MOST && tempHeight > mHeightMeasureSize)
+                            mCurrentHeight = mHeightMeasureSize;
+                        else
+                            mCurrentHeight = tempHeight;
 
-            if (module.getHeight() >= 0) {
-                if (mHeightMeasureMode != View.MeasureSpec.EXACTLY) {
-                    int tempHight = boundBottom + getPaddingTop() + getPaddingBottom();
-                    mCurrentHeight = Math.max(mCurrentHeight, tempHight);
-                    if (mHeightMeasureMode == View.MeasureSpec.AT_MOST)
-                        mCurrentHeight = Math.min(mCurrentHeight, mHeightMeasureSize);
+                    }
                 }
             }
+//
+//            //resolve current dimensions
+//            if (mWidthMeasureMode != View.MeasureSpec.EXACTLY && module.getWidth() >= 0) {
+//                int tempWidth = boundRight + getPaddingLeft() + getPaddingRight();
+//                if (tempWidth > mCurrentWidth)
+//                    mCurrentWidth = tempWidth;
+//                if (mWidthMeasureMode == View.MeasureSpec.AT_MOST && mCurrentWidth > mWidthMeasureSize) {
+//                    mCurrentWidth = mWidthMeasureSize;
+//                }
+//            }
+//
+//            if (mHeightMeasureMode != View.MeasureSpec.EXACTLY && module.getHeight() >= 0) {
+//                int tempHeight = boundBottom + getPaddingTop() + getPaddingBottom();
+//                if (tempHeight > mCurrentHeight)
+//                    mCurrentHeight = tempHeight;
+//                if (mHeightMeasureMode == View.MeasureSpec.AT_MOST && mCurrentHeight > mHeightMeasureSize)
+//                    mCurrentHeight = mHeightMeasureSize;
+//            }
         }
 
         setContentBounds(boundLeft, boundTop, boundRight, boundBottom);
-        onPostMeasureChildren(mCurrentWidth, mCurrentHeight);
     }
 
-
-    void onPostMeasureChildren(int currentWidth, int currentHeight) {
-
-    }
 
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
+    protected void onLayout(int left, int top, int right, int bottom) {
+        super.onLayout(left, top, right, bottom);
         for (Module module : mModules) {
             if (module == null)
                 continue;

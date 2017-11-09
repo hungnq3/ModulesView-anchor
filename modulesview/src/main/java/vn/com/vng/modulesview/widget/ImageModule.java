@@ -65,6 +65,7 @@ public class ImageModule extends Module {
     private int mDrawTranslateX, mDrawTranslateY;
     private final RectF mCLipRect = new RectF();
     private final Path mClipPath = new Path();
+    private boolean mConfigured;
 
     //properties
     private Bitmap mBitmap;
@@ -86,7 +87,7 @@ public class ImageModule extends Module {
     public void setScaleType(@ScaleType int scaleType) {
         if (mScaleType != scaleType) {
             mScaleType = scaleType;
-            invalidate();
+            updateImage();
         }
     }
 
@@ -104,8 +105,7 @@ public class ImageModule extends Module {
     public void setImageDrawable(Drawable drawable) {
         mDrawable = drawable;
         mBitmap = null;
-//        setImageBitmap(getBitmapFromDrawable(drawable));
-        invalidate();
+        updateImage();
     }
 
     public void setImageResource(int id) {
@@ -122,9 +122,8 @@ public class ImageModule extends Module {
             mBitmapShader = null;
             mBitmapPaint.setShader(null);
         }
-        invalidate();
+        updateImage();
     }
-
 
 
     public boolean isAdjustViewBound() {
@@ -132,17 +131,35 @@ public class ImageModule extends Module {
     }
 
     public void setAdjustViewBound(boolean adjustViewBound) {
-        if(adjustViewBound != mAdjustViewBound) {
+        if (adjustViewBound != mAdjustViewBound) {
             mAdjustViewBound = adjustViewBound;
-            if(getLayoutParams().getWidthDimension() == LayoutParams.WRAP_CONTENT || getLayoutParams().getHeightDimension() == LayoutParams.WRAP_CONTENT)
-                invalidate();
+            if (getLayoutParams().getWidthDimension() == LayoutParams.WRAP_CONTENT || getLayoutParams().getHeightDimension() == LayoutParams.WRAP_CONTENT)
+                requestLayout();
         }
     }
 
+
+    private boolean needToRequestLayout() {
+        return mAdjustViewBound && (getLayoutParams().getWidthDimension() == LayoutParams.WRAP_CONTENT || getLayoutParams().getHeightDimension() == LayoutParams.WRAP_CONTENT);
+
+    }
+
+    private void updateImage(){
+        if (needToRequestLayout())
+            requestLayout();
+        else {
+            mConfigured = false;
+            configModule();
+            invalidate();
+        }
+    }
     //-------------endregion------------------
 
     @Override
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
+        int oldWidth = getContentWidth();
+        int oldHeight = getContentHeight();
+
         if (isAdjustViewBound() && (mBitmap != null || mDrawable != null)) {
             if (widthMode != DIMENSION_MODE_EXACTLY && heightMode != DIMENSION_MODE_EXACTLY) {
                 int imageWidth = mBitmap != null ? mBitmap.getWidth() : mDrawable.getIntrinsicWidth();
@@ -157,6 +174,7 @@ public class ImageModule extends Module {
 
                 int contentWidth = width;
                 int contentHeight;
+
 
                 if (mScaleType == CENTER) //  Image bitmap no scale for this type
                     contentHeight = imageHeight;
@@ -194,12 +212,17 @@ public class ImageModule extends Module {
         } else
             super.onMeasureContent(width, widthMode, height, heightMode);
 
+
+        mConfigured = mConfigured && (oldWidth == getContentWidth() && oldHeight == getContentHeight());
     }
 
 
     @Override
     public void configModule() {
         super.configModule();
+        if (mConfigured)
+            return;
+
         if (getWidth() <= 0 || getHeight() <= 0)
             return;
 
@@ -212,6 +235,8 @@ public class ImageModule extends Module {
         configureImageBounds();
         configureDrawRegionPath();
         configureBitmapPaint();
+
+        mConfigured = true;
     }
 
 
@@ -474,13 +499,12 @@ public class ImageModule extends Module {
     }
 
 
-
     public void loadImage(final String url, int defaultWidth, int defaultHeight) {
         loadImage(url, 0, 0, defaultWidth, defaultHeight);
     }
 
     public void loadImage(final String url) {
-        loadImage(url, 0, 0, 0 ,0);
+        loadImage(url, 0, 0, 0, 0);
     }
 
     public void loadImage(final String url, int placeHolderResId, int errorResId, int defaultWidth, int defaultHeight) {
@@ -497,10 +521,10 @@ public class ImageModule extends Module {
         if (placeHolderResId != 0)
             request.placeholder(placeHolderResId);
 
-        int vWidth = getContentWidth() >0 ? getContentWidth() : defaultWidth;
+        int vWidth = getContentWidth() > 0 ? getContentWidth() : defaultWidth;
         int vHeight = getContentHeight() > 0 ? getContentHeight() : defaultHeight;
 
-        if(vWidth >0 && vHeight > 0) {
+        if (vWidth > 0 && vHeight > 0) {
             request.resize(vWidth, vHeight)
                     .onlyScaleDown();
             switch (mScaleType) {
@@ -528,24 +552,25 @@ public class ImageModule extends Module {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                     setImageBitmap(bitmap);
-                    configModule();
-//                    invalidate();
                 }
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
                     setImageDrawable(errorDrawable);
-                    configModule();
-//                    invalidate();
                 }
 
                 @Override
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
                     setImageDrawable(placeHolderDrawable);
-                    configModule();
-//                    invalidate();
+
                 }
             };
         return mLoaderTarget;
+    }
+
+    @Override
+    public void requestLayout() {
+        super.requestLayout();
+        mConfigured = false;
     }
 }

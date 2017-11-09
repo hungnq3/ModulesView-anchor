@@ -9,7 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.support.v4.util.LongSparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -182,9 +182,19 @@ public class Module {
 
 
     final void measure(int parentWidth, int parentWidthMode, int parentHeight, int parentHeightMode) {
-        //clear layout state
-        setBounds(BOUND_UNSPECIFIED, BOUND_UNSPECIFIED, BOUND_UNSPECIFIED, BOUND_UNSPECIFIED);
-        setContentDimensions(0, 0);
+
+//        //step 0: check cached measure dimension
+//        long key = (long)View.MeasureSpec.makeMeasureSpec(parentWidth, parentWidthMode) << 32 | (View.MeasureSpec.makeMeasureSpec(parentHeight,parentHeightMode) & 0xffffffffL);
+//        if (mMeasureCache == null)
+//            mMeasureCache = new LongSparseArray<>(2);
+//        else {
+//            long dimensions = mMeasureCache.get(key, -1L);
+//            if(dimensions != -1){
+//                int width = (int) (dimensions >> 32);
+//                int height = (int) ((dimensions << 32) >> 32);
+//            }
+//        }
+
 
         //step 1: external measure
         mParams.onMeasureAnchors();
@@ -275,7 +285,7 @@ public class Module {
     private int getRemainWidth(int parentWidth) {
         int right, left;
         if (mRight == BOUND_UNSPECIFIED) {
-            right = parentWidth - mParams.getMarginRight() - (mParent.getPaddingLeft() + mParent.getPaddingRight());
+            right = parentWidth  - mParent.getPaddingLeft()  - mParent.getPaddingRight() - mParams.getMarginRight();
         } else {
             right = mRight;
         }
@@ -285,28 +295,26 @@ public class Module {
         } else {
             left = mLeft;
         }
+        int width = right - left- mParams.getPaddingRight() - mParams.getPaddingLeft();
 
-        return Math.max(right - left - mParams.getPaddingRight() - mParams.getPaddingLeft(), 0);
+        return width > 0 ? width : 0;
     }
 
     private int getRemainHeight(int parentHeight) {
 
         int bottom, top;
         if (mBottom == BOUND_UNSPECIFIED) {
-            bottom = View.MeasureSpec.getSize(parentHeight) - mParams.getMarginBottom();
-            bottom -= mParent != null ? mParent.getPaddingBottom() : 0;
+            bottom = parentHeight - -mParent.getPaddingTop() - mParent.getPaddingBottom() - mParams.getMarginBottom();
         } else {
             bottom = mBottom;
         }
-
         if (mTop == BOUND_UNSPECIFIED) {
             top = mParams.getMarginTop();
-            top += mParent != null ? mParent.getPaddingTop() : 0;
         } else {
             top = mTop;
         }
-
-        return Math.max(bottom - top - mParams.getPaddingTop() - mParams.getPaddingBottom(), 0);
+        int height = bottom - top - mParams.getPaddingTop() - mParams.getPaddingBottom();
+        return height > 0 ? height : 0;
     }
 
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
@@ -359,10 +367,6 @@ public class Module {
     }
 
 
-    public void onPostMeasured() {
-    }
-
-
     public int getCoordinateX() {
         return mCoordinateX;
     }
@@ -375,10 +379,10 @@ public class Module {
 
     final void layout(int left, int top, int right, int bottom) {
 
-        int oldWidth = mWidth;
-        int oldHeight = mHeight;
-        setBounds(left, top, right, bottom);
-        boolean changed = oldWidth != mWidth && oldHeight != mHeight;
+//        int oldWidth = mWidth;
+//        int oldHeight = mHeight;
+//        setBounds(left, top, right, bottom);
+//        boolean changed = oldWidth != mWidth && oldHeight != mHeight;
 
         //reconfig center if needed
         reconfigCenterInParentIfNeeded();
@@ -390,8 +394,7 @@ public class Module {
         mCoordinateX = parentCooX + mLeft;
         mCoordinateY = parentCooY + mTop;
 
-        onLayout(changed, mLeft, mTop, mRight, mBottom);
-
+        onLayout(mLeft, mTop, mRight, mBottom);
 
         configModule();
     }
@@ -414,7 +417,7 @@ public class Module {
     }
 
 
-    void onLayout(boolean layoutChanged, int left, int top, int right, int bottom) {
+    void onLayout(int left, int top, int right, int bottom) {
 
     }
 
