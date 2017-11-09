@@ -178,10 +178,13 @@ public class GroupModule extends Module implements Parent {
         int boundRight = 0;
         int boundBottom = 0;
 
+        int remainWidth = mWidthMeasureSize - getPaddingLeft() - getPaddingRight();
+        int remainHeight = mHeightMeasureMode - getPaddingTop() - getPaddingBottom();
         for (Module module : mModules) {
             if (module == null)
                 continue;
-            module.measure(width, widthMode, height, heightMode);
+            module.measure(remainWidth, mWidthMeasureMode, remainHeight, mHeightMeasureMode);
+
 
             //resolve current dimensions
             if (module.getLeft() != Module.BOUND_UNSPECIFIED && module.getLeft() != Module.BOUND_UNKNOWN) {

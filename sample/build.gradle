@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        test_release {
+            keyAlias 'key-test'
+            keyPassword 'qweqwe'
+            storeFile file('/home/cpu10995/Workspace/ModulesView-anchor/keystore-test-release.jks')
+            storePassword 'qweqwe'
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
@@ -13,6 +21,8 @@ android {
     }
     buildTypes {
         release {
+            signingConfig  signingConfigs.test_release
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -30,14 +40,11 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile project(':modulesview')
-
     // Litho
     implementation 'com.facebook.litho:litho-core:0.8.0'
     implementation 'com.facebook.litho:litho-widget:0.8.0'
     compileOnly 'com.facebook.litho:litho-annotations:0.8.0'
-
     annotationProcessor 'com.facebook.litho:litho-processor:0.8.0'
-
     // SoLoader
     implementation 'com.facebook.soloader:soloader:0.2.0'
 }

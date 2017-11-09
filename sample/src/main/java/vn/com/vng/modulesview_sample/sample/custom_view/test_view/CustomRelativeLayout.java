@@ -23,22 +23,25 @@ public class CustomRelativeLayout extends RelativeLayout {
         super(context, attrs, defStyleAttr);
     }
 
-
+//
 //    @Override
 //    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        long t = System.nanoTime();
+//        long startTime = System.nanoTime();
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        Log.i("Measure time","[Native View]: " + String.valueOf(System.nanoTime() - t));
+//        long endTime = System.nanoTime();
+//        Log.i("Measure time","[RelativeLayout]: " + String.valueOf((endTime- startTime)/1000000f));
 //    }
 //
 //    @Override
 //    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-//        long time = System.nanoTime();
+//        long startTime = System.nanoTime();
 //        super.onLayout(changed, l, t, r, b);
-//        Log.i("Layout time","[Native View]: " + String.valueOf(System.nanoTime() - time));
+//        long endTime = System.nanoTime();
+//
+//        Log.i("Layout time","[RelativeLayout]: " + String.valueOf((endTime- startTime)/1000000f));
 //
 //    }
-
+//
 
     //
 //

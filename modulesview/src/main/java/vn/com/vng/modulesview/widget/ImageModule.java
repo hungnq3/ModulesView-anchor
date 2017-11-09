@@ -14,6 +14,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;

@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.support.annotation.IntDef;
 import android.text.Layout;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 import java.lang.annotation.Retention;
@@ -226,7 +227,6 @@ public class TextModule extends Module {
 
 
     //-----------------endregion--------------------------------------------
-
 
     @Override
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {

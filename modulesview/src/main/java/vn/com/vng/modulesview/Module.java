@@ -238,14 +238,14 @@ public class Module {
             //step 5: resolve center
             if (mParams.isCenterInHorizontal()) {
                 if (mWidth != DIMENSION_UNSPECIFIED && parentWidthMode == DIMENSION_MODE_EXACTLY) {
-                    int dx = (parentWidth - mParent.getPaddingLeft() - mParent.getPaddingRight() - mParams.getMarginLeft() - mParams.getMarginRight() - mWidth) / 2;
+                    int dx = (parentWidth- mParams.getMarginLeft() - mParams.getMarginRight() - mWidth) / 2;
                     mLeft += dx;
                     mRight += dx;
                 }
             }
             if (mParams.isCenterInVertical()) {
                 if (mHeight != DIMENSION_UNSPECIFIED && parentHeightMode == DIMENSION_MODE_EXACTLY) {
-                    int dy = (parentHeight - mParent.getPaddingTop() - mParent.getPaddingBottom() - mParams.getMarginTop() - mParams.getMarginBottom() - mHeight) / 2;
+                    int dy = (parentHeight - mParams.getMarginTop() - mParams.getMarginBottom() - mHeight) / 2;
                     mTop += dy;
                     mBottom += dy;
                 }
@@ -285,7 +285,7 @@ public class Module {
     private int getRemainWidth(int parentWidth) {
         int right, left;
         if (mRight == BOUND_UNSPECIFIED) {
-            right = parentWidth  - mParent.getPaddingLeft()  - mParent.getPaddingRight() - mParams.getMarginRight();
+            right = parentWidth - mParams.getMarginRight();
         } else {
             right = mRight;
         }
@@ -304,7 +304,7 @@ public class Module {
 
         int bottom, top;
         if (mBottom == BOUND_UNSPECIFIED) {
-            bottom = parentHeight - -mParent.getPaddingTop() - mParent.getPaddingBottom() - mParams.getMarginBottom();
+            bottom = parentHeight - mParams.getMarginBottom();
         } else {
             bottom = mBottom;
         }

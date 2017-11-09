@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <ImageView
+    <vn.com.vng.modulesview_sample.sample.custom_view.test_view.CustomImageView
         android:id="@+id/iv"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -24,7 +24,7 @@
         android:layout_marginLeft="8dp"
         android:layout_centerVertical="true"
         >
-        <TextView
+        <vn.com.vng.modulesview_sample.sample.custom_view.test_view.CustomTextView
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             />
 
 
-        <TextView
+        <vn.com.vng.modulesview_sample.sample.custom_view.test_view.CustomTextView
             android:id="@id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
     </LinearLayout>
 
 
-    <ImageView
+    <vn.com.vng.modulesview_sample.sample.custom_view.test_view.CustomImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_alignParentRight="true"

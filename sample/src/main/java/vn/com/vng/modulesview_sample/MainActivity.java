@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void testInflateTime() {
-        int count = 100;
+        int count = 1;
 
         long startTime = System.nanoTime();
         for (int i = 0; i < count; i++) {
@@ -128,15 +129,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         long endTime = System.nanoTime();
-        Log.w("Inflate time", "ModulesView: " + String.valueOf((endTime - startTime) / 10000000000f) + " ms");
+        Log.w("Inflate time", "ModulesView: " + String.valueOf((endTime - startTime) / 1000000f) + " ms");
 
         startTime = System.nanoTime();
         for (int i = 0; i < count; i++) {
             LayoutInflater.from(this).inflate(R.layout.compare_normal_layout, null);
         }
         endTime = System.nanoTime();
-        Log.i("Inflate time", "Native Inflater: " + String.valueOf((endTime - startTime) / 10000000000f) + " ms");
+        Log.i("Inflate time", "Native Inflater: " + String.valueOf((endTime - startTime) / 1000000f) + " ms");
 
+    }
+
+    private void rebind() {
+
+        mLayoutRoot.removeViews(0,2);
+        mLayoutRoot.addView(new CompareView(this), 0);
+        mLayoutRoot.addView(LayoutInflater.from(this).inflate(R.layout.compare_normal_layout, null), 0);
 
     }
 
@@ -410,6 +418,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_inflate:
                 testInflateTime();
+                break;
+            case R.id.btn_rebind:
+                rebind();
                 break;
 
         }
