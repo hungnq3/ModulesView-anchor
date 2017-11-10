@@ -75,7 +75,7 @@ public class DemoLayoutGravityView extends ModulesView {
         mTextModule.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule.getLayoutParams()
                 .setCenterInHorizontal(true)
-                .setBellowOf(new Fence(mTextModule1, mTextModule2, mTextModule3))
+                .setBelowOf(new Fence(mTextModule1, mTextModule2, mTextModule3))
                 .setMargin(dp(8))
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 

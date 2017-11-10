@@ -14,7 +14,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -145,7 +144,7 @@ public class ImageModule extends Module {
 
     }
 
-    private void updateImage(){
+    private void updateImage() {
         if (needToRequestLayout())
             requestLayout();
         else {
@@ -228,11 +227,22 @@ public class ImageModule extends Module {
             return;
 
         if (mDrawable != null)
-            if (mScaleType == CENTER_CROP)
-                setImageBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), false));
-            else
-                setImageBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), true));
-
+            switch (mScaleType) {
+                case CENTER_CROP:
+                    setImageBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), false));
+                    break;
+                case CENTER:
+                    setImageBitmap(getBitmapFromDrawable(mDrawable, mDrawable.getIntrinsicWidth(), mDrawable.getIntrinsicHeight(), true));
+                    break;
+                case CENTER_INSIDE:
+                    if (mDrawable.getIntrinsicHeight() < getWidth() && mDrawable.getIntrinsicHeight() < getHeight())
+                        setImageBitmap(getBitmapFromDrawable(mDrawable, mDrawable.getIntrinsicWidth(), mDrawable.getIntrinsicHeight(), true));
+                    else
+                        setImageBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), false));
+                    break;
+                default:
+                    setImageBitmap(getBitmapFromDrawable(mDrawable, getContentWidth(), getContentHeight(), true));
+            }
         configureImageBounds();
         configureDrawRegionPath();
         configureBitmapPaint();

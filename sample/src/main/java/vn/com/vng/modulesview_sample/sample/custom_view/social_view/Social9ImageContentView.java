@@ -71,24 +71,24 @@ public class Social9ImageContentView extends SocialImageContentView {
 
         img4.getLayoutParams()
                 .setDimensions(temp, temp)
-                .setBellowOf(img1)
+                .setBelowOf(img1)
                 .setPadding(0, dp(1), dp(1), dp(1));
 
         img5.getLayoutParams()
                 .setDimensions(temp,temp)
-                .setBellowOf(img2)
+                .setBelowOf(img2)
                 .setToRightOf(img4)
                 .setPadding(dp(1));
 
         img6.getLayoutParams()
                 .setDimensions(temp,temp)
                 .setToRightOf(img5)
-                .setBellowOf(img3)
+                .setBelowOf(img3)
                 .setPadding(dp(1),dp(1),0,dp(1));
 
         img7.getLayoutParams()
                 .setDimensions(temp,temp)
-                .setBellowOf(img4)
+                .setBelowOf(img4)
                 .setPadding(0,dp(1),dp(1), 0);
 
         img8.getLayoutParams()
@@ -99,7 +99,7 @@ public class Social9ImageContentView extends SocialImageContentView {
 
         img9.getLayoutParams()
                 .setDimensions(temp,temp)
-                .setBellowOf(img6)
+                .setBelowOf(img6)
                 .setToRightOf(img8)
                 .setPadding(dp(1),dp(1),0, 0);
         

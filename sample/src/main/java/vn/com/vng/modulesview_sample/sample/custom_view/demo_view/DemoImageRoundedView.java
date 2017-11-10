@@ -42,7 +42,7 @@ public class DemoImageRoundedView extends ModulesView {
         mTextModule1.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule1.setTextSize(sp(12));
         mTextModule1.getLayoutParams()
-                .setBellowOf(mImageModule1)
+                .setBelowOf(mImageModule1)
                 .setCenterInHorizontal(true);
 
         mImageModule2 = new ImageModule(mContext);
@@ -52,7 +52,7 @@ public class DemoImageRoundedView extends ModulesView {
         mImageModule2.getLayoutParams()
                 .setDimensions(dp(200), dp(200))
                 .setMarginTop(dp(8))
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setCenterInHorizontal(true);
 
 
@@ -61,7 +61,7 @@ public class DemoImageRoundedView extends ModulesView {
         mTextModule2.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule2.setTextSize(sp(12));
         mTextModule2.getLayoutParams()
-                .setBellowOf(mImageModule2)
+                .setBelowOf(mImageModule2)
                 .setCenterInHorizontal(true);
 
 

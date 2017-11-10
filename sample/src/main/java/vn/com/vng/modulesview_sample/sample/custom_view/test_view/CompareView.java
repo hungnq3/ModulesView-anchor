@@ -1,7 +1,6 @@
 package vn.com.vng.modulesview_sample.sample.custom_view.test_view;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -76,7 +75,7 @@ public class CompareView extends ModulesView {
         mTextModule2.setText("Secondary text");
         mTextModule2.setTextSize(sp(12));
         mTextModule2.getLayoutParams()
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setAlignLeft(mTextModule1);
 
 
@@ -95,7 +94,7 @@ public class CompareView extends ModulesView {
         addModule(mGroupModule);
         addModule(mNotificationOff);
     }
-
+//
 //    @Override
 //    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        long startTime = System.nanoTime();
@@ -114,18 +113,4 @@ public class CompareView extends ModulesView {
 //    }
 
 
-    //    @Override
-//    public void layout(int l, int t, int r, int b) {
-//        long time = System.nanoTime();
-//        super.layout(l, t, r, b);
-//        Log.i("Layout time", "[ModulesView] layout: " + String.valueOf(System.nanoTime() - time));
-//
-//    }
-//
-//    @Override
-//    public void draw(Canvas canvas) {
-//        long t = System.nanoTime();
-//        super.draw(canvas);
-//        Log.i("Drawing time", "[ModulesView] draw: " + String.valueOf(System.nanoTime() - t));
-//    }
 }

@@ -34,7 +34,7 @@ public class DemoTextColorView extends ModulesView {
         mTextModule2.setTextColor(0xff998877);
         mTextModule2.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         mTextModule3 = new TextModule(mContext);
@@ -42,7 +42,7 @@ public class DemoTextColorView extends ModulesView {
         mTextModule3.setTextColor(0xffee0934);
         mTextModule3.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule2)
+                .setBelowOf(mTextModule2)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         addModule(mTextModule1);

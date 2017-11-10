@@ -77,7 +77,7 @@ public class DemoLayoutFenceView extends ModulesView {
         mTextModule4.setTextSize(sp(10.5f));
         mTextModule4.getLayoutParams()
                 .setGravity(GravityCompat.CENTER)
-                .setBellowOf(new Fence(mTextModule1, mTextModule2, mTextModule3))
+                .setBelowOf(new Fence(mTextModule1, mTextModule2, mTextModule3))
                 .setAlignRight(mTextModule2)
                 .setDimensions(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
 

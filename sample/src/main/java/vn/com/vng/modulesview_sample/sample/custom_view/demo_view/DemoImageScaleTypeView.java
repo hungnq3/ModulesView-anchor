@@ -47,7 +47,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mTextModule1.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule1.setTextSize(sp(12));
         mTextModule1.getLayoutParams()
-                .setBellowOf(mImageModule1)
+                .setBelowOf(mImageModule1)
                 .setCenterInHorizontal(true);
 
 
@@ -57,7 +57,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mImageModule2.setScaleType(ImageModule.CENTER_INSIDE);
         mImageModule2.getLayoutParams()
                 .setDimensions(dp(200), dp(200))
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setMarginTop(dp(8))
                 .setCenterInHorizontal(true);
 
@@ -67,7 +67,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mTextModule2.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule2.setTextSize(sp(12));
         mTextModule2.getLayoutParams()
-                .setBellowOf(mImageModule2)
+                .setBelowOf(mImageModule2)
                 .setCenterInHorizontal(true);
 
         mImageModule3 = new ImageModule(mContext);
@@ -76,7 +76,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mImageModule3.setScaleType(ImageModule.CENTER_CROP);
         mImageModule3.getLayoutParams()
                 .setDimensions(dp(200), dp(200))
-                .setBellowOf(mTextModule2)
+                .setBelowOf(mTextModule2)
                 .setMarginTop(dp(8))
                 .setCenterInHorizontal(true);
 
@@ -86,7 +86,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mTextModule3.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule3.setTextSize(sp(12));
         mTextModule3.getLayoutParams()
-                .setBellowOf(mImageModule3)
+                .setBelowOf(mImageModule3)
                 .setCenterInHorizontal(true);
 
         mImageModule4 = new ImageModule(mContext);
@@ -95,7 +95,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mImageModule4.setScaleType(ImageModule.FIT_CENTER);
         mImageModule4.getLayoutParams()
                 .setDimensions(dp(200), dp(200))
-                .setBellowOf(mTextModule3)
+                .setBelowOf(mTextModule3)
                 .setMarginTop(dp(8))
                 .setCenterInHorizontal(true);
 
@@ -105,7 +105,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mTextModule4.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule4.setTextSize(sp(12));
         mTextModule4.getLayoutParams()
-                .setBellowOf(mImageModule4)
+                .setBelowOf(mImageModule4)
                 .setCenterInHorizontal(true);
 
         mImageModule5 = new ImageModule(mContext);
@@ -114,7 +114,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mImageModule5.setScaleType(ImageModule.FIT_XY);
         mImageModule5.getLayoutParams()
                 .setDimensions(dp(200), dp(200))
-                .setBellowOf(mTextModule4)
+                .setBelowOf(mTextModule4)
                 .setMarginTop(dp(8))
                 .setCenterInHorizontal(true);
 
@@ -124,7 +124,7 @@ public class DemoImageScaleTypeView extends ModulesView {
         mTextModule5.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule5.setTextSize(sp(12));
         mTextModule5.getLayoutParams()
-                .setBellowOf(mImageModule5)
+                .setBelowOf(mImageModule5)
                 .setCenterInHorizontal(true);
 
 

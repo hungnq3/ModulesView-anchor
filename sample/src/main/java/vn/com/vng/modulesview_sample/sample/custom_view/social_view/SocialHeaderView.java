@@ -84,7 +84,7 @@ public class SocialHeaderView extends ModulesView {
         mTimeTextModule.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setAlignLeft(mNameTextModule)
-                .setBellowOf(mNameTextModule);
+                .setBelowOf(mNameTextModule);
 
         mTopLine = new Module(getContext());
         mTopLine.setBackgroundColor(0xffcccccc);

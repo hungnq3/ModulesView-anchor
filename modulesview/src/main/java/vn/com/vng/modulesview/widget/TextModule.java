@@ -2,12 +2,10 @@ package vn.com.vng.modulesview.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.annotation.IntDef;
 import android.text.Layout;
 import android.text.TextUtils;
-import android.util.Log;
 
 
 import java.lang.annotation.Retention;

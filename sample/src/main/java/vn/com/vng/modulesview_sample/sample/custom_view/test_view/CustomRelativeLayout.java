@@ -23,25 +23,25 @@ public class CustomRelativeLayout extends RelativeLayout {
         super(context, attrs, defStyleAttr);
     }
 
-//
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        long startTime = System.nanoTime();
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        long endTime = System.nanoTime();
-//        Log.i("Measure time","[RelativeLayout]: " + String.valueOf((endTime- startTime)/1000000f));
-//    }
-//
-//    @Override
-//    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-//        long startTime = System.nanoTime();
-//        super.onLayout(changed, l, t, r, b);
-//        long endTime = System.nanoTime();
-//
-//        Log.i("Layout time","[RelativeLayout]: " + String.valueOf((endTime- startTime)/1000000f));
-//
-//    }
-//
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        long startTime = System.nanoTime();
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        long endTime = System.nanoTime();
+        Log.i("Measure time","[RelativeLayout]: " + String.valueOf((endTime- startTime)/1000000f));
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        long startTime = System.nanoTime();
+        super.onLayout(changed, l, t, r, b);
+        long endTime = System.nanoTime();
+
+        Log.i("Layout time","[RelativeLayout]: " + String.valueOf((endTime- startTime)/1000000f));
+
+    }
+
 
     //
 //

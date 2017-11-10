@@ -173,8 +173,15 @@ public class ModulesView extends View implements Parent {
         mHeightMeasureSize = MeasureSpec.getSize(heightMeasureSpec);
         mHeightMeasureMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        mCurrentWidth = mWidthMeasureMode == MeasureSpec.EXACTLY ? mWidthMeasureSize : 0;
-        mCurrentHeight = mHeightMeasureMode == MeasureSpec.EXACTLY ? mHeightMeasureSize : 0;
+        int remainWidth = mWidthMeasureSize - getPaddingLeft() - getPaddingRight();
+        int remainHeight = mHeightMeasureSize - getPaddingTop() - getPaddingBottom();
+        if(remainWidth <0)
+            remainWidth = 0;
+        if(remainHeight <0)
+            remainHeight = 0;
+
+        mCurrentWidth = mWidthMeasureMode == MeasureSpec.EXACTLY ? remainWidth : 0;
+        mCurrentHeight = mHeightMeasureMode == MeasureSpec.EXACTLY ? remainHeight: 0;
 
         mContentWidth = 0;
         mContentHeight = 0;
@@ -183,8 +190,7 @@ public class ModulesView extends View implements Parent {
         int boundTop = Integer.MAX_VALUE;
         int boundRight = 0;
         int boundBottom = 0;
-        int remainWidth = mWidthMeasureSize - getPaddingLeft() - getPaddingRight();
-        int remainHeight = mHeightMeasureMode - getPaddingTop() - getPaddingBottom();
+
         for (Module module : mModules) {
             if (module == null)
                 continue;
@@ -207,11 +213,11 @@ public class ModulesView extends View implements Parent {
                     boundRight = temp;
                     //resolve current dimensions
                     if (mWidthMeasureMode != View.MeasureSpec.EXACTLY) {
-                        int tempWidth = boundRight + getPaddingLeft() + getPaddingRight();
-                        if (mWidthMeasureMode == View.MeasureSpec.AT_MOST && tempWidth > mWidthMeasureSize)
-                            mCurrentWidth = mWidthMeasureSize;
+//                        int tempWidth = boundRight + getPaddingLeft() + getPaddingRight();
+                        if (mWidthMeasureMode == View.MeasureSpec.AT_MOST && boundRight > remainWidth)
+                            mCurrentWidth = remainWidth;
                         else
-                            mCurrentWidth = tempWidth;
+                            mCurrentWidth = boundRight;
                     }
                 }
             }
@@ -221,11 +227,11 @@ public class ModulesView extends View implements Parent {
                     boundBottom = temp;
                     //resolve current dimensions
                     if (mHeightMeasureMode != View.MeasureSpec.EXACTLY) {
-                        int tempHeight = boundBottom + getPaddingTop() + getPaddingBottom();
-                        if (mHeightMeasureMode == View.MeasureSpec.AT_MOST && tempHeight > mHeightMeasureSize)
-                            mCurrentHeight = mHeightMeasureSize;
+//                        int tempHeight = boundBottom + getPaddingTop() + getPaddingBottom();
+                        if (mHeightMeasureMode == View.MeasureSpec.AT_MOST && boundBottom > remainHeight)
+                            mCurrentHeight = remainHeight;
                         else
-                            mCurrentHeight = tempHeight;
+                            mCurrentHeight = boundBottom;
 
                     }
                 }
@@ -250,7 +256,7 @@ public class ModulesView extends View implements Parent {
         }
 
         setContentBounds(boundLeft, boundTop, boundRight, boundBottom);
-        setMeasuredDimension(mCurrentWidth, mCurrentHeight);
+        setMeasuredDimension(mCurrentWidth + getPaddingLeft() + getPaddingRight(), mCurrentHeight + getPaddingTop() + getPaddingBottom());
     }
 
 

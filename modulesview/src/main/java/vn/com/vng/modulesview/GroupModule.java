@@ -165,25 +165,23 @@ public class GroupModule extends Module implements Parent {
 
     @Override
     public void onMeasureContent(int width, int widthMode, int height, int heightMode) {
-        mWidthMeasureSize = width;
+        mWidthMeasureSize = width + getPaddingLeft() + getPaddingRight();
         mWidthMeasureMode = widthMode;
-        mHeightMeasureSize = height;
+        mHeightMeasureSize = height + getPaddingTop() + getPaddingBottom();
         mHeightMeasureMode = heightMode;
 
-        mCurrentWidth = mWidthMeasureMode == View.MeasureSpec.EXACTLY ? mWidthMeasureSize : 0;
-        mCurrentHeight = mHeightMeasureMode == View.MeasureSpec.EXACTLY ? mHeightMeasureSize : 0;
+        mCurrentWidth = mWidthMeasureMode == View.MeasureSpec.EXACTLY ? width : 0;
+        mCurrentHeight = mHeightMeasureMode == View.MeasureSpec.EXACTLY ? height : 0;
 
         int boundLeft = Integer.MAX_VALUE;
         int boundTop = Integer.MAX_VALUE;
         int boundRight = 0;
         int boundBottom = 0;
 
-        int remainWidth = mWidthMeasureSize - getPaddingLeft() - getPaddingRight();
-        int remainHeight = mHeightMeasureMode - getPaddingTop() - getPaddingBottom();
         for (Module module : mModules) {
             if (module == null)
                 continue;
-            module.measure(remainWidth, mWidthMeasureMode, remainHeight, mHeightMeasureMode);
+            module.measure(width, widthMode, height, heightMode);
 
 
             //resolve current dimensions
@@ -203,11 +201,11 @@ public class GroupModule extends Module implements Parent {
                     boundRight = temp;
                     //resolve current dimensions
                     if (mWidthMeasureMode != View.MeasureSpec.EXACTLY) {
-                        int tempWidth = boundRight + getPaddingLeft() + getPaddingRight();
-                        if (mWidthMeasureMode == View.MeasureSpec.AT_MOST && tempWidth > mWidthMeasureSize)
+//                        int tempWidth = boundRight + getPaddingLeft() + getPaddingRight();
+                        if (mWidthMeasureMode == View.MeasureSpec.AT_MOST && boundRight > mWidthMeasureSize)
                             mCurrentWidth = mWidthMeasureSize;
                         else
-                            mCurrentWidth = tempWidth;
+                            mCurrentWidth = boundRight;
                     }
                 }
             }
@@ -217,11 +215,11 @@ public class GroupModule extends Module implements Parent {
                     boundBottom = temp;
                     //resolve current dimensions
                     if (mHeightMeasureMode != View.MeasureSpec.EXACTLY) {
-                        int tempHeight = boundBottom + getPaddingTop() + getPaddingBottom();
-                        if (mHeightMeasureMode == View.MeasureSpec.AT_MOST && tempHeight > mHeightMeasureSize)
+//                        int tempHeight = boundBottom + getPaddingTop() + getPaddingBottom();
+                        if (mHeightMeasureMode == View.MeasureSpec.AT_MOST && boundBottom > mHeightMeasureSize)
                             mCurrentHeight = mHeightMeasureSize;
                         else
-                            mCurrentHeight = tempHeight;
+                            mCurrentHeight = boundBottom;
 
                     }
                 }

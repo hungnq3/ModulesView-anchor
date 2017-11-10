@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import vn.com.vng.modulesview.ModulesView;
 import vn.com.vng.modulesview_sample.R;
 import vn.com.vng.modulesview_sample.sample.adapter.holder.BaseViewHolder;
 import vn.com.vng.modulesview_sample.sample.adapter.holder.chat_list.ChatHeaderViewHolder;
@@ -55,6 +56,7 @@ import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialFooter
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialHeaderView;
 import vn.com.vng.modulesview_sample.sample.custom_view.social_view.SocialImageContentView;
 import vn.com.vng.modulesview_sample.sample.custom_view.test_view.CompareView;
+import vn.com.vng.modulesview_sample.sample.custom_view.test_view.ComplexTestView;
 import vn.com.vng.modulesview_sample.sample.custom_view.test_view.TestView;
 import vn.com.vng.modulesview_sample.sample.custom_view.test_view.litho.LithoFactory;
 
@@ -94,6 +96,20 @@ public class ModulesViewAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             case ViewType.LITHO_SAMPLE:{
                 holder = new BaseViewHolder(LithoFactory.createLithoTestView(parent.getContext()));
+                break;
+            }
+            case ViewType.MODULES_COMPLEX_TEST:{
+                holder = new BaseViewHolder(new ComplexTestView(parent.getContext()));
+                break;
+            }
+
+            case ViewType.NATIVE_COMPLEX_TEST:{
+                holder = new BaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.complex_layout_test, parent, false));
+                break;
+            }
+
+            case ViewType.LITHO_COMPLEX_TEST:{
+                holder = new BaseViewHolder(LithoFactory.createComplexLithoView(parent.getContext()));
                 break;
             }
 

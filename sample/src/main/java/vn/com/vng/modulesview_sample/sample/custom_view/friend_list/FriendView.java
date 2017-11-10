@@ -129,7 +129,7 @@ public class FriendView extends ModulesView {
         mStatusText.getLayoutParams()
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setAlignLeft(mNameText)
-                .setBellowOf(mNameText);
+                .setBelowOf(mNameText);
 
         mContentGroup.addModule(mNameText);
         mContentGroup.addModule(mStatusText);

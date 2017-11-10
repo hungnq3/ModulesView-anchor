@@ -93,7 +93,7 @@ public class SocialFooterView extends ModulesView {
 
         mImgLike = buildLikeImgModule();
         mImgLike.getLayoutParams()
-                .setBellowOf(mTopLine)
+                .setBelowOf(mTopLine)
                 .setMarginLeft(mLeftMargin)
                 .setPadding(dp(4), dp(8), dp(4), 0)
                 .setDimensions(mIconSize, mIconSize);
@@ -102,13 +102,13 @@ public class SocialFooterView extends ModulesView {
         mTextLike.getLayoutParams()
                 .setDimensions(mLikeTextWidth, mContentHeight)
                 .setGravity(GravityCompat.CENTER_VERTICAL)
-                .setBellowOf(mTopLine)
+                .setBelowOf(mTopLine)
                 .setToRightOf(mImgLike);
 
         mImgComment = buildCommentImgModule();
         mImgComment.getLayoutParams()
                 .setDimensions(mIconSize, mIconSize)
-                .setBellowOf(mTopLine)
+                .setBelowOf(mTopLine)
                 .setToRightOf(mTextLike)
                 .setPadding(dp(4), dp(8), dp(4), 0);
 
@@ -116,14 +116,14 @@ public class SocialFooterView extends ModulesView {
         mTextComment.getLayoutParams()
                 .setDimensions(mCommentTextWidth, mContentHeight)
                 .setGravity(GravityCompat.CENTER_VERTICAL)
-                .setBellowOf(mTopLine)
+                .setBelowOf(mTopLine)
                 .setToRightOf(mImgComment);
 
 
         mImgMore = buildMoreImgModule();
         mImgMore.getLayoutParams()
                 .setDimensions(mIconSize, mIconSize)
-                .setBellowOf(mTopLine)
+                .setBelowOf(mTopLine)
                 .setAlignParentRight(true)
                 .setMarginRight(mRightMargin)
                 .setPadding(dp(4));
@@ -134,13 +134,13 @@ public class SocialFooterView extends ModulesView {
         mBottomLine.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, 1)
                 .setMarginTop(dp(8))
-                .setBellowOf(mImgLike);
+                .setBelowOf(mImgLike);
 
         mBottomSeparator = new Module(getContext());
         mBottomSeparator.setBackgroundColor(0xffe4e5e5);
         mBottomSeparator.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, mBottomSeparatorSize)
-                .setBellowOf(mBottomLine);
+                .setBelowOf(mBottomLine);
         //add modules
         addModule(mTopLine);
         addModule(mImgLike);

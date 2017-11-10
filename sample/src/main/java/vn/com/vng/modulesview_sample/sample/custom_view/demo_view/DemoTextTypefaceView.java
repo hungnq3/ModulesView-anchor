@@ -3,8 +3,6 @@ package vn.com.vng.modulesview_sample.sample.custom_view.demo_view;
 import android.content.Context;
 import android.graphics.Typeface;
 
-import java.lang.reflect.Type;
-
 import vn.com.vng.modulesview.LayoutParams;
 import vn.com.vng.modulesview.ModulesView;
 import vn.com.vng.modulesview.widget.TextModule;
@@ -39,7 +37,7 @@ public class DemoTextTypefaceView extends ModulesView {
         mTextModule2.setTypeFace(Typeface.DEFAULT_BOLD);
         mTextModule2.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
 
@@ -48,7 +46,7 @@ public class DemoTextTypefaceView extends ModulesView {
         mTextModule3.setTypeFace(Typeface.MONOSPACE);
         mTextModule3.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule2)
+                .setBelowOf(mTextModule2)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         mTextModule4 = new TextModule(mContext);
@@ -56,7 +54,7 @@ public class DemoTextTypefaceView extends ModulesView {
         mTextModule4.setTypeFace(Typeface.SANS_SERIF);
         mTextModule4.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule3)
+                .setBelowOf(mTextModule3)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         mTextModule5 = new TextModule(mContext);
@@ -64,7 +62,7 @@ public class DemoTextTypefaceView extends ModulesView {
         mTextModule5.setTypeFace(Typeface.SERIF);
         mTextModule5.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule4)
+                .setBelowOf(mTextModule4)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         addModule(mTextModule1);

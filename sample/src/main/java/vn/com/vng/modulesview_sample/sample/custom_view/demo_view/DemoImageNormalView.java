@@ -3,7 +3,6 @@ package vn.com.vng.modulesview_sample.sample.custom_view.demo_view;
 import android.content.Context;
 import android.text.Layout;
 
-import vn.com.vng.modulesview.GravityCompat;
 import vn.com.vng.modulesview.LayoutParams;
 import vn.com.vng.modulesview.ModulesView;
 import vn.com.vng.modulesview.widget.ImageModule;
@@ -39,7 +38,7 @@ public class DemoImageNormalView extends ModulesView {
         mTextModule.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule.setTextSize(sp(12));
         mTextModule.getLayoutParams()
-                .setBellowOf(mImageModule)
+                .setBelowOf(mImageModule)
                 .setCenterInHorizontal(true);
 
         addModule(mImageModule);

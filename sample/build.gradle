@@ -40,6 +40,10 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile project(':modulesview')
+
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+
+
     // Litho
     implementation 'com.facebook.litho:litho-core:0.8.0'
     implementation 'com.facebook.litho:litho-widget:0.8.0'
@@ -47,4 +51,6 @@ dependencies {
     annotationProcessor 'com.facebook.litho:litho-processor:0.8.0'
     // SoLoader
     implementation 'com.facebook.soloader:soloader:0.2.0'
+
+
 }

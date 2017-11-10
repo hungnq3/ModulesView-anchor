@@ -124,7 +124,7 @@ public class ChatHeaderView extends ModulesView {
         mNotificationOff.getLayoutParams()
                 .setDimensions(dp(18), dp(18))
                 .setAlignRight(mTimeText)
-                .setBellowOf(mTimeText)
+                .setBelowOf(mTimeText)
                 .setMarginTop(dp(4));
 
         mMessageText = new TextModule(getContext());
@@ -135,7 +135,7 @@ public class ChatHeaderView extends ModulesView {
                 .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 .setAlignLeft(mTitleText)
                 .setToLeftOf(mNotificationOff)
-                .setBellowOf(mTitleText);
+                .setBelowOf(mTitleText);
 //                .setMarginRight(dp(4));
 
         mBottomLine = new Module(getContext());

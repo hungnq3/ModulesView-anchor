@@ -49,10 +49,11 @@ public class LayoutParams {
     private int mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom;
     private int mMarginLeft, mMarginTop, mMarginRight, mMarginBottom;
 
-
     private int mGravity;
     private int mVisibility;
 
+    private float mAspectRatioWidth;
+    private float mAspectRatioHeight;
 
     public LayoutParams(@NonNull Module module) {
         mModule = module;
@@ -284,7 +285,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams setBellowOf(Module module) {
+    public LayoutParams setBelowOf(Module module) {
         if (module == null) {
             mAnchorTop = null;
             return this;
@@ -315,7 +316,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams setBellowOf(Fence fence) {
+    public LayoutParams setBelowOf(Fence fence) {
         if (fence == null) {
             mAnchorTop = null;
             return this;
@@ -351,7 +352,7 @@ public class LayoutParams {
         return this;
     }
 
-    public LayoutParams setBellowOf(Guideline guideline) {
+    public LayoutParams setBelowOf(Guideline guideline) {
         if (guideline == null) {
             mAnchorTop = null;
             return this;
@@ -580,8 +581,20 @@ public class LayoutParams {
         return this;
     }
 
+    public LayoutParams setAspectRatioWidth(float aspectRatioWidth) {
+        mAspectRatioWidth = aspectRatioWidth;
+        mAspectRatioHeight = 0f;
+        return this;
+    }
 
-    //------------------------------------------------
+    public LayoutParams setAspectRatioHeight(float aspectRatioHeight) {
+        mAspectRatioHeight = aspectRatioHeight;
+        mAspectRatioWidth = 0f;
+        return this;
+    }
+
+
+//------------------------------------------------
 
 
 //-----------------------------------------------------------------------------
@@ -665,6 +678,15 @@ public class LayoutParams {
     }
 
 
+    public float getAspectRatioWidth() {
+        return mAspectRatioWidth;
+    }
+
+    public float getAspectRatioHeight() {
+        return mAspectRatioHeight;
+    }
+
+
     boolean hasAnchorLeft() {
         return (mAnchorLeft != null);
     }
@@ -692,10 +714,8 @@ public class LayoutParams {
                 left += mMarginLeft;
         } else if (mWidthDimension == MATCH_PARENT || mX > 0) {
             left = mX + mMarginLeft;
-//            if (mX == 0 && mModule.getParent() != null)
-//                left += mModule.getParent().getPaddingLeft();
-        }else
-             left = Module.BOUND_UNSPECIFIED;
+        } else
+            left = Module.BOUND_UNSPECIFIED;
         return left;
     }
 
@@ -714,10 +734,10 @@ public class LayoutParams {
                     right = Module.BOUND_UNSPECIFIED;
                 else
                     right = Math.max(parent.getWidthMeasureSize() - mModule.getParent().getPaddingLeft() - mModule.getParent().getPaddingRight(), 0) - mMarginRight;
-            }else
-                right  = Module.BOUND_UNSPECIFIED;
-        }else
-            right  = Module.BOUND_UNSPECIFIED;
+            } else
+                right = Module.BOUND_UNSPECIFIED;
+        } else
+            right = Module.BOUND_UNSPECIFIED;
         return right;
     }
 
@@ -731,9 +751,7 @@ public class LayoutParams {
                 top += mMarginTop;
         } else if (mHeightDimension == MATCH_PARENT || mY > 0) {
             top = mY + mMarginTop;
-            if (mY == 0 && mModule.getParent() != null)
-                top += mModule.getParent().getPaddingTop();
-        }else
+        } else
             top = Module.BOUND_UNSPECIFIED;
 
         return top;
@@ -755,45 +773,68 @@ public class LayoutParams {
                     bottom = Module.BOUND_UNSPECIFIED;
                 else
                     bottom = Math.max(parent.getHeightMeasureSize() - mModule.getParent().getPaddingTop() - mModule.getParent().getPaddingBottom(), 0) - mMarginBottom;
-            }else
+            } else
                 bottom = Module.BOUND_UNSPECIFIED;
-        }else
+        } else
             bottom = Module.BOUND_UNSPECIFIED;
         return bottom;
     }
 
 
+    private boolean isValidBound(int bound) {
+        return bound != Module.BOUND_UNKNOWN && bound != Module.BOUND_UNSPECIFIED;
+    }
+
     protected void onMeasureAnchors() {
-        //measure horizontal
         int left = getAnchorLeft();
         int right = getAnchorRight();
+        int top = getAnchorTop();
+        int bottom = getAnchorBottom();
 
-        if (mWidthDimension >= 0 && mVisibility != GONE) {
-            if (left == Module.BOUND_UNSPECIFIED && right != Module.BOUND_UNSPECIFIED) {
-                left = right - mWidthDimension;
-            } else if (left != Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
-                right = left + mWidthDimension;
-            } else if (left == Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
-                left = mMarginLeft;
-                right = left + mWidthDimension;
+
+        //resolve width, height
+        int width;
+        int height;
+        if(mAspectRatioWidth >0 || mAspectRatioHeight >0) {
+            width = isValidBound(left) && isValidBound(right) ? right - left: mWidthDimension;
+            height = isValidBound(top) && isValidBound(bottom)? bottom - top : mHeightDimension;
+
+            if (mAspectRatioHeight > 0f && width >= 0)
+                height = (int) (width * mAspectRatioHeight);
+            else if (mAspectRatioWidth > 0f && height >= 0)
+                width = (int) (mAspectRatioWidth * height);
+        }else{
+            width = mWidthDimension;
+            height = mHeightDimension;
+        }
+
+        //measure horizontal
+        if (left == Module.BOUND_UNSPECIFIED || right == Module.BOUND_UNSPECIFIED) {
+            if (width >= 0 && mVisibility != GONE) {
+                if (left == Module.BOUND_UNSPECIFIED && right != Module.BOUND_UNSPECIFIED) {
+                    left = right - width;
+                } else if (left != Module.BOUND_UNSPECIFIED && right == Module.BOUND_UNSPECIFIED) {
+                    right = left + width;
+                } else {
+                    left = mMarginLeft;
+                    right = left + width;
+                }
             }
         }
 
         //measure vertical
-        int top = getAnchorTop();
-        int bottom = getAnchorBottom();
-
-        if (mHeightDimension >= 0 && mVisibility != GONE){
-            if (top == Module.BOUND_UNSPECIFIED && bottom != Module.BOUND_UNSPECIFIED) {
-                top = bottom - mHeightDimension;
-            } else if (top != Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
-                bottom = top + mHeightDimension;
-            } else if (top == Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
-                top = mMarginTop;
-                bottom = top + mHeightDimension;
+        if (top == Module.BOUND_UNSPECIFIED || bottom == Module.DIMENSION_UNSPECIFIED) {
+            if (height >= 0 && mVisibility != GONE) {
+                if (top == Module.BOUND_UNSPECIFIED && bottom != Module.BOUND_UNSPECIFIED) {
+                    top = bottom - height;
+                } else if (top != Module.BOUND_UNSPECIFIED && bottom == Module.BOUND_UNSPECIFIED) {
+                    bottom = top + height;
+                } else{
+                    top = mMarginTop;
+                    bottom = top + height;
+                }
             }
         }
-
         mModule.setBounds(left, top, right, bottom);
     }
 }

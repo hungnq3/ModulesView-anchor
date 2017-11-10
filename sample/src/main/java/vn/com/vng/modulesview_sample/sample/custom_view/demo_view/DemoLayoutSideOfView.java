@@ -80,7 +80,7 @@ public class DemoLayoutSideOfView extends ModulesView {
         mTextModule5.setTextSize(sp(10.5f));
         mTextModule5.getLayoutParams()
                 .setGravity(GravityCompat.CENTER)
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setDimensions(dp(60), LayoutParams.WRAP_CONTENT);
 
         addModule(mTextModule1);

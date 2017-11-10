@@ -64,13 +64,13 @@ public class Social4ImageContentView extends SocialImageContentView {
                 .setHeightDimension(temp2)
                 .setToRightOf(img1)
                 .setAlignParentRight(true)
-                .setBellowOf(img2)
+                .setBelowOf(img2)
                 .setPadding(dp(1),dp(1),0,0);
         img4.getLayoutParams()
                 .setHeightDimension(temp2)
                 .setToRightOf(img1)
                 .setAlignParentRight(true)
-                .setBellowOf(img3)
+                .setBelowOf(img3)
                 .setPadding(dp(1),dp(1),0,0);
 
     }

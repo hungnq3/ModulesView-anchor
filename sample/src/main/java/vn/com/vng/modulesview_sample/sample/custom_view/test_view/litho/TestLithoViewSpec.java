@@ -31,6 +31,7 @@ public class TestLithoViewSpec {
         return Row.create(c)
                 .paddingDip(YogaEdge.ALL, 8)
                 .heightDip(76)
+                .alignSelf(YogaAlign.STRETCH)
                 .child(Image.create(c)
                         .scaleType(ImageView.ScaleType.CENTER_CROP)
                         .widthDip(60)

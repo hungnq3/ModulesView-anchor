@@ -2,23 +2,14 @@ package vn.com.vng.modulesview.widget.text_layout_builder;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.Px;
 import android.text.Layout;
-import android.text.SpannableStringBuilder;
-import android.text.StaticLayout;
-import android.text.TextDirectionHeuristic;
-import android.text.TextDirectionHeuristics;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.style.ClickableSpan;
-import android.util.Log;
 
 import java.lang.annotation.Retention;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Type;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 

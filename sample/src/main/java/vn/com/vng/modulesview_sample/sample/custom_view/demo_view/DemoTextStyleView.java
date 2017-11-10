@@ -1,7 +1,6 @@
 package vn.com.vng.modulesview_sample.sample.custom_view.demo_view;
 
 import android.content.Context;
-import android.graphics.Typeface;
 
 import vn.com.vng.modulesview.LayoutParams;
 import vn.com.vng.modulesview.ModulesView;
@@ -36,7 +35,7 @@ public class DemoTextStyleView extends ModulesView {
         mTextModule2.setTextStyle(TextModule.TEXT_STYLE_BOLD);
         mTextModule2.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         mTextModule3 = new TextModule(mContext);
@@ -44,7 +43,7 @@ public class DemoTextStyleView extends ModulesView {
         mTextModule3.setTextStyle(TextModule.TEXT_STYLE_ITALIC);
         mTextModule3.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule2)
+                .setBelowOf(mTextModule2)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         mTextModule4 = new TextModule(mContext);
@@ -52,7 +51,7 @@ public class DemoTextStyleView extends ModulesView {
         mTextModule4.setTextStyle(TextModule.TEXT_STYLE_BOLD_ITALIC);
         mTextModule4.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule3)
+                .setBelowOf(mTextModule3)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         addModule(mTextModule1);

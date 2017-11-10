@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.LongSparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -238,7 +237,7 @@ public class Module {
             //step 5: resolve center
             if (mParams.isCenterInHorizontal()) {
                 if (mWidth != DIMENSION_UNSPECIFIED && parentWidthMode == DIMENSION_MODE_EXACTLY) {
-                    int dx = (parentWidth- mParams.getMarginLeft() - mParams.getMarginRight() - mWidth) / 2;
+                    int dx = (parentWidth - mParams.getMarginLeft() - mParams.getMarginRight() - mWidth) / 2;
                     mLeft += dx;
                     mRight += dx;
                 }
@@ -295,7 +294,7 @@ public class Module {
         } else {
             left = mLeft;
         }
-        int width = right - left- mParams.getPaddingRight() - mParams.getPaddingLeft();
+        int width = right - left - mParams.getPaddingRight() - mParams.getPaddingLeft();
 
         return width > 0 ? width : 0;
     }
@@ -337,6 +336,18 @@ public class Module {
     }
 
     private final void updateUnspecifiedBounds(int width, int height) {
+
+        if (getLayoutParams().getAspectRatioHeight() > 0f) {
+            height = (int) ((width + getLayoutParams().getPaddingLeft() + getLayoutParams().getPaddingRight())
+                    * getLayoutParams().getAspectRatioHeight())
+                    - getLayoutParams().getPaddingTop() - getLayoutParams().getPaddingBottom();
+        } else if (getLayoutParams().getAspectRatioWidth() > 0f) {
+            width = (int)(height + getLayoutParams().getPaddingTop() + getLayoutParams().getPaddingBottom()
+                    *getLayoutParams().getAspectRatioWidth())
+                    - getLayoutParams().getPaddingLeft() - getLayoutParams().getPaddingRight();
+        }
+
+
         if (mWidth == DIMENSION_UNSPECIFIED) {
             if (mLeft == BOUND_UNSPECIFIED && mRight == BOUND_UNSPECIFIED) {
                 mWidth = width + mParams.getPaddingLeft() + mParams.getPaddingRight();

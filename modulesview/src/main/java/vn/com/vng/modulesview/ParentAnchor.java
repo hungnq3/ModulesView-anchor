@@ -43,7 +43,7 @@ public class ParentAnchor extends Anchor {
             return BOUND_UNKNOWN;
         Parent parent = mModule.getParent();
 
-        return Math.max(parent.getCurrentWidth() - mModule.getParent().getPaddingLeft()- mModule.getParent().getPaddingRight(), 0);
+        return parent.getCurrentWidth();
     }
 
     @Override
@@ -52,6 +52,6 @@ public class ParentAnchor extends Anchor {
             return BOUND_UNKNOWN;
         Parent parent = mModule.getParent();
 
-        return Math.max(parent.getCurrentHeight() - mModule.getParent().getPaddingTop() - mModule.getParent().getPaddingBottom(), 0);
+        return parent.getCurrentHeight();
     }
 }

@@ -1,7 +1,6 @@
 package vn.com.vng.modulesview_sample.sample.custom_view.demo_view;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.text.Layout;
 
 import vn.com.vng.modulesview.LayoutParams;
@@ -40,7 +39,7 @@ public class DemoTitleView extends ModulesView {
         mLineModule.setBackgroundColor(0xffcccccc);
         mLineModule.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, 2)
-                .setBellowOf(mTextModule);
+                .setBelowOf(mTextModule);
 
 
         addModule(mTextModule);

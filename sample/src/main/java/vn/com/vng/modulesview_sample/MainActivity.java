@@ -43,6 +43,8 @@ import vn.com.vng.modulesview_sample.sample.adapter.view_item.demo.DemoTitleView
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.friend_list.FriendViewItem;
 import vn.com.vng.modulesview_sample.sample.adapter.view_item.chat_list.GroupChatHeaderViewItem;
 import vn.com.vng.modulesview_sample.sample.custom_view.test_view.CompareView;
+import vn.com.vng.modulesview_sample.sample.custom_view.test_view.ComplexTestView;
+import vn.com.vng.modulesview_sample.sample.custom_view.test_view.litho.LithoFactory;
 import vn.com.vng.modulesview_sample.sample.model.ChatHeaderModel;
 import vn.com.vng.modulesview_sample.sample.model.FriendModel;
 import vn.com.vng.modulesview_sample.sample.model.GroupChatHeaderModel;
@@ -60,19 +62,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ModulesViewAdapter mAdapter;
 
     Button btnNormal, btnModulesView, btnConstraint, btnLitho;
+    Button btnNormal2, btnModulesView2;
+
     ViewGroup mLayoutRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_complex);
 
         mLayoutRoot = findViewById(R.id.root_layout);
+
+//        mLayoutRoot.removeAllViews();
+//        mLayoutRoot.addView(LithoFactory.createComplexLithoView(this));
+//        mLayoutRoot.addView(LithoFactory.createLithoTestView(this));
 
         btnNormal = findViewById(R.id.btn_normal);
         btnConstraint = findViewById(R.id.btn_constraint);
         btnModulesView = findViewById(R.id.btn_modulesview);
         btnLitho = findViewById(R.id.btn_litho);
+
+        btnNormal2 = findViewById(R.id.btn_normal2);
+        btnModulesView2 = findViewById(R.id.btn_modulesview2);
 
         recyclerView = findViewById(R.id.recycler);
         if (recyclerView != null)
@@ -81,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupRecycler() {
         mAdapter = new ModulesViewAdapter(buildItems());
-//        mAdapter = new ModulesViewAdapter(buildListModulesViewItemsSample());
+//        mAdapter = new ModulesViewAdapter(buildListComplexLithoViewItemsSample());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
@@ -118,6 +129,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return items;
     }
+    private List<BaseViewItem> buildListComplexLithoViewItemsSample() {
+        List<BaseViewItem> items = new LinkedList<>();
+        for (int i = 0; i < 400; i++) {
+            items.add(new FlexViewTypeItem(ViewType.LITHO_COMPLEX_TEST));
+        }
+        return items;
+    }
+    private List<BaseViewItem> buildListComplexModulesViewSample() {
+        List<BaseViewItem> items = new LinkedList<>();
+        for (int i = 0; i < 400; i++) {
+            items.add(new FlexViewTypeItem(ViewType.MODULES_COMPLEX_TEST));
+        }
+        return items;
+    }
+    private List<BaseViewItem> buildListComplexNativeViewSample() {
+        List<BaseViewItem> items = new LinkedList<>();
+        for (int i = 0; i < 400; i++) {
+            items.add(new FlexViewTypeItem(ViewType.NATIVE_COMPLEX_TEST));
+        }
+        return items;
+    }
 
 
     private void testInflateTime() {
@@ -142,9 +174,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void rebind() {
 
-        mLayoutRoot.removeViews(0,2);
+        mLayoutRoot.removeViews(0, 2);
         mLayoutRoot.addView(new CompareView(this), 0);
         mLayoutRoot.addView(LayoutInflater.from(this).inflate(R.layout.compare_normal_layout, null), 0);
+
+    }
+
+
+    private void testInflateTime2() {
+
+        long startTime = System.nanoTime();
+        new ComplexTestView(this);
+        long endTime = System.nanoTime();
+        Log.w("Inflate time", "ModulesView: " + String.valueOf((endTime - startTime) / 1000000f) + " ms");
+
+        startTime = System.nanoTime();
+        LayoutInflater.from(this).inflate(R.layout.complex_layout_test, null);
+        endTime = System.nanoTime();
+        Log.i("Inflate time", "Native Inflater: " + String.valueOf((endTime - startTime) / 1000000f) + " ms");
+
+    }
+
+    private void rebind2() {
+
+        mLayoutRoot.removeViews(0, 2);
+        mLayoutRoot.addView(new ComplexTestView(this), 0);
+        mLayoutRoot.addView(LayoutInflater.from(this).inflate(R.layout.complex_layout_test, null), 0);
 
     }
 
@@ -422,6 +477,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_rebind:
                 rebind();
                 break;
+            case R.id.btn_inflate2:
+                testInflateTime2();
+                break;
+            case R.id.btn_rebind2:
+                rebind2();
+                break;
+
+            case R.id.btn_modulesview2:
+                mAdapter.setItems(buildListComplexModulesViewSample());
+                mAdapter.notifyDataSetChanged();
+                btnModulesView2.setTextColor(0xff1111dd);
+                btnNormal2.setTextColor(0xff050505);
+                break;
+            case R.id.btn_normal2:
+                mAdapter.setItems(buildListComplexNativeViewSample());
+                mAdapter.notifyDataSetChanged();
+                btnModulesView2.setTextColor(0xff050505);
+                btnNormal2.setTextColor(0xff1111dd);
+                break;
+
 
         }
     }

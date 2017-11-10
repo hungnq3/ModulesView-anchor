@@ -35,7 +35,7 @@ public class DemoTextSizeView extends ModulesView {
         mTextModule2.setText("Text size 14sp");
         mTextModule2.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         mTextModule3 = new TextModule(mContext);
@@ -43,7 +43,7 @@ public class DemoTextSizeView extends ModulesView {
         mTextModule3.setTextSize(sp(18));
         mTextModule3.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule2)
+                .setBelowOf(mTextModule2)
                 .setPadding(dp(4));
 
         mTextModule4 = new TextModule(mContext);
@@ -51,7 +51,7 @@ public class DemoTextSizeView extends ModulesView {
         mTextModule4.setTextSize(sp(22));
         mTextModule4.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule3)
+                .setBelowOf(mTextModule3)
                 .setPadding(dp(8), dp(4), dp (8), dp(4));
 
         addModule(mTextModule1);

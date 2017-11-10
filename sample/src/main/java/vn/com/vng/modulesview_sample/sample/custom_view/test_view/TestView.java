@@ -1,15 +1,10 @@
 package vn.com.vng.modulesview_sample.sample.custom_view.test_view;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.text.Layout;
-import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import vn.com.vng.modulesview_sample.R;
 import vn.com.vng.modulesview.Fence;
-import vn.com.vng.modulesview.GravityCompat;
 import vn.com.vng.modulesview.GroupModule;
 import vn.com.vng.modulesview.Guideline;
 import vn.com.vng.modulesview.LayoutParams;
@@ -88,7 +83,7 @@ public class TestView extends ModulesView {
         mImageModule.getLayoutParams()
                 .setDimensions(dp(100),dp(100))
                 .setAlignRight(mText2)
-                .setBellowOf(new Fence(mText1, mText2, mText3));
+                .setBelowOf(new Fence(mText1, mText2, mText3));
 
         addModule(mText1);
         addModule(mText2);
@@ -132,20 +127,20 @@ public class TestView extends ModulesView {
 //        mText2.setOnClickListener(mOnClickListener);
 //        mText2.getLayoutParams()
 //                .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-//                .setBellowOf(mText1);
+//                .setBelowOf(mText1);
 //
 //        mGroup1.addModule(mText1);
 //        mGroup1.addModule(mText2);
 //
-//        mGroup2 = new GroupModule(getContext());
-//        mGroup2.setBackgroundColor(0xff556677);
-//        mGroup2.getLayoutParams()
+//        mImageGroup = new GroupModule(getContext());
+//        mImageGroup.setBackgroundColor(0xff556677);
+//        mImageGroup.getLayoutParams()
 //                .setGravity(GravityCompat.CENTER)
 //                .setDimensions(dp(200), dp(100))
 //                .setMargin(dp(4))
 //                .setPadding(dp(4))
 //                .setToRightOf(mGroup1)
-//                .setBellowOf(mGroup1);
+//                .setBelowOf(mGroup1);
 //
 //        mText3 = new TextModule(getContext());
 //        mText3.setText("TEXT 3");
@@ -159,11 +154,11 @@ public class TestView extends ModulesView {
 //        mText4.setOnClickListener(mOnClickListener);
 //        mText4.getLayoutParams()
 //                .setDimensions(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-//                .setBellowOf(mText3);
+//                .setBelowOf(mText3);
 //
 //
-//        mGroup2.addModule(mText3);
-//        mGroup2.addModule(mText4);
+//        mImageGroup.addModule(mText3);
+//        mImageGroup.addModule(mText4);
 //
 //
 //        mText5 = new TextModule(getContext());
@@ -176,7 +171,7 @@ public class TestView extends ModulesView {
 //                .setPadding(dp(4))
 //                .setAlignParentLeft(true)
 //                .setToLeftOf(new Guideline().setXPercent(1 / 3f))
-//                .setBellowOf(new Fence(mGroup1, mGroup2));
+//                .setBelowOf(new Fence(mGroup1, mImageGroup));
 //
 //
 //        mImageModule = new ImageModule(getContext());
@@ -199,7 +194,7 @@ public class TestView extends ModulesView {
 //                .setDimensions(LayoutParams.WRAP_CONTENT, dp(100));
 //
 //        addModule(mGroup1);
-//        addModule(mGroup2);
+//        addModule(mImageGroup);
 ////        addModule(mText5);
 //
 //        addModule(mImageModule);

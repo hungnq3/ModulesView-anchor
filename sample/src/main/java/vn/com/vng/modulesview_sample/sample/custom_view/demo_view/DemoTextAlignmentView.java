@@ -35,7 +35,7 @@ public class DemoTextAlignmentView extends ModulesView {
         mTextModule2.setAlignment(Layout.Alignment.ALIGN_CENTER);
         mTextModule2.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule1)
+                .setBelowOf(mTextModule1)
                 .setPadding(dp(8));
 
         mTextModule3 = new TextModule(mContext);
@@ -43,7 +43,7 @@ public class DemoTextAlignmentView extends ModulesView {
         mTextModule3.setAlignment(Layout.Alignment.ALIGN_OPPOSITE);
         mTextModule3.getLayoutParams()
                 .setDimensions(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                .setBellowOf(mTextModule2)
+                .setBelowOf(mTextModule2)
                 .setPadding(dp(8));
 
         addModule(mTextModule1);

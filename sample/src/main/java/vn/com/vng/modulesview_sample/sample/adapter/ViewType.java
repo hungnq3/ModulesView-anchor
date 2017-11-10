@@ -11,6 +11,9 @@ public class ViewType {
     public static final int NORMALVIEW_SAMPLE = 11;
     public static final int CONSTRAINTLAYOUT_SAMPLE = 12;
     public static final int LITHO_SAMPLE = 13;
+    public static final int MODULES_COMPLEX_TEST = 14;
+    public static final int NATIVE_COMPLEX_TEST = 15;
+    public static final int LITHO_COMPLEX_TEST = 16;
 
     public static final int DEMO_TITLE_VIEW = 99;
     public static final int DEMO_HEADER_VIEW = 100;

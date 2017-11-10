@@ -14,4 +14,7 @@ public class LithoFactory {
     public  static View createLithoTestView(Context context){
         return LithoView.create(context, TestLithoView.create(new ComponentContext(context)).build());
     }
+    public  static View createComplexLithoView(Context context){
+        return LithoView.create(context, ComplexLithoView.create(new ComponentContext(context)).build());
+    }
 }

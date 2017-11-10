@@ -63,23 +63,23 @@ public class Social6ImageContentView extends SocialImageContentView {
         img3.getLayoutParams()
                 .setDimensions(temp2,temp2)
                 .setToRightOf(img1)
-                .setBellowOf(img2)
+                .setBelowOf(img2)
                 .setPadding(dp(1),dp(1),0,dp(1));
 
         img4.getLayoutParams()
                 .setDimensions(temp2,temp2)
-                .setBellowOf(img1)
+                .setBelowOf(img1)
                 .setPadding(0,dp(1),dp(1), 0);
 
         img5.getLayoutParams()
                 .setDimensions(temp2,temp2)
-                .setBellowOf(img1)
+                .setBelowOf(img1)
                 .setToRightOf(img4)
                 .setPadding(dp(1),dp(1),dp(1), 0);
 
         img6.getLayoutParams()
                 .setDimensions(temp2,temp2)
-                .setBellowOf(img3)
+                .setBelowOf(img3)
                 .setToRightOf(img5)
                 .setPadding(dp(1),dp(1),0, 0);
 
